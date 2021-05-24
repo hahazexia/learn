@@ -1,0 +1,28 @@
+.content {
+  /* 十六进制通常是写几位 */
+  color: #12345678;
+}
+
+:-webkit-full-screen {
+  color: red;
+}
+
+:-ms-fullscreen {
+  color: red;
+}
+
+:fullscreen {
+  color: red;
+}
+
+.content {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  transition: all 2s ease;
+}
+
+
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jc3MvdGVzdC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxlQUFlO0VBQ2YsZ0JBQWdCO0FBQ2xCOztBQUVBO0VBQ0UsVUFBVTtBQUNaOztBQUZBO0VBQ0UsVUFBVTtBQUNaOztBQUZBO0VBQ0UsVUFBVTtBQUNaOztBQUVBO0VBQ0UseUJBQWlCO0tBQWpCLHNCQUFpQjtNQUFqQixxQkFBaUI7VUFBakIsaUJBQWlCO0VBQ2pCLHVCQUF1QjtBQUN6QiIsImZpbGUiOiJlbmQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRlbnQge1xyXG4gIC8qIOWNgeWFrei/m+WItumAmuW4uOaYr+WGmeWHoOS9jSAqL1xyXG4gIGNvbG9yOiAjMTIzNDU2Nzg7XHJcbn1cclxuXHJcbjpmdWxsc2NyZWVuIHtcclxuICBjb2xvcjogcmVkO1xyXG59XHJcblxyXG4uY29udGVudCB7XHJcbiAgdXNlci1zZWxlY3Q6IG5vbmU7XHJcbiAgdHJhbnNpdGlvbjogYWxsIDJzIGVhc2U7XHJcbn1cclxuXHJcblxyXG4iXX0= */
