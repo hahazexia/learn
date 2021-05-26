@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- 引入依赖 -->
+    <script src="./react/react.development.js"></script>
+    <script src="./react/react-dom.development.js"></script>
+    <script src="./react/babel.min.js"></script>
+
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor () {
+                super();
+                this.state = {
+                    info: {
+                        name: 'tom',
+                        age: '28'
+                    },
+                    isLogin: true
+                }
+            }
+
+            sum (a, b) {
+                return a + b;
+            }
+
+            render () {
+                const { info, have, isLogin } = this.state;
+
+                return (
+                    <div>
+                        {/* 表达式 */}
+                        <div>{info.name + ' ' + info.age}</div>
+                        <div>{20 + 100}</div>
+                        {/* 三元运算符 */}
+                        <div>{isLogin ? '已登录' : '请登录'}</div>
+                        {/* 函数调用 */}
+                        <div>{this.sum(1, 6)}</div>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('app'))
+    </script>
+</body>
+</html>

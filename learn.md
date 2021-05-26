@@ -10,3 +10,4 @@
 
 * react
     - [初识](learn-react/1.first.md)
+    - [jsx语法](learn-react/2.jsx.md)
