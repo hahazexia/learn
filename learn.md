@@ -7,6 +7,7 @@
 
 * nodejs
     - [初始](learn-nodejs/1.first.md)
+    - [模块化](learn-nodejs/2.module.md)
 
 * react
     - [初识](learn-react/1.first.md)
