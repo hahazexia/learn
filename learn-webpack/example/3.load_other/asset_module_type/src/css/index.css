@@ -1,0 +1,16 @@
+@import "./test.css";
+@import "../font/iconfont.css";
+.demo {
+  color: red;
+}
+
+.bg-image {
+  display: inline-block;
+  background-image: url('../img/nhlt.jpg');
+  background-size: contain;
+}
+
+.why_icon {
+  font-size: 50px;
+  color: blueviolet;
+}
