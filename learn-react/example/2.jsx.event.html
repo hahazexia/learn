@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- 引入依赖 -->
+    <script src="./react/react.development.js"></script>
+    <script src="./react/react-dom.development.js"></script>
+    <script src="./react/babel.min.js"></script>
+
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor () {
+                super();
+                this.state = {
+                    message: '你好',
+                    count: 0
+                }
+
+                this.btnClick = this.btnClick.bind(this);
+            }
+
+            btnClick () {
+                console.log(this.state.message, '点击了')
+            }
+
+            increase =  () => {
+                this.setState({
+                    count: this.state.count + 1
+                });
+            }
+
+            decrease () {
+                this.setState({
+                    count: this.state.count - 1
+                })
+            }
+
+            render () {
+                const { message, count } = this.state;
+                return (
+                    <div>
+                        <div>{message}</div>
+                        <div>{count}</div>
+                        {/* 显示绑定 */}
+                        <button onClick={this.btnClick.bind(this)}>按钮</button>
+
+                        {/* 定义函数时使用箭头函数 */}
+                        <button onClick={this.increase}>+1</button>
+
+                        {/* 给事件绑定传递一个箭头函数，在箭头函数中调用要执行的函数 */}
+                        <button onClick={e => {this.decrease()}}>-1</button>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('app'))
+    </script>
+</body>
+</html>

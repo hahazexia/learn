@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- 引入依赖 -->
+    <script src="./react/react.development.js"></script>
+    <script src="./react/react-dom.development.js"></script>
+    <script src="./react/babel.min.js"></script>
+
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor () {
+                super();
+                this.state = {
+                    title: '标题',
+                    imgUrl: 'http://p1.music.126.net/z3mxHzSvXoMPhWYYPWAstA==/109951166006554807.jpg',
+                    link: 'http://www.baidu.com',
+                    active: true
+                }
+            }
+
+            getSizeImg (img, size) {
+                return `${img}?param=${size}x${size}`
+            }
+
+            render () {
+                const { title, imgUrl, link, active } = this.state;
+                return (
+                    <div>
+                        {/* 普通属性 */}
+                        <h2 title={title}>我是标题</h2>
+                        <img src={this.getSizeImg(imgUrl, 140)} alt="" />
+                        <a href={link}>百度</a>
+
+                        {/* 绑定class */}
+                        <div className="box title">className</div>
+                        <div className={'box title' + (active ? 'active' : '')}>className</div>
+                        <label htmlFor=""></label>
+
+                        {/* 绑定style */}
+                        <div style={{color: 'blue', fontSize: '20px'}}>绑定style</div>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('app'))
+    </script>
+</body>
+</html>
