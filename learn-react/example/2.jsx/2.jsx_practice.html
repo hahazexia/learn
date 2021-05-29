@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border: 1px solid #aaa;
+            border-collapse: collapse;
+        }
+        table thead {
+            background-color: #ccc;
+        }
+        table td, table th {
+            border: 1px solid #aaa;
+            border-collapse: collapse;
+            padding: 5px 16px;
+            text-align: center;
+        }
+        table .count {
+            padding: 0 6px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- 引入依赖 -->
+    <script src="../react/react.development.js"></script>
+    <script src="../react/react-dom.development.js"></script>
+    <script src="../react/babel.min.js"></script>
+
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor () {
+                super();
+                this.state = {
+                    books: [
+                        {
+                        id: 1,
+                        name: '《算法导论》',
+                        date: '2006-9',
+                        price: 85,
+                        count: 1
+                        },
+                        {
+                        id: 2,
+                        name: '《UNIX编程艺术》',
+                        date: '2006-2',
+                        price: 59,
+                        count: 1
+                        },
+                        {
+                        id: 3,
+                        name: '《编程珠玑》',
+                        date: '2008-10',
+                        price: 39,
+                        count: 1
+                        },
+                        {
+                        id: 4,
+                        name: '《代码大全》',
+                        date: '2006-3',
+                        price: 128,
+                        count: 1
+                        },
+                    ]
+                }
+            }
+
+            shopCart () {
+                const { books } = this.state;
+                return (
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>书籍名称</th>
+                                    <th>出版日期</th>
+                                    <th>价格</th>
+                                    <th>购买数量</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    books.map((item, index) => {
+                                        return (
+                                            <tr>
+                                                <td>{index + 1}</td>
+                                                <td>{item.name}</td>
+                                                <td>{item.date}</td>
+                                                <td>{this.formatPrice(item.price, 2)}</td>
+                                                <td>
+                                                    <button disabled={item.count <= 1} onClick={() => this.changeCount(index, -1)}>-</button>
+                                                    <span className="count">{item.count}</span>
+                                                    <button onClick={() => this.changeCount(index, +1)}>+</button>
+                                                </td>
+                                                <td>
+                                                    <button onClick={ () => this.removeBook(item.id)}>移除</button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        <h2>
+                            {
+                                `总价格：￥${this.getGrossPrice()}`
+                            }
+                        </h2>
+                    </div>
+                )
+            }
+
+            empty () {
+                return (
+                    <h2>购物车为空！</h2>
+                )
+            }
+
+            render () {
+                const { books } = this.state;
+                return (
+                    <div>
+                        {
+                            books.length ? this.shopCart() : this.empty()
+                        }
+                    </div>
+                )
+            }
+
+            getGrossPrice () {
+                let total =  this.state.books.reduce((acc, item) => {
+                    return (acc += (item.price * item.count), acc)
+                }, 0);
+                return this.formatPrice(total, 2)
+            }
+
+            formatPrice (price, precision) {
+                return price.toFixed(precision)
+            }
+
+            removeBook (id) {
+                const newBooks = this.state.books.filter(item => item.id !== id);
+                this.setState({
+                    books: newBooks
+                })
+            }
+
+            changeCount (index, data) {
+                const newBooks = [...this.state.books];
+                newBooks[index].count += data;
+                this.setState({
+                    books: newBooks
+                });
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('app'))
+    </script>
+</body>
+</html>
