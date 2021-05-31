@@ -8,6 +8,7 @@
 * nodejs
     - [初始](learn-nodejs/1.first.md)
     - [模块化](learn-nodejs/2.module.md)
+    - [常用内置模块](learn-nodejs/3.buildin_modules.md)
 
 * react
     - [初识](learn-react/1.first.md)
