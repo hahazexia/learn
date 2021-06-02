@@ -14,6 +14,7 @@
     - [初识](learn-react/1.first.md)
     - [jsx语法](learn-react/2.jsx.md)
     - [脚手架](learn-react/3.cra.md)
+    - [组件化](learn-react/4.component.md)
 
 * data structure and algorithms
     - [复杂度](learn-data-structure-algorithms/1.complexity.md)
