@@ -9,6 +9,8 @@
     - [初始](learn-nodejs/1.first.md)
     - [模块化](learn-nodejs/2.module.md)
     - [常用内置模块](learn-nodejs/3.buildin_modules.md)
+    - [包管理工具](learn-nodejs/4.npm.md)
+
 
 * react
     - [初识](learn-react/1.first.md)
@@ -18,3 +20,4 @@
 
 * data structure and algorithms
     - [复杂度](learn-data-structure-algorithms/1.complexity.md)
+    - [动态数组](learn-data-structure-algorithms/2.dynamicArray.md)
