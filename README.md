@@ -4,6 +4,7 @@
     - [初识](learn-webpack/1.first.md)
     - [配置和css处理](learn-webpack/2.config_css.md)
     - [加载和处理其他资源](learn-webpack/3.load_other.md)
+    - [模块化原理和source-map](learn-webpack/4.module.md)
 
 * nodejs
     - [初始](learn-nodejs/1.first.md)
