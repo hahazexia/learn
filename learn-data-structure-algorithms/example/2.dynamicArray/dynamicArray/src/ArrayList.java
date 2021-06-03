@@ -1,16 +1,16 @@
-public class ArrayList {
+public class ArrayList<E> {
 
     // 元素数量
     private int size;
     // 所有元素
-    private int[] elements;
+    private E[] elements;
 
     private static final int DEFAULT_CAPACITY = 2;
     private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList(int capacity) {
         capacity = (capacity < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
-        elements = new int[capacity];
+        elements = (E[]) new Object[capacity];
     }
 
     public ArrayList() {
@@ -44,7 +44,7 @@ public class ArrayList {
         // 新容量是旧容量的 1.5 倍
         int newCapacity = oldCapacity + (oldCapacity >> 1);
 
-        int[] newElements = new int[newCapacity];
+        E[] newElements = (E[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
             newElements[i] = elements[i];
         }
@@ -56,6 +56,9 @@ public class ArrayList {
      * 删除所有元素
      */
     public void clear() {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = null;
+        }
         size = 0;
     }
 
@@ -80,7 +83,7 @@ public class ArrayList {
      * @param element
      * @return 找到返回 true，否则 false
      */
-    public boolean contains(int element) {
+    public boolean contains(E element) {
         return indexOf(element) != ELEMENT_NOT_FOUND;
     }
 
@@ -88,7 +91,7 @@ public class ArrayList {
      * 添加元素到尾部
      * @param element
      */
-    public void add(int element) {
+    public void add(E element) {
         add(size, element);
     }
 
@@ -97,7 +100,7 @@ public class ArrayList {
      * @param index
      * @return index位置的元素
      */
-    public int get(int index) {
+    public E get(int index) {
         rangeCheck(index);
         return elements[index];
     }
@@ -108,9 +111,9 @@ public class ArrayList {
      * @param element
      * @return index 位置原来的元素
      */
-    public int set(int index, int element) {
+    public E set(int index, E element) {
         rangeCheck(index);
-        int old = elements[index];
+        E old = elements[index];
         elements[index] = element;
         return old;
     }
@@ -120,7 +123,7 @@ public class ArrayList {
      * @param index
      * @param element
      */
-    public void add(int index, int element) {
+    public void add(int index, E element) {
         rangeCheckForAdd(index);
         entureCapacity(size + 1);
         for(int i = size - 1; i >= index; i--) {
@@ -135,14 +138,14 @@ public class ArrayList {
      * @param index
      * @return 被删除元素的值
      */
-    public int remove(int index) {
+    public E remove(int index) {
         rangeCheck(index);
-        int del = elements[index];
+        E del = elements[index];
 
         for (int i = index + 1; i < size - 1; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
+        elements[--size] = null;
 
         return del;
     }
@@ -152,9 +155,15 @@ public class ArrayList {
      * @param element
      * @return 元素的索引，找不到返回 -1
      */
-    public int indexOf(int element) {
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == element) return i;
+    public int indexOf(E element) {
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (elements[i].equals(element)) return i;
+            }
         }
         return ELEMENT_NOT_FOUND;
     }
