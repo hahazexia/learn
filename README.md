@@ -23,3 +23,4 @@
 * data structure and algorithms
     - [复杂度](learn-data-structure-algorithms/1.complexity.md)
     - [动态数组](learn-data-structure-algorithms/2.dynamicArray.md)
+    - [链表](learn-data-structure-algorithms/3.linkedList.md)
