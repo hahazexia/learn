@@ -1,4 +1,4 @@
-public class ArrayList<E> {
+public class ArrayList<E> extends AbstractList<E> {
 
     // 元素数量
     private int size;
@@ -6,7 +6,6 @@ public class ArrayList<E> {
     private E[] elements;
 
     private static final int DEFAULT_CAPACITY = 2;
-    private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList(int capacity) {
         capacity = (capacity < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
@@ -17,21 +16,7 @@ public class ArrayList<E> {
         this(DEFAULT_CAPACITY);
     }
     
-    private void outOfBound(int index) {
-        throw new IndexOutOfBoundsException("index" + index + ", size: " + size);
-    }
 
-    private void rangeCheck(int index) {
-        if (index < 0 || index >= size) {
-            outOfBound(index);
-        }
-    }
-
-    private void rangeCheckForAdd(int index) {
-        if (index < 0 || index > size) {
-            outOfBound(index);
-        }
-    }
 
     /**
      * 保证有 capacity 的容量
@@ -60,39 +45,6 @@ public class ArrayList<E> {
             elements[i] = null;
         }
         size = 0;
-    }
-
-    /**
-     * 获取元素数量
-     * @return 长度
-     */
-    public int size() {
-        return size;
-    }
-
-    /**
-     * 是否为空
-     * @return 长度为空返回 true，否则 false
-     */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    /**
-     * 是否包含某个元素
-     * @param element
-     * @return 找到返回 true，否则 false
-     */
-    public boolean contains(E element) {
-        return indexOf(element) != ELEMENT_NOT_FOUND;
-    }
-
-    /**
-     * 添加元素到尾部
-     * @param element
-     */
-    public void add(E element) {
-        add(size, element);
     }
 
     /**
