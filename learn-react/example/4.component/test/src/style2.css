@@ -1,0 +1,12 @@
+.slot {
+    display: flex;
+    height: 44px;
+    line-height: 44px;
+}
+
+.left, .center, .right {
+    flex: 1;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+}
