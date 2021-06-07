@@ -1,21 +1,45 @@
 
 public class LinkedList<E> extends AbstractList<E> {
     private Node<E> first;
-
+    private Node<E> last;
 
     private static class Node<E> {
         E element;
-        Node<E> next; 
+        Node<E> next;
+        Node<E> prev;
 
-        public Node(E element, Node<E> next) {
+        public Node(Node<E> prev, E element, Node<E> next) {
+            this.prev = prev;
             this.element = element;
             this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+
+            if (prev != null) {
+                sb.append(prev.element);
+            } else {
+                sb.append("null");
+            }
+
+            sb.append("_").append(element).append("_");
+
+            if (next != null) {
+                sb.append(next.element);
+            } else {
+                sb.append("null");
+            }
+
+            return sb.toString();
         }
     }
 
     @Override
     public void clear() {
         first = null;
+        last = null;
         size = 0;
     }
 
@@ -36,27 +60,48 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-        if (index == 0) {
-            first = new Node<E>(element, first);
+
+        if (index == size) {
+            last = new Node<>(last, element, null);
+            if (last.prev == null) {
+                first = last;
+            } else {
+                last.prev.next = last;
+            }
         } else {
-            Node<E> prev = node(index - 1);
-            prev.next = new Node<E>(element, prev.next);
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            Node<E> t = new Node<>(prev, element, next);
+			next.prev = t;
+
+            if (prev == null) {
+                first = t;
+            } else {
+                prev.next = t;
+            }
         }
         size++;
-        System.out.println(size);
     }
 
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            first = first.next;
+        Node<E> node = node(index);
+        Node<E> prev = node.prev;
+        Node<E> next = node.next;
+
+        if (prev == null) {
+            first = next;
         } else {
-            Node<E> prev = node(index - 1);
-            node = prev.next;
-            prev.next = node.next; 
+            prev.next = next;
         }
+        
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+        }
+
         size--;
         return node.element;
     }
@@ -85,12 +130,18 @@ public class LinkedList<E> extends AbstractList<E> {
      */
     private Node<E> node(int index) {
         rangeCheck(index);
+        Node<E> target;
 
-        int t = 0;
-        Node<E> target = first;
-        while (t < index) {
-            t++;
-            target = target.next;
+        if (index < (size >> 1)) {
+            target = first;
+            for (int i = 0; i < index; i++) {
+                target = target.next;
+            }
+        } else {
+            target = last;
+            for (int i = size- 1; i > index; i--) {
+                target = target.prev;
+            }
         }
         return target; 
     }
@@ -98,18 +149,18 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
-
+        string.append("size=").append(size).append(", [");
         Node<E> node = first;
-        string.append("size = ").append(size).append(", [");
         for (int i = 0; i < size; i++) {
             if (i != 0) {
                 string.append(", ");
             }
-            string.append(node.element);
+
+            string.append(node);
+
             node = node.next;
         }
         string.append("]");
-
         return string.toString();
     }
 }

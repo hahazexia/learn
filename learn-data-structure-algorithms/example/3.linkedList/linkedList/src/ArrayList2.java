@@ -1,18 +1,19 @@
-public class ArrayList<E> extends AbstractList<E> {
+/**
+ * 动态数组缩容操作
+ */
+public class ArrayList2<E> extends AbstractList<E> {
 
-    // 元素数量
-    private int size;
     // 所有元素
     private E[] elements;
 
     private static final int DEFAULT_CAPACITY = 2;
 
-    public ArrayList(int capacity) {
+    public ArrayList2(int capacity) {
         capacity = (capacity < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
         elements = (E[]) new Object[capacity];
     }
 
-    public ArrayList() {
+    public ArrayList2() {
         this(DEFAULT_CAPACITY);
     }
     
@@ -45,6 +46,10 @@ public class ArrayList<E> extends AbstractList<E> {
             elements[i] = null;
         }
         size = 0;
+        
+        if (elements != null && elements.length > DEFAULT_CAPACITY) {
+            elements = (E[]) new Object[DEFAULT_CAPACITY];
+        }
     }
 
     /**
@@ -117,11 +122,27 @@ public class ArrayList<E> extends AbstractList<E> {
         }
         elements[--size] = null;
 
+        trim();
         return del;
     }
 
     public void remove(E element) {
         remove(indexOf(element));
+    }
+
+    // 删除一个元素后判断是否需要缩容
+    private void trim() {
+        int capacity = elements.length;
+        int newCapacity = capacity >> 1;
+
+        if (size > newCapacity || capacity <= DEFAULT_CAPACITY) return;
+
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        System.out.println(newCapacity);
+        elements = newElements;
     }
 
     /**
