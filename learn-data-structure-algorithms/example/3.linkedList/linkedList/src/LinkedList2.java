@@ -1,7 +1,13 @@
 
-public class LinkedList<E> extends AbstractList<E> {
+/**
+ * 增加一个虚拟头节点
+ */
+public class LinkedList2<E> extends AbstractList<E> {
     private Node<E> first;
 
+    public LinkedList2() {
+        first = new Node<>(null, null);
+    }
 
     private static class Node<E> {
         E element;
@@ -35,28 +41,21 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public void add(int index, E element) {
+        System.out.println(index);
         rangeCheckForAdd(index);
-        if (index == 0) {
-            first = new Node<E>(element, first);
-        } else {
-            Node<E> prev = node(index - 1);
-            prev.next = new Node<E>(element, prev.next);
-        }
+
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        prev.next = new Node<E>(element, prev.next);
         size++;
-        System.out.println(size);
     }
 
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            first = first.next;
-        } else {
-            Node<E> prev = node(index - 1);
-            node = prev.next;
-            prev.next = node.next; 
-        }
+
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        Node<E> node = prev.next;
+        prev.next = node.next; 
         size--;
         return node.element;
     }
@@ -87,7 +86,7 @@ public class LinkedList<E> extends AbstractList<E> {
         rangeCheck(index);
 
         int t = 0;
-        Node<E> target = first;
+        Node<E> target = first.next;
         while (t < index) {
             t++;
             target = target.next;
@@ -99,7 +98,7 @@ public class LinkedList<E> extends AbstractList<E> {
     public String toString() {
         StringBuilder string = new StringBuilder();
 
-        Node<E> node = first;
+        Node<E> node = first.next;
         string.append("size = ").append(size).append(", [");
         for (int i = 0; i < size; i++) {
             if (i != 0) {

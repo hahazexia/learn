@@ -1,6 +1,7 @@
 {
     "java.project.sourcePaths": [
+        "learn-data-structure-algorithms/example/2.dynamicArray/dynamicArray/src",
         "learn-data-structure-algorithms/example/1.complexity/complexity/src",
-        "learn-data-structure-algorithms/example/2.dynamicArray/dynamicArray/src"
+        "learn-data-structure-algorithms/example/3.linkedList/linkedList/src"
     ]
 }
