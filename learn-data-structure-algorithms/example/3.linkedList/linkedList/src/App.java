@@ -36,6 +36,8 @@ public class App {
         //     list.remove(0);
         // }
 
-        testList(new LinkedList<>());
+        // testList(new LinkedList<>());
+        // testList(new CircleLinkedList<>());
+        JosephusCircleLinkedList.josephus();
     }
 }
