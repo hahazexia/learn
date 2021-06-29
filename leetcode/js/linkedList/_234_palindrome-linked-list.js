@@ -38,3 +38,46 @@ var isPalindrome = function(head) {
 
     return true;
 };
+
+var reverseLinkList = function(head) {
+    let prev = null;
+    let cur = head;
+
+    while(cur) {
+        let temp = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = temp;
+    }
+
+    return prev;
+}
+
+var findHalf = function(head) {
+    let fast = head;
+    let slow = head;
+
+    while(fast.next !== null && fast.next.next !== null) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+
+    return slow;
+}
+
+var isPalindrome = function(head) {
+
+    let half = findHalf(head);
+    let second = reverseLinkList(half);
+
+    let a = head;
+    let b = second;
+    while(a) {
+        if (a.val !== b.val) return false;
+        a = a.next;
+        b = b.next;
+    }
+
+    half.next = reverseLinkList(second);
+    return true;
+};
