@@ -6,6 +6,7 @@ class Store {
     // 保存选项
     this._mutations = options.mutations
     this._actions = options.actions
+    this._wrappedGetters = options.getters || {}
     // 暴露一个 state 属性，并对 state 选项做响应式处理
     // Vue.util.defineReactive(this, 'state', this.$options.state)
 
@@ -15,13 +16,32 @@ class Store {
     //   }
     // })
 
+    const computed = {}
+    this.getters = {}
+
+    const store = this
+
+    Object.keys(this._wrappedGetters).forEach(key => {
+      // 获取用户定义的 getters
+      const fn = store._wrappedGetters[key]
+      // 转换为 computed 可以使用无参数形式
+      computed[key] = function () {
+        return fn(store.state)
+      }
+      // 为 getters 指定只读属性
+      Object.defineProperty(store.getters, key, {
+        get: () => store._vm[key]
+      })
+    })
+
     this._vm = new Vue({
       data() {
         return {
           // 加上 $$ 避免对该属性做代理
           $$state: options.state
         }
-      }
+      },
+      computed: computed
     })
 
     // 绑定上下文，确保是 store 实例

@@ -5,17 +5,39 @@ class VueRouter {
     // 保存路由选项
     this.$options = options
     // 给 current 一个初始值
-    // this.current = window.location.hash.slice(1) || '/'
+    this.current = window.location.hash.slice(1) || '/'
     // 将 current 变成一个响应式数据
     Vue.util.defineReactive(
       this,
-      'current',
-      window.location.hash.slice(1) || '/'
+      'matched',
+      []
     )
+    // match 可以递归路由表，获取匹配关系的数组
+    this.match()
     // 监控 hash 变化
     window.addEventListener('hashchange', () => {
       this.current = window.location.hash.slice(1)
+      this.matched = []
     }, false)
+  }
+
+  match(routes) {
+    routes = routes || this.$options.routes
+
+    for (const route of routes) {
+      if (route.path === '/' && this.current === '/') {
+        this.matched.push(route)
+        return
+      }
+
+      if (route.path !== '/' && this.current.indexOf(route.path) !== -1) {
+        this.matched.push(route)
+        if (route.children) {
+          this.match(route.children)
+        }
+        return
+      }
+    }
   }
 }
 
@@ -55,9 +77,23 @@ VueRouter.install = function (_Vue) {
   })
   Vue.component('router-view', {
     render(h) {
+      // 标记自己是 router-view
+      this.$vnode.data.routerView = true
+
+      let depth = 0
+      let parent = this.$parent
+
+      while (parent) {
+        const vnodeData = parent.$vnode && parent.$vnode.data
+        if (vnodeData && vnodeData.routerView) {
+          depth++
+        }
+        parent = parent.$parent
+      }
+
       let component
       // 获取当前 url 的 hash 部分
-      const route = this.$router.$options.routes.find(route => route.path === this.$router.current)
+      const route = this.$router.matched[depth]
       if (route) {
         component = route.component
       }
