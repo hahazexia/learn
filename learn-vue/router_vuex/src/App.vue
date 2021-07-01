@@ -3,6 +3,8 @@
     <div id="nav">
       <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <p @click="$store.commit('add')">{{$store.state.counter}}</p>
+      <p @click="$store.dispatch('add')">async {{$store.state.counter}}</p>
     </div>
     <router-view/>
   </div>
