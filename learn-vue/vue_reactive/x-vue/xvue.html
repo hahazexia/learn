@@ -1,0 +1,25 @@
+<div id="app">
+    <p>{{counter}}</p>
+    <p x-text="counter"></p>
+    <p x-html="haha"></p>
+    <a href="javascript:;" @click="btnClick">按钮</a>
+    <input type="text" x-model="counter" />
+</div>
+<script src="./xvue.js"></script>
+<script>
+    const app = new XVue({
+        el: '#app',
+        data: {
+            counter: 1,
+            haha: '<p>hahaha</p>'
+        },
+        methods: {
+            btnClick() {
+                alert('按钮点击了')
+            }
+        }
+    })
+    setInterval(() => {
+        app.counter++
+    }, 1000);
+</script>
