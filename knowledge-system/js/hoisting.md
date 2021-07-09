@@ -66,3 +66,609 @@ var notHoisted = function() {
    console.log("bar");
 };
 ```
+
+## 题目
+
+第一题
+
+```js
+function foo() {
+    var a = b = 1;
+    a++;
+    return a;
+}
+foo()
+console.log(b)
+console.log(a)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function foo() {
+    var a = b = 1;
+    // 等价于 var a = 1; b = 1; 这样就声明了一个全局变量 b
+    a++;
+    return a;
+}
+foo()
+console.log(b) // 1
+console.log(a) // Uncaught ReferenceError: a is not defined
+```
+</details>
+<br><br>
+
+第二题
+
+```js
+console.log(a, b)
+var a = 12, b = 'aaa'
+function foo() {
+    console.log(a, b)
+    var a = b = 13
+    console.log(a, b)
+}
+foo()
+console.log(a, b)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+console.log(a, b) // undefined undefined
+var a = 12, b = 'aaa'
+function foo() {
+    console.log(a, b) // undefined 'aaa'
+    var a = b = 13
+    console.log(a, b) // 13 13
+}
+foo()
+console.log(a, b) // 12 13
+```
+</details>
+<br><br>
+
+第三题
+
+```js
+console.log(a, b)
+var a = 12, b = 'aaa'
+function foo() {
+    console.log(a, b)
+    console.log(a, b)
+}
+foo()
+console.log(a, b)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+console.log(a, b) // undefined undefined
+var a = 12, b = 'aaa'
+function foo() {
+    console.log(a, b) // 12 'aaa'
+    console.log(a, b) // 12 'aaa'
+}
+foo()
+console.log(a, b) // 12 'aaa'
+```
+</details>
+<br><br>
+
+第四题
+
+```js
+a = 0
+function foo() {
+    var a = 12;
+    b = 'aaa'
+    console.log('b' in window)
+    console.log(a, b)
+}
+
+foo()
+console.log(b)
+console.log(a)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+a = 0
+function foo() {
+    var a = 12;
+    b = 'aaa'
+    console.log('b' in window) // true
+    console.log(a, b) // 12 'aaa'
+}
+
+foo()
+console.log(b) // 'aaa'
+console.log(a) // 0
+```
+</details>
+<br><br>
+
+第五题
+
+```js
+function foo() {
+    console.log(a)
+    a = 12;
+    b = 'aaa'
+    console.log('b' in window)
+    console.log(a, b)
+}
+foo()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function foo() {
+    console.log(a) // Uncaught ReferenceError: a is not defined
+    a = 12;
+    b = 'aaa'
+    console.log('b' in window)
+    console.log(a, b)
+}
+foo()
+```
+</details>
+<br><br>
+
+第六题
+
+```js
+fn();
+console.log(v1);
+console.log(v2);
+console.log(v3);
+function fn() {
+    var v1 = v2 = v3 = 2019;
+    console.log(v1);
+    console.log(v2);
+    console.log(v3);
+}
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+fn();
+console.log(v1); // Uncaught ReferenceError: v1 is not defined
+console.log(v2);
+console.log(v3);
+function fn() {
+    var v1 = v2 = v3 = 2019;
+    console.log(v1); // 2019
+    console.log(v2); // 2019
+    console.log(v3); // 2019
+}
+```
+</details>
+<br><br>
+
+第七题
+
+```js
+if (!("value" in window)) {
+    var value = 2019; 
+}
+console.log(value); 
+console.log('value' in window);
+```
+
+<details>
+<summary>答案</summary>
+
+
+```js
+if (!("value" in window)) {
+    var value = 2019; // 无论条件判断是否成立，变量声明都会提升到条件语句外层的最上面 
+}
+console.log(value); // undefined
+console.log('value' in window); // true
+```
+</details>
+<br><br>
+
+第八题
+
+```js
+if (true) {
+    console.log(print())
+    function print() {
+        console.log('aaa')
+    }
+}
+console.log(print())
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+if (true) {
+    console.log(print()) // 'aaa'
+    function print() {
+        console.log('aaa')
+    }
+}
+console.log(print()) // 'aaa'
+```
+</details>
+<br><br>
+
+第九题
+
+```js
+console.log(a)
+console.log(p())
+if (true) {
+    var a = 12
+    function p() {
+        console.log('aaa')
+    }
+}
+```
+
+<details>
+<summary>答案</summary>
+
+无论条件判断是否成立，变量声明函数声明都会提升到条件语句外层的最上面。这时候函数 p 还是 undefined，调用会报错。
+
+```js
+console.log(a) // undefined
+console.log(p()) // Uncaught TypeError: p is not a function
+if (true) {
+    var a = 12
+    function p() {
+        console.log('aaa')
+    }
+}
+```
+</details>
+<br><br>
+
+第十题
+
+```js
+var y = 1
+if (function f(){}) { 
+    console.log(typeof f)
+    y = y + typeof f
+}
+console.log(y)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var y = 1
+if (function f(){}) { 
+    console.log(typeof f) // undefined
+    y = y + typeof f
+}
+console.log(y) // '1undefined'
+```
+</details>
+<br><br>
+
+第十一题
+
+```js
+var fn = 12
+function fn() {
+    console.log('aaa')
+}
+console.log(window.fn)
+fn()
+```
+
+<details>
+<summary>答案</summary>
+
+函数和变量相比，会被优先提升。这意味着函数会被提升到更靠前的位置
+
+```js
+var fn = 12
+function fn() {
+    console.log('aaa')
+}
+console.log(window.fn) // 12
+fn() // Uncaught TypeError: fn is not a function
+```
+</details>
+<br><br>
+
+第十二题
+
+```js
+console.log('1', fn())
+function fn() {
+    console.log(1)
+}
+
+console.log('2', fn())
+function fn() {
+    console.log(2)
+}
+
+console.log('3', fn())
+var fn = 'aaa'
+
+console.log('4', fn())
+function fn() {
+    console.log(3)
+}
+```
+
+<details>
+<summary>答案</summary>
+
+
+```js
+console.log('1', fn()) // 3 '1' undefined
+function fn() {
+    console.log(1)
+}
+
+console.log('2', fn()) // 3 '2' undefined
+function fn() {
+    console.log(2)
+}
+
+console.log('3', fn()) // 3 '3' undefined
+var fn = 'aaa'
+
+console.log('4', fn()) // Uncaught TypeError: fn is not a function
+function fn() {
+    console.log(3)
+}
+```
+</details>
+<br><br>
+
+第十三题
+
+```js
+var a = 2;
+function a() {
+    console.log(3);
+}
+console.log(typeof a);
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var a = 2;
+function a() {
+    console.log(3);
+}
+console.log(typeof a); // number
+```
+</details>
+<br><br>
+
+第十四题
+
+```js
+console.log(fn);
+var fn = 2019;
+console.log(fn);
+function fn(){}
+```
+<details>
+<summary>答案</summary>
+
+```js
+console.log(fn); // fn() {}
+var fn = 2019;
+console.log(fn); // 2019
+function fn(){}
+```
+</details>
+<br><br>
+
+第十五题
+
+```js
+let a = 0, b = 0;
+function fn(a) {
+  fn = function fn2(b) {
+    console.log(a, b)
+    console.log(++a + b)
+  }
+  console.log('a', a++)
+}
+fn(1);
+fn(2);
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+let a = 0, b = 0;
+function fn(a) {
+  fn = function fn2(b) {
+    console.log(a, b)
+    console.log(++a + b)
+  }
+  console.log('a', a++)
+}
+fn(1); // 'a' 1
+fn(2);
+// 2 2
+// 5
+```
+</details>
+<br><br>
+
+第十六题
+
+```js
+var foo = 'aaa';
+
+(function(f) {
+    console.log(foo);
+    var foo = f || 'hello';
+    console.log(foo)
+})(foo);
+
+console.log(foo)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var foo = 'aaa';
+
+(function(f) {
+    console.log(foo); // undefined
+    var foo = f || 'hello';
+    console.log(foo) // 'aaa'
+})(foo);
+
+console.log(foo) // 'aaa'
+```
+</details>
+<br><br>
+
+第十七题
+
+```js
+var foo = 'aaa';
+
+(function(foo) {
+    console.log(foo);
+    var foo = foo || 'world';
+    console.log(foo)
+})(foo);
+
+console.log(foo)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var foo = 'aaa';
+
+(function(foo) {
+    console.log(foo); // 'aaa'
+    var foo = foo || 'world';
+    console.log(foo) // 'aaa'
+})(foo);
+
+console.log(foo) // 'aaa'
+```
+</details>
+<br><br>
+
+第十八题
+
+```js
+var foo = 'aaa'
+
+function a(foo) {
+    console.log(foo);
+    var foo = 1
+    console.log(foo)
+}
+
+a(foo)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var foo = 'aaa'
+
+function a(foo) {
+    console.log(foo); // 'aaa'
+    var foo = 1
+    console.log(foo) // 1
+}
+
+a(foo)
+```
+</details>
+<br><br>
+
+第十九题
+
+```js
+var foo = 'aaa'
+
+function a() {
+    console.log(foo);
+    var foo = 1
+    console.log(foo)
+}
+
+a()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var foo = 'aaa'
+
+function a() {
+    console.log(foo); // undefined
+    var foo = 1
+    console.log(foo) // 1
+}
+
+a()
+```
+</details>
+<br><br>
+
+第二十题
+
+```js
+var foo = 'aaa';
+
+function a(foo) {
+    console.log(foo)
+    function foo () {}
+    var foo = 1
+    console.log(foo)
+}
+
+a(foo)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var foo = 'aaa';
+
+function a(foo) {
+    console.log(foo) // function foo() {}
+    function foo () {}
+    var foo = 1
+    console.log(foo) // 1
+}
+
+a(foo)
+```
+</details>
+<br><br>

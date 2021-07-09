@@ -1,4 +1,4 @@
-# this
+# this绑定
 
 ## 如何判断 this 执行指向
 
@@ -165,6 +165,8 @@ obj.getData();
 
 ## 题目
 
+第一题
+
 ```js
 var name = "window";
 var person = {
@@ -199,6 +201,8 @@ function sayName() {
 ```
 </details>
 <br><br>
+
+第二题
 
 ```js
 var name = 'window'
@@ -272,6 +276,7 @@ person1.foo4().call(person2) // person1
 </details>
 <br><br>
 
+第三题
 
 ```js
 var name = 'window'
@@ -342,6 +347,7 @@ person1.foo4().call(person2) // person1
 </details>
 <br><br>
 
+第四题
 
 ```js
 var name = 'window'
