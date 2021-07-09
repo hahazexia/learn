@@ -6,6 +6,7 @@
 2. 将这个空对象的原型，指向构造函数的prototype属性。
 3. 将这个空对象赋值给函数内部的this关键字。
 4. 开始执行构造函数内部的代码。
+5. 然后返回这个新实例
 
 下面是 `new` 命令简化的内部流程：
 
@@ -361,6 +362,59 @@ getName(); // 1
 new Foo.getName()  // 2
 new Foo().getName() // 3
 new new Foo().getName() // 3
+```
+</details>
+<br><br>
+
+第四题
+
+```js
+function Fn() {
+  var a = 12
+  this.getName = function() {
+    console.log('private getName')
+  }
+}
+
+Fn.prototype.getName = function () {
+  console.log('public getName')
+}
+
+var fn = new Fn()
+var fn1 = new Fn()
+console.log(fn.a)
+console.log(fn.getName())
+console.log(fn.getName === fn1.getName)
+console.log(fn.__proto__.getName === fn1.__proto__.getName)
+console.log(fn.__proto__.getName === Fn.prototype.getName)
+console.log(fn.hasOwnProperty === Object.prototype.hasOwnProperty)
+console.log(fn.constructor === Fn)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function Fn() {
+  var a = 12
+  this.getName = function() {
+    console.log('private getName')
+  }
+}
+
+Fn.prototype.getName = function () {
+  console.log('public getName')
+}
+
+var fn = new Fn()
+var fn1 = new Fn()
+console.log(fn.a) // undefined
+console.log(fn.getName()) // 'private getName'
+console.log(fn.getName === fn1.getName) // false
+console.log(fn.__proto__.getName === fn1.__proto__.getName) // true
+console.log(fn.__proto__.getName === Fn.prototype.getName) // true
+console.log(fn.hasOwnProperty === Object.prototype.hasOwnProperty) // true
+console.log(fn.constructor === Fn) // true
 ```
 </details>
 <br><br>
