@@ -171,21 +171,21 @@ Sub.prototype = new F();
 第一题
 
 ```js
-function fun(){
-    this.a = 0
-    this.b = function(){
-        alert(this.a)
-    }
+function fun() {
+  this.a = 0
+  this.b = function() {
+    alert(this.a)
+  }
 }
 
 fun.prototype = {
-    b: function(){
-        this.a = 20
-        alert(this.a)
+    b: function() {
+      this.a = 20
+      alert(this.a)
     },
-    c: function (){
-        this.a = 30
-        alert(this.a)
+    c: function () {
+      this.a = 30
+      alert(this.a)
     }
 }
 
@@ -198,6 +198,169 @@ my_fun.c()
 <details>
 <summary>答案</summary>
 
+```js
+function fun() {
+  this.a = 0
+  this.b = function() {
+    alert(this.a)
+  }
+}
 
+fun.prototype = {
+    b: function() {
+      this.a = 20
+      alert(this.a)
+    },
+    c: function () {
+      this.a = 30
+      alert(this.a)
+    }
+}
+
+var my_fun = new fun()
+
+my_fun.b() // alert 弹出 0
+my_fun.c() // alert 弹出 30
+```
+</details>
+<br><br>
+
+第二题
+
+```js
+function Fn() {
+  var n = 10
+  this.m = 20
+  this.aa = function() {
+    console.log(this.m)
+  }
+}
+
+Fn.prototype.bb = function () {
+  console.log(this.n)
+}
+
+var f1 = new Fn
+Fn.prototype = {
+  aa: function() {
+    console.log(this.m + 10)
+  }
+}
+
+var f2 = new Fn
+console.log(f1.constructor)
+console.log(f2.constructor)
+f1.bb()
+f1.aa()
+f2.aa()
+f2.__proto__.aa()
+f2.bb()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function Fn() {
+  var n = 10
+  this.m = 20
+  this.aa = function() {
+    console.log(this.m)
+  }
+}
+
+Fn.prototype.bb = function () {
+  console.log(this.n)
+}
+
+var f1 = new Fn
+Fn.prototype = {
+  aa: function() {
+    console.log(this.m + 10)
+  }
+}
+
+var f2 = new Fn
+console.log(f1.constructor) // Fn() {}
+console.log(f2.constructor) // Object() {}
+f1.bb() // undefined
+f1.aa() // 20
+f2.aa() // 20
+f2.__proto__.aa() // NaN
+f2.bb() // Uncaught TypeError: f2.bb is not a function
+```
+</details>
+<br><br>
+
+第三题
+
+```js
+function Foo() {
+  getName = function () {
+    console.log(1)
+  }
+  return this
+}
+
+Foo.getName = function () {
+  console.log(2)
+}
+
+Foo.prototype.getName = function(){
+  console.log(3)
+}
+
+var getName = function (){
+  console.log(4)
+}
+
+function getName() {
+  console.log(5)
+}
+
+Foo.getName()
+getName()
+Foo().getName();
+getName();
+new Foo.getName()
+new Foo().getName()
+new new Foo().getName()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function Foo() {
+  getName = function () {
+    console.log(1)
+  }
+  return this
+}
+
+Foo.getName = function () {
+  console.log(2)
+}
+
+Foo.prototype.getName = function(){
+  console.log(3)
+}
+
+var getName = function (){
+  console.log(4)
+}
+
+function getName() {
+  console.log(5)
+}
+
+Foo.getName() // 2
+getName() // 4
+Foo().getName(); // 1
+getName(); // 1
+new Foo.getName()  // 2
+new Foo().getName() // 3
+new new Foo().getName() // 3
+```
 </details>
 <br><br>
