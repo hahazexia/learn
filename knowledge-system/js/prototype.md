@@ -165,3 +165,39 @@ Sub.prototype = new F();
 
 
 ```
+
+## 题目
+
+第一题
+
+```js
+function fun(){
+    this.a = 0
+    this.b = function(){
+        alert(this.a)
+    }
+}
+
+fun.prototype = {
+    b: function(){
+        this.a = 20
+        alert(this.a)
+    },
+    c: function (){
+        this.a = 30
+        alert(this.a)
+    }
+}
+
+var my_fun = new fun()
+
+my_fun.b()
+my_fun.c()
+```
+
+<details>
+<summary>答案</summary>
+
+
+</details>
+<br><br>
