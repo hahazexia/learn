@@ -37,3 +37,612 @@
 * 微任务（Microtasks）包括 queueMicrotask 添加的回调函数，promise，MutationObserver 等。
 
 * 消息队列机制并不是太灵活，为了适应效率和实时性，才引入了微任务。
+
+## 题目
+
+第一题
+
+```js
+setTimeout(() => {
+    console.log(1)
+}, 20)
+
+setTimeout(() => {
+    console.log(2)
+}, 0)
+
+setTimeout(() => {
+    console.log(3)
+}, 10)
+
+setTimeout(() => {
+    console.log(5)
+}, 10)
+
+console.log(4)
+```
+
+<details>
+<summary>答案</summary>
+
+
+```js
+setTimeout(() => {
+    console.log(1)
+}, 20)
+
+setTimeout(() => {
+    console.log(2)
+}, 0)
+
+setTimeout(() => {
+    console.log(3)
+}, 10)
+
+setTimeout(() => {
+    console.log(5)
+}, 10)
+
+console.log(4)
+
+// 4 2 3 5 1
+```
+</details>
+<br><br>
+
+第二题
+
+```js
+setTimeout(() => {
+    console.log(1)
+}, 20)
+
+setTimeout(() => {
+    console.log(2)
+}, 0)
+
+setTimeout(() => {
+    console.log(3)
+}, 30)
+
+console.log(4)
+```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+setTimeout(() => {
+    console.log(1)
+}, 20)
+
+setTimeout(() => {
+    console.log(2)
+}, 0)
+
+setTimeout(() => {
+    console.log(3)
+}, 30)
+
+console.log(4)
+
+// 4 2 1 3 
+```
+</details>
+<br><br>
+
+第三题
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('post', 'api')
+xhr.onreadystatechange = () => {
+    if (xhr.readyState == 2) {
+        console.log(2)
+    }
+    if (xhr.readyState == 4) {
+        console.log(4)
+    }
+}
+xhr.send()
+console.log(3)
+
+```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('post', 'api')
+xhr.onreadystatechange = () => {
+    if (xhr.readyState == 2) {
+        console.log(2)
+    }
+    if (xhr.readyState == 4) {
+        console.log(4)
+    }
+    /*
+    0: 请求未初始化
+    1: 服务器连接已建立
+    2: 请求已接收
+    3: 请求处理中
+    4: 请求已完成，且响应已就绪
+    */
+}
+xhr.send()
+console.log(3)
+
+// 3 2 4
+```
+</details>
+<br><br>
+
+第四题
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('get', 'xxx', false)
+xhr.send()
+
+xhr.onreadystatechange = () => {
+    console.log(xhr.readyState)
+}
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('get', 'xxx', false)
+xhr.send()
+
+xhr.onreadystatechange = () => {
+    console.log(xhr.readyState)
+}
+// 没有打印 readyState 因为 open 方法传递第三个参数 async 为 false，所以请求是同步执行的，send()方法直到收到答复前不会返回。
+```
+</details>
+<br><br>
+
+第五题
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('post', 'api')
+xhr.onreadystatechange = () =>{
+    console.log(xhr.readyState)
+}
+xhr.send()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+let xhr = new XMLHttpRequest()
+xhr.open('post', 'api')
+xhr.onreadystatechange = () =>{
+    console.log(xhr.readyState)
+}
+xhr.send()
+// 2 3 4
+
+/*
+0: 请求未初始化
+1: 服务器连接已建立
+2: 请求已接收
+3: 请求处理中
+4: 请求已完成，且响应已就绪
+*/
+// onreadystatechange 的回调加入到任务队列中等待，xhr.send() 执行后 readyState 变成 1，这时候 onreadystatechange 回调才开始执行，然后打印 2 3 4
+```
+</details>
+<br><br>
+
+第六题
+
+```js
+console.log(1)
+new Promise((resolve, reject) => {
+    console.log(2)
+    resolve()
+}).then(res => {
+    console.log(3)
+})
+console.log(4)
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+console.log(1)
+new Promise((resolve, reject) => {
+    console.log(2)
+    resolve()
+}).then(res => {
+    console.log(3)
+})
+console.log(4)
+
+// 1 2 4 3
+```
+</details>
+<br><br>
+
+第七题
+
+```js
+setTimeout(function () {
+    console.log(1)
+}, 0);
+
+new Promise(function (resolve, reject) {
+    console.log(2);
+    resolve();
+}).then(function () {
+    console.log(3)
+}).then(function () {
+    console.log(4)
+});
+
+console.log(6);
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+setTimeout(function () {
+    console.log(1)
+}, 0);
+
+new Promise(function (resolve, reject) {
+    console.log(2);
+    resolve();
+}).then(function () {
+    console.log(3)
+}).then(function () {
+    console.log(4)
+});
+
+console.log(6);
+
+// 2 6 3 4 1
+```
+</details>
+<br><br>
+
+第八题
+
+```js
+setTimeout(function () {
+    console.log(1)
+}, 0);
+
+new Promise(function (resolve, reject) {
+    console.log(2)
+    for (var i = 0; i < 10000; i++) {
+        if (i === 10) {
+            console.log(10)
+        }
+        i == 9999 && resolve();
+    }
+    console.log(3)
+}).then(function () {
+    console.log(4)
+})
+console.log(5);
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+setTimeout(function () {
+    console.log(1)
+}, 0);
+
+new Promise(function (resolve, reject) {
+    console.log(2)
+    for (var i = 0; i < 10000; i++) {
+        if (i === 10) {
+            console.log(10)
+        }
+        i == 9999 && resolve();
+    }
+    console.log(3)
+}).then(function () {
+    console.log(4)
+})
+console.log(5);
+
+// 2 10 3 5 4 1
+```
+</details>
+<br><br>
+
+第九题
+
+```js
+console.log("start");
+setTimeout(() => {
+    console.log("children2")
+    Promise.resolve().then(() => {
+        console.log("children3")
+    })
+}, 0)
+
+new Promise(function(resolve, reject) {
+    console.log("children4")
+    setTimeout(function() {
+        console.log("children5")
+        resolve("children6")
+    }, 0)
+}).then(res =>{
+    console.log("children7")
+    setTimeout(() =>{
+        console.log(res)
+    }, 0)
+})
+```
+
+<details>
+<summary>答案</summary>
+
+
+```js
+console.log("start");
+setTimeout(() => {
+    console.log("children2")
+    Promise.resolve().then(() => {
+        console.log("children3")
+    })
+}, 0)
+
+new Promise(function(resolve, reject) {
+    console.log("children4")
+    setTimeout(function() {
+        console.log("children5")
+        resolve("children6")
+    }, 0)
+}).then(res =>{
+    console.log("children7")
+    setTimeout(() =>{
+        console.log(res)
+    }, 0)
+})
+
+// start children4 children2 children3 children5 children7 children6
+```
+</details>
+<br><br>
+
+第十题
+
+```js
+async function async1() {
+    console.log('async1 start')
+    await async2()
+    console.log('async1 end')
+}
+async function async2() {
+    console.log('async2')
+}
+console.log('script start')
+setTimeout(function () {
+    console.log('setTimeout')
+}, 0)
+async1()
+new Promise((resolve) => {
+    console.log('promise1')
+    resolve()
+}).then(function () {
+    console.log('promise2')
+})
+console.log('script end')
+
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+async function async1() {
+    console.log('async1 start')
+    await async2()
+    console.log('async1 end')
+}
+
+async function async2() {
+    console.log('async2')
+}
+
+console.log('script start')
+
+setTimeout(function () {
+    console.log('setTimeout')
+}, 0)
+
+async1()
+
+new Promise((resolve) => {
+    console.log('promise1')
+    resolve()
+}).then(function () {
+    console.log('promise2')
+})
+
+console.log('script end')
+
+// 'script start'
+// 'async1 start'
+// 'async2'
+// 'promise1'
+// 'script end'
+// 'async1 end'
+// 'promise2'
+// 'setTimeout'
+```
+</details>
+<br><br>
+
+第十一题
+
+```js
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    console.log('async1 end');
+}
+async function async2() {
+    new Promise(function (resolve) {
+        console.log('promise1');
+        resolve();
+    }).then(function () {
+        console.log('promise2');
+    });
+}
+console.log('script start');
+setTimeout(function () {
+    console.log('setTimeout');
+}, 0)
+async1();
+new Promise(function (resolve) {
+    console.log('promise3');
+    resolve();
+}).then(function () {
+    console.log('promise4');
+});
+console.log('script end');
+
+```
+
+<details>
+<summary>答案</summary>
+
+
+```js
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    console.log('async1 end');
+}
+async function async2() {
+    new Promise(function (resolve) {
+        console.log('promise1');
+        resolve();
+    }).then(function () {
+        console.log('promise2');
+    });
+}
+
+console.log('script start');
+
+setTimeout(function () {
+    console.log('setTimeout');
+}, 0)
+
+async1();
+
+new Promise(function (resolve) {
+    console.log('promise3');
+    resolve();
+}).then(function () {
+    console.log('promise4');
+});
+
+console.log('script end');
+
+// 'script start'
+// 'async1 start'
+// 'promise1'
+// 'promise3'
+// 'script end'
+// 'promise2'
+// 'async1 end'
+// 'promise4'
+// 'setTimeout'
+```
+</details>
+<br><br>
+
+第十二题
+
+```js
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    setTimeout(function() {
+        console.log('setTimeout1')
+    },0)
+}
+async function async2() {
+	setTimeout(function() {
+		console.log('setTimeout2')
+	},0)
+}
+console.log('script start');
+setTimeout(function() {
+    console.log('setTimeout3');
+}, 0)
+async1();
+new Promise(function(resolve) {
+    console.log('promise1');
+    resolve();
+}).then(function() {
+    console.log('promise2');
+});
+console.log('script end');
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    setTimeout(function() {
+        console.log('setTimeout1')
+    },0)
+}
+
+async function async2() {
+    setTimeout(function() {
+        console.log('setTimeout2')
+    },0)
+}
+
+console.log('script start');
+
+setTimeout(function() {
+    console.log('setTimeout3');
+}, 0)
+
+async1();
+
+new Promise(function(resolve) {
+    console.log('promise1');
+    resolve();
+}).then(function() {
+    console.log('promise2');
+});
+
+console.log('script end');
+
+// 'script start'
+// 'async1 start'
+// 'promise1'
+// 'script end'
+// 'promise2'
+// 'setTimeout3'
+// 'setTimeout2'
+// 'setTimeout1'
+```
+</details>
+<br><br>
