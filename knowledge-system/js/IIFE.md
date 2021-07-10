@@ -11,8 +11,8 @@ function a() {}() // Uncaught SyntaxError: Unexpected token ')'
 因为圆括号有两种使用方法，一种是写在函数名后表示调用函数，一种是在其中写表达式表示计算表达式的值。
 
 ```js
-a() // 函数调用
-(1 + 2) // 计算表达式的值
+a(); // 函数调用
+(1 + 2); // 计算表达式的值
 ```
 
 如果作为表达式来写，圆括号里的表达式不能为空，否则会报错。
@@ -38,8 +38,8 @@ var a = function() {}()
 -function () {}()
 void function () {}()
 
-(function() {})()
-(function() {}())
+;(function() {})()
+;(function() {}())
 ```
 
 IIFE（Immediately Invoked Function Expression） 的好处是外界访问此 IIFE 中的变量，而且又不会污染全局作用域。如果需要外界使用其中的变量，将变量返回出来即可。
@@ -56,7 +56,14 @@ result; // "Barry"
 js 库经常使用 IIFE 来实现模块，这样不会污染全局环境
 
 ```js
-(function (global, xxx) {
+;(function (global, xxx) {
     global.xxx = xxx()
 })(this, function () {/* 库的定义，返回一个对象 */})
 ```
+
+括号有个缺点，那就是如果上一行代码不写分号，括号会被解释为上一行代码最末的函数调用，产生完全不符合预期，并且难以调试的行为，加号等运算符也有类似的问题。所以一些推荐不加分号的代码风格规范，会要求在括号前面加上分号。
+
+```js
+;(function(){}())
+```
+

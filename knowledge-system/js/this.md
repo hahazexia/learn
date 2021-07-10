@@ -404,3 +404,37 @@ person1.obj.foo2().call(person2) // obj
 ```
 </details>
 <br><br>
+
+第五题
+
+```js
+class C {
+    showThis() {
+        console.log(this);
+    }
+}
+var o = new C();
+var showThis = o.showThis;
+
+showThis();
+o.showThis();
+```
+
+<details>
+<summary>答案</summary>
+
+类中的代码默认按照 strict 模式运行，所以 this 指向了 undefined 而不是 window
+```js
+class C {
+    showThis() {
+        console.log(this);
+    }
+}
+var o = new C();
+var showThis = o.showThis;
+
+showThis(); // undefined
+o.showThis(); // o
+```
+</details>
+<br><br>

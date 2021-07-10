@@ -178,3 +178,15 @@ FunctionExectionContext = { // 函数执行上下文
 这是整篇文章中最简单的部分。在此阶段，完成对所有这些变量的分配，最后执行代码。
 
 **注意** — 在执行阶段，如果 JavaScript 引擎不能在源码中声明的实际位置找到 `let` 变量的值，它会被赋值为 `undefined`。
+
+## ES2018 中的执行上下文
+
+以上介绍的是 ES5 的执行上下文，在 ES2018 中，执行上下文又变成了这个样子，this 值被归入 lexical environment，但是增加了不少内容。
+
+* lexical environment：词法环境，当获取变量或者 this 值时使用。
+* variable environment：变量环境，当声明变量时使用。
+* code evaluation state：用于恢复代码执行位置。
+* Function：执行的任务是函数时使用，表示正在被执行的函数。
+* ScriptOrModule：执行的任务是脚本或者模块时使用，表示正在被执行的代码。
+* Realm：使用的基础库和内置对象实例。
+* Generator：仅生成器上下文有这个属性，表示当前生成器。
