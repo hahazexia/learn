@@ -159,6 +159,176 @@ undefined + 1 // NaN
 -false // 0
 ```
 
+## 比较运算符
+
+相等比较和非相等比较。两者的规则是不一样的
+
+* 对于非相等的比较，算法是先看两个运算子是否都是字符串，如果是的，就按照字典顺序比较（实际上是比较 Unicode 码点）；否则，将两个运算子都转成数值，再比较数值的大小。
+
+### 非相等运算符：字符串的比较
+
+依次比较字符串 Unicode 码点
+
+### 非相等运算符：非字符串的比较
+
+* 原始类型值
+
+如果两个运算子都是原始类型的值，则是先转成数值再比较。
+
+```js
+5 > '4' // true
+// 等同于 5 > Number('4')
+// 即 5 > 4
+
+true > false // true
+// 等同于 Number(true) > Number(false)
+// 即 1 > 0
+
+2 > true // true
+// 等同于 2 > Number(true)
+// 即 2 > 1
+```
+
+* 对象
+
+如果运算子是对象，会转为原始类型的值，再进行比较。对象转换成原始类型的值，算法是先调用valueOf方法；如果返回的还是对象，再接着调用toString方法
+
+```js
+var x = [2];
+x > '11' // true
+// 等同于 [2].valueOf().toString() > '11'
+// 即 '2' > '11'
+
+x.valueOf = function () { return '1' };
+x > '11' // false
+// 等同于 [2].valueOf() > '11'
+// 即 '1' > '11'
+
+
+[2] > [1] // true
+// 等同于 [2].valueOf().toString() > [1].valueOf().toString()
+// 即 '2' > '1'
+
+[2] > [11] // true
+// 等同于 [2].valueOf().toString() > [11].valueOf().toString()
+// 即 '2' > '11'
+
+{ x: 2 } >= { x: 1 } // true
+// 等同于 { x: 2 }.valueOf().toString() >= { x: 1 }.valueOf().toString()
+// 即 '[object Object]' >= '[object Object]'
+```
+
+### 严格相等运算符
+
+如果两个值不是同一类型，严格相等运算符（===）直接返回false。只需注意一些特殊情况。
+
+```js
+1 === 0x1 // true
+NaN === NaN  // false
++0 === -0 // true
+```
+
+### 相等运算符
+
+* 相等运算符用来比较相同类型的数据时，与严格相等运算符完全一样。
+* 比较不同类型的数据时，相等运算符会先将数据进行类型转换，然后再用严格相等运算符比较
+* 原始类型的值会转换成数值再进行比较。
+* 对象（这里指广义的对象，包括数组和函数）与原始类型的值比较时，对象转换成原始类型的值，再进行比较。先调用对象的valueOf()方法，如果得到原始类型的值，就按照上一小节的规则，互相比较；如果得到的还是对象，则再调用toString()方法，得到字符串形式，再进行比较。
+* undefined和null只有与自身比较，或者互相比较时，才会返回true；与其他类型的值比较时，结果都为false。
+
+```js
+1 == true // true
+// 等同于 1 === Number(true)
+
+0 == false // true
+// 等同于 0 === Number(false)
+
+2 == true // false
+// 等同于 2 === Number(true)
+
+2 == false // false
+// 等同于 2 === Number(false)
+
+'true' == true // false
+// 等同于 Number('true') === Number(true)
+// 等同于 NaN === 1
+
+'' == 0 // true
+// 等同于 Number('') === 0
+// 等同于 0 === 0
+
+'' == false  // true
+// 等同于 Number('') === Number(false)
+// 等同于 0 === 0
+
+'1' == true  // true
+// 等同于 Number('1') === Number(true)
+// 等同于 1 === 1
+
+'\n  123  \t' == 123 // true
+// 因为字符串转为数字时，省略前置和后置的空格
+
+
+
+// 数组与数值的比较
+[1] == 1 // true
+
+// 数组与字符串的比较
+[1] == '1' // true
+[1, 2] == '1,2' // true
+
+// 对象与布尔值的比较
+[1] == true // true
+[2] == true // false
+
+
+const obj = {
+  valueOf: function () {
+    console.log('执行 valueOf()');
+    return obj;
+  },
+  toString: function () {
+    console.log('执行 toString()');
+    return 'foo';
+  }
+};
+
+obj == 'foo'
+// 执行 valueOf()
+// 执行 toString()
+// true
+
+
+
+undefined == undefined // true
+null == null // true
+undefined == null // true
+
+false == null // false
+false == undefined // false
+
+0 == null // false
+0 == undefined // false
+
+
+
+0 == ''             // true
+0 == '0'            // true
+
+2 == true           // false
+2 == false          // false
+
+false == 'false'    // false
+false == '0'        // true
+
+false == undefined  // false
+false == null       // false
+null == undefined   // true
+
+' \t\r\n ' == 0     // true
+```
+
+
 ## parseInt 和 parseFloat
 
 ### parseInt
@@ -293,3 +463,83 @@ Number('') // 0
 parseFloat('123.45#') // 123.45
 Number('123.45#') // NaN
 ```
+
+
+## 题目
+
+第一题
+
+```js
+true + false
+12 / "6"
+"number" + 15 + 3
+15 + 3 + "number"
+[1] > null
+"foo" + + "bar"
+"true" == true
+false == "false"
+null == ""
+!!"false" == !!"true"
+["x"] == "x"
+[] + null + 1
+[1,2,3] == [1,2,3]
+{} + [] + {} + [1]
+! + [] + [] + ![]
+new Date(0) - 0
+new Date(0) + 0
+```
+
+
+<details>
+<summary>答案</summary>
+
+
+```js
+true + false // 1 + 0 => 1
+12 / "6" // 2
+"number" + 15 + 3 // 'number153'
+15 + 3 + "number" // '18number'
+[1] > null // 1 > 0 => true
+"foo" + + "bar" // 'foo' + (+ 'bar') => 'foo' + NaN => 'fooNaN'
+"true" == true // NaN == 1 => false
+false == "false" // 0 == NaN => false
+null == "" // false   null 不等于任何值除了 null 和 undefined
+!!"false" == !!"true" // true == true => true
+["x"] == "x" // true
+[] + null + 1 // 'null1'
+[1,2,3] == [1,2,3] // false
+{} + [] + {} + [1] // '0[object Object]1'
+! + [] + [] + ![] // 'truefalse'
+new Date(0) - 0 // 0
+new Date(0) + 0 // 'Thu Jan 01 1970 02:00:00 GMT+0200 (EET)0'
+```
+</details>
+<br><br>
+
+第二题
+
+```js
+let ans = ["1", "2", "3"].map(parseInt);
+console.log(ans);
+```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+let ans = ["1", "2", "3"].map(parseInt);
+/*
+["1", "2", "3"].map((item, index) => {
+  return parseInt(item, index)
+});
+
+parseInt('1', 0)
+parseInt('2', 1)
+parseInt('3', 2)
+*/
+console.log(ans);
+// [1, NaN, NaN]
+```
+</details>
+<br><br>
