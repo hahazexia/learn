@@ -438,3 +438,158 @@ o.showThis(); // o
 ```
 </details>
 <br><br>
+
+第六题
+
+```js
+var name = 'aaa'
+var obj = {
+  name: 'bbb',
+  show: function () {
+    console.log(this.name)
+  },
+  wait: function () {
+    var fn = this.show
+    fn()
+  }
+}
+obj.wait()
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var name = 'aaa'
+var obj = {
+  name: 'bbb',
+  show: function () {
+    console.log(this.name)
+  },
+  wait: function () {
+    var fn = this.show
+    fn()
+  }
+}
+obj.wait()
+
+// 'aaa'
+```
+</details>
+<br><br>
+
+第七题
+
+```js
+function Foo() {
+  Foo.a = function() {
+    console.log(1)
+  }
+
+  this.a = function() {
+    console.log(2)
+  }
+}
+
+Foo.prototype.a = function() {
+  console.log(3)
+}
+
+Foo.a = function() {
+  console.log(4)
+}
+
+Foo.a();
+
+let obj = new Foo(); 
+obj.a();
+Foo.a();
+```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+function Foo() {
+  Foo.a = function() {
+    console.log(1)
+  }
+
+  this.a = function() {
+    console.log(2)
+  }
+}
+
+Foo.prototype.a = function() {
+  console.log(3)
+}
+
+Foo.a = function() {
+  console.log(4)
+}
+
+Foo.a();
+
+let obj = new Foo(); 
+obj.a();
+Foo.a();
+
+// 4 2 1
+```
+</details>
+<br><br>
+
+第八题
+
+```js
+var n = 2
+var obj = {
+  n: 3,
+  fn: (function(n) {
+    n *= 2
+    this.n += 2
+    var n = 5
+    console.log("window.n", window.n)
+    return function (m) {
+      console.log("n:", n, "m", m)
+      this.n *= 2
+      console.log(m + (++n))
+    }
+  })(n)
+}
+
+var fn = obj.fn;
+fn(3)
+obj.fn(3)
+console.log(n, obj.n)
+```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+var n = 2
+var obj = {
+  n: 3,
+  fn: (function(n) {
+    n *= 2
+    this.n += 2
+    var n = 5
+    console.log("window.n", window.n)
+    return function (m) {
+      console.log("n:", n, "m:", m)
+      this.n *= 2
+      console.log(m + (++n))
+    }
+  })(n)
+}
+
+var fn = obj.fn;
+fn(3) // "n:" 5 "m:" 3 9
+obj.fn(3) // "n:" 6 "m:" 3 10
+console.log(n, obj.n) // 8 6
+```
+</details>
+<br><br>
