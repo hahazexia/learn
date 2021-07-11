@@ -158,3 +158,138 @@ undefined + 1 // NaN
 +true // 1
 -false // 0
 ```
+
+## parseInt 和 parseFloat
+
+### parseInt
+
+* parseInt方法用于将字符串转为整数。如果参数不是一个字符串，则将其转换为字符串。parseInt的返回值只有两种可能，要么是一个十进制整数，要么是NaN
+* 如果字符串头部有空格，空格会被自动去除
+* 字符串转为整数的时候，是一个个字符依次转换，如果遇到不能转为数字的字符，就不再进行下去，返回已经转好的部分。
+* 如果字符串的第一个字符不能转化为数字（后面跟着数字的正负号除外），返回NaN。
+* 如果字符串以0x或0X开头，parseInt会将其按照十六进制数解析。
+* 如果字符串以0开头，将其按照10进制解析。
+* 会自动转为科学计数法的数字，parseInt会将科学计数法的表示方法视为字符串，因此导致一些奇怪的结果
+
+```js
+parseInt('123') // 123
+
+
+parseInt('   81') // 81
+
+
+parseInt(1.23) // 1
+// 等同于
+parseInt('1.23') // 1
+
+
+
+parseInt('8a') // 8
+parseInt('12**') // 12
+parseInt('12.34') // 12
+parseInt('15e2') // 15
+parseInt('15px') // 15
+
+
+
+parseInt('abc') // NaN
+parseInt('.3') // NaN
+parseInt('') // NaN
+parseInt('+') // NaN
+parseInt('+1') // 1
+
+
+parseInt('0x10') // 16
+
+
+parseInt('011') // 11
+
+
+parseInt(1000000000000000000000.5) // 1
+// 等同于
+parseInt('1e+21') // 1
+parseInt(0.0000008) // 8
+// 等同于
+parseInt('8e-7') // 8
+```
+
+* parseInt方法还可以接受第二个参数（2到36之间），表示被解析的值的进制。parseInt的第二个参数默认为10，也就是十进制转十进制
+* 第二个参数不是数值，会被自动转为一个整数。这个整数只有在2到36之间，才能得到有意义的结果，超出这个范围，则返回NaN。如果第二个参数是0、undefined和null，则直接忽略。
+* 如果字符串包含对于指定进制无意义的字符，则从最高位开始，只返回可以转换的数值。如果最高位无法转换，则直接返回NaN。
+* 如果parseInt的第一个参数不是字符串，会被先转为字符串。这会导致一些令人意外的结果。八进制的前缀0，尤其需要注意
+
+```js
+parseInt('1000') // 1000
+// 等同于
+parseInt('1000', 10) // 1000
+
+
+parseInt('1000', 2) // 8
+parseInt('1000', 6) // 216
+parseInt('1000', 8) // 512
+
+
+parseInt('10', 37) // NaN
+parseInt('10', 1) // NaN
+parseInt('10', 0) // 10
+parseInt('10', null) // 10
+parseInt('10', undefined) // 10
+
+
+parseInt('1546', 2) // 1
+parseInt('546', 2) // NaN
+
+
+parseInt(0x11, 36) // 43
+parseInt(0x11, 2) // 1
+// 等同于
+parseInt(String(0x11), 36)
+parseInt(String(0x11), 2)
+// 等同于
+parseInt('17', 36)
+parseInt('17', 2)
+
+
+parseInt(011, 2) // NaN
+// 等同于
+parseInt(String(011), 2)
+// 等同于
+parseInt(String(9), 2)
+```
+
+### parseFloat
+
+* parseFloat方法用于将一个字符串转为浮点数。parseFloat方法会自动过滤字符串前导的空格。
+* 如果字符串符合科学计数法，则会进行相应的转换。
+* 如果字符串包含不能转为浮点数的字符，则不再进行往后转换，返回已经转好的部分。
+* 如果参数不是字符串，或者字符串的第一个字符不能转化为浮点数，则返回NaN。
+
+```js
+parseFloat('3.14') // 3.14
+parseFloat('\t\v\r12.34\n ') // 12.34
+
+
+parseFloat('314e-2') // 3.14
+parseFloat('0.0314E+2') // 3.14
+
+
+parseFloat('3.14more non-digit characters') // 3.14
+
+
+parseFloat([]) // NaN
+parseFloat('FF2') // NaN
+parseFloat('') // NaN
+
+
+parseFloat(true)  // NaN
+Number(true) // 1
+
+parseFloat(null) // NaN
+Number(null) // 0
+
+parseFloat('') // NaN
+Number('') // 0
+
+parseFloat('123.45#') // 123.45
+Number('123.45#') // NaN
+```
