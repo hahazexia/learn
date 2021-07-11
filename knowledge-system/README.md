@@ -15,3 +15,5 @@
             * [闭包](./js/closure.md)
             * [原型链和继承](./js/prototype.md)
             * [事件循环](./js/event_loop.md)
+            * [浮点数精度](./js/float.md)
+            * [类型转换](./js/conversion.md)
