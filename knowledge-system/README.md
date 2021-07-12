@@ -30,6 +30,7 @@
             * [起始行](./http/first_line.md)
             * [头部](./http/headers.md)
             * [主体](./http/body.md)
+        + [缓存](./http/cache.md)
 
 - vue
 
