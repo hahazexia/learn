@@ -146,13 +146,13 @@ Last-Modified: Mon, 10 Nov 2018 09:10:11 GMT
     * 如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。
     * 如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
 
-#### Etag（响应头）& If-None-Match（请求头）
+#### ETag（响应头）& If-None-Match（请求头）
 
-为了解决上述问题，出现了一组新的字段 Etag 和 If-None-Match
+为了解决上述问题，出现了一组新的字段 ETag 和 If-None-Match
 
-Etag 存储的是文件的特殊标识(一般都是 hash 生成的)，服务器存储着文件的 Etag 字段。之后的流程和 Last-Modified 一致，只是 Last-Modified 字段和它所表示的更新时间改变成了 Etag 字段和它所表示的文件 hash，把 If-Modified-Since 变成了 If-None-Match。服务器同样进行比较，命中返回 304, 不命中返回新资源和 200。
+ETag 存储的是文件的特殊标识(一般都是 hash 生成的)，服务器存储着文件的 ETag 字段。之后的流程和 Last-Modified 一致，只是 Last-Modified 字段和它所表示的更新时间改变成了 ETag 字段和它所表示的文件 hash，把 If-Modified-Since 变成了 If-None-Match。服务器同样进行比较，命中返回 304, 不命中返回新资源和 200。
 
-Etag 的优先级高于 Last-Modified。
+ETag 的优先级高于 Last-Modified。
 
 ### 缓存总结
 
@@ -216,3 +216,40 @@ Cache-Control: max-age=600, must-revalidate
 
 除了自动清理引发问题，不同资源的请求时间不同也能导致问题。例如 A 页面请求的是 A.js 和 all.css，而 B 页面是 B.js 和 all.css。如果我们以 A -> B 的顺序访问页面，势必导致 all.css 的缓存时间早于 B.js。那么以后访问 B 页面就同样存在资源版本失配的隐患。
 
+
+## ETag 计算
+
+* Nginx 官方默认的 ETag 计算方式是为 `文件最后修改时间16进制-文件长度16进制`。例："59e72c84-2404"
+* Express 框架使用了 serve-static 中间件来配置缓存方案，其中，使用了一个叫 ETag 的 npm 包来实现 ETag 计算。从其源码可以看出，有两种计算方式：
+    + 方式一：使用文件大小和修改时间
+    ```js
+    function stattag (stat) {
+        var mtime = stat.mtime.getTime().toString(16)
+        var size = stat.size.toString(16)
+
+        return '"' + size + '-' + mtime + '"'
+    }
+    ```
+    + 方式二：使用文件内容的 hash 值和内容长度
+    ```js
+    function entitytag (entity) {
+        if (entity.length === 0) {
+            // fast-path empty
+            return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"'
+        }
+
+        // compute hash of entity
+        var hash = crypto
+            .createHash('sha1')
+            .update(entity, 'utf8')
+            .digest('base64')
+            .substring(0, 27)
+
+        // compute length of entity
+        var len = typeof entity === 'string'
+            ? Buffer.byteLength(entity, 'utf8')
+            : entity.length
+
+        return '"' + len.toString(16) + '-' + hash + '"'
+    }
+    ```
