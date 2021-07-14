@@ -1,6 +1,6 @@
 # 知识体系
 
-![javascript](./img/javascript.png)
+![javascript](./img/javascript.svg)
 [链接](https://www.processon.com/mindmap/60e66dc01efad457654f9198)
 
 - javascript
@@ -33,7 +33,8 @@
         + [缓存](./http/cache.md)
         + [跨域](./http/cross-domain.md)
     * 历史
-        + [不同版本区别](./http/difference.md)
+        + [http 历史](./http/history.md)
+        + [三次握手 四次挥手](./http/three_way_handshake.md)
 
 - vue
 
