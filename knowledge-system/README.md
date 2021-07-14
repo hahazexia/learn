@@ -21,7 +21,7 @@
 
 - 浏览器
 
-![http](./img/http.png)
+![http](./img/http.svg)
 [链接](https://www.processon.com/mindmap/60eba6ac1e08530964183b2b)
 
 - http
@@ -32,6 +32,8 @@
             * [主体](./http/body.md)
         + [缓存](./http/cache.md)
         + [跨域](./http/cross-domain.md)
+    * 历史
+        + [不同版本区别](./http/difference.md)
 
 - vue
 
