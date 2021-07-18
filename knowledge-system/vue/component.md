@@ -753,6 +753,47 @@ export default {
 
     注意这里调用组件构造函数的时候传入的 options 中的参数 parent 是 activeInstance，也就是在父组件 App.vue 执行 Vue.prototype._update 的时候设置的当前激活的组件实例，也即是 App.vue 对应的实例，也就是说这个 parent 参数的传入使得 ComponentA 和 App 组件建立起了父子组件关系。
 
+    组件初始化的时候会调用 initLifecycle 去建立子组件和父组件的关系，也就是 vm.$parent 属性和 vm.$children 属性，如下所示
+
+    initLifecycle `src\core\instance\lifecycle.js`
+
+    ```js
+        export function initLifecycle (vm: Component) {
+            const options = vm.$options
+
+            // locate first non-abstract parent (查找第一个非抽象的父组件)
+            let parent = options.parent
+            // 如果当前实例有父组件，且当前实例不是抽象的
+            // 抽象组件就是不渲染 dom 的组件：例如 keep-alive 或者 transition，他们也不会出现在父子关系的路径上
+            // 这里下面循环去找上层的真正父级实例（非抽象的）的原因是要将当前实例添加到父级的 $children 属性里
+            if (parent && !options.abstract) {
+                // 使用 while 循环查找第一个非抽象的父组件
+                while (parent.$options.abstract && parent.$parent) {
+                parent = parent.$parent
+                }
+                // 经过上面的 while 循环后，parent 应该是一个非抽象的组件，将它作为当前实例的父级，所以将当前实例 vm 添加到父级的 $children 属性里
+                parent.$children.push(vm)
+            }
+
+            // 设置当前实例的 $parent 属性，指向父级
+            vm.$parent = parent
+            // 设置 $root 属性，有父级就是用父级的 $root，否则 $root 指向自身
+            vm.$root = parent ? parent.$root : vm
+            // 上面代码的作用：将当前实例添加到父实例的 $children 属性里，并设置当前实例的 $parent 指向父实例
+
+
+            vm.$children = []
+            vm.$refs = {}
+
+            vm._watcher = null
+            vm._inactive = null
+            vm._directInactive = false
+            vm._isMounted = false
+            vm._isDestroyed = false
+            vm._isBeingDestroyed = false
+        }
+    ```
+
     同时注意这一句 
     ```js
         const child = vnode.componentInstance = createComponentInstanceForVnode(
