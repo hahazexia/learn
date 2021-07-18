@@ -43,6 +43,7 @@
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
         + [响应式](./vue/reactivity.md)
+        + [组件化](./vue/component.md)
 
 - 工程化
 

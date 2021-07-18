@@ -34,6 +34,9 @@ Observer 类将 data 中的数据的属性变成 getter/setter。
 
 以下是源码 `src\core\observer\index.js`
 
+<details>
+<summary>点击查看代码</summary>
+
 ```js
 export class Observer {
   value: any;
@@ -98,6 +101,187 @@ export class Observer {
   }
 }
 ```
+</details>
+<br><br>
+
+以下是 defineReactive 源码 `src\core\observer\index.js`
+
+<details>
+<summary>点击查看代码</summary>
+
+
+```js
+/**
+ * 拦截 obj[key] 的读取和设置操作：
+ *   1、在第一次读取时收集依赖，比如执行 render 函数生成虚拟 DOM 时会有读取操作
+ *   2、在更新时设置新值并通知依赖更新
+ */
+// shallow 参数，是否深度监测
+export function defineReactive (
+  obj: Object,
+  key: string,
+  val: any,
+  customSetter?: ?Function,
+  shallow?: boolean
+) {
+  // 实例化 dep，一个 key 一个 dep
+  const dep = new Dep()
+
+  // 获取 obj[key] 的属性描述符，发现它是不可配置对象的话直接 return
+  const property = Object.getOwnPropertyDescriptor(obj, key)
+  if (property && property.configurable === false) {
+    return
+  }
+
+  // cater for pre-defined getter/setters
+  // 记录原始 getter 和 setter，获取 val 值
+  //一个对象的属性很可能已经是一个访问器属性了，所以该属性很可能已经存在 get 或 set 方法。由于接下来会使用 Object.defineProperty 函数重新定义属性的 setter/getter，这会导致属性原有的 set 和 get 方法被覆盖，所以要将属性原有的 setter/getter 缓存，并在重新定义的 set 和 get 方法中调用缓存的函数，从而做到不影响属性的原有读写操作。
+
+  const getter = property && property.get
+  const setter = property && property.set
+
+  // https://github.com/vuejs/vue/pull/7302
+  // 为什么要这样判断：(!getter || setter)
+  // 因为有可能用户定义的 data 中的属性原本就是拥有 getter 的，如下：
+  /**
+   *  const data = {}
+      Object.defineProperty(data, 'getterProp', {
+        enumerable: true,
+        configurable: true,
+        get: () => {
+          return {
+            a: 1
+          }
+        }
+      })
+
+      const ins = new Vue({
+        data,
+        watch: {
+          'getterProp.a': () => {
+            console.log('这句话不会输出')
+          }
+        }
+      })
+
+      属性 getterProp 是一个拥有 get 拦截器函数的访问器属性，而当 Vue 发现该属性拥有原本的 getter 时，是不会深度观测的。
+
+      那么为什么当属性拥有自己的 getter 时就不会对其深度观测了呢？有两方面的原因，
+      第一：由于当属性存在原本的 getter 时在深度观测之前不会取值，所以在深度观测语句执行之前取不到属性值从而无法深度观测。
+      第二：之所以在深度观测之前不取值是因为属性原本的 getter 由用户定义，用户可能在 getter 中做任何意想不到的事情，这么做是出于避免引发不可预见行为的考虑。
+
+   */
+  if ((!getter || setter) && arguments.length === 2) {
+    val = obj[key]
+  }
+  // 递归调用，处理 val 即 obj[key] 的值为对象的情况，保证对象中的所有 key 都被观察
+  let childOb = !shallow && observe(val)
+
+  /**
+   *
+    const data = {
+      a: {
+        b: 1
+      }
+    }
+    observe(data)
+
+    经过处理后变成如下数据：
+
+    const data = {
+      a: {
+        b: 1
+        __ob__: {a, dep, vmCount}
+      }
+      __ob__: {data, dep, vmCount}
+    }
+
+    // 属性 a 通过 setter/getter 通过闭包引用着 dep 和 childOb
+    // 属性 b 通过 setter/getter 通过闭包引用着 dep 和 childOb
+    // 这里需要注意 a 通过闭包引用的 childOb 就是 data.a.__ob__
+    // 而 b 通过闭包引用的 childOb 是 undefined
+
+   */
+  // 响应式核心
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    // get 拦截对 obj[key] 的读取操作，做两件事：1.返回正确的属性值，2.收集依赖
+    get: function reactiveGetter () {
+      // 正确地返回属性值
+      const value = getter ? getter.call(obj) : val
+      /**
+       * Dep.target 为 Dep 类的一个静态属性，值为 watcher，在实例化 Watcher 时会被设置
+       * 实例化 Watcher 时会执行 new Watcher 时传递的回调函数（computed 除外，因为它懒执行）
+       * 而回调函数中如果有 vm.key 的读取行为，则会触发这里的 读取 拦截，进行依赖收集
+       * 回调函数执行完以后又会将 Dep.target 设置为 null，避免这里重复收集依赖
+       */
+      if (Dep.target) {
+        // 依赖收集，在 dep 中添加 watcher，也在 watcher 中添加 dep
+        dep.depend()
+        // 对于上面举的例子，对于属性 a 来说，childOb 就是 data.a.__ob__
+        // 所以 childOb.dep 就是 data.a.__ob__.dep
+        // 也就是说依赖不仅要收集到 a 自己的 dep 里，也要收集到 a.__ob__.dep 里
+        // 这样做的原因是因为 a.dep 和 a.__ob__.dep 里的依赖，触发更新的时机是不同的
+        // 第一个触发的时机就是当 a 属性的值被改变的时候，即触发 a 的 setter 的 dep.notify()
+        // 而第二个触发的时机是 $set 或 Vue.set 给对象添加新属性时触发
+
+        /**
+         * Vue.set(data.a, 'c', 1)
+         * 这样设置新的属性 c 后，之所以可以触发更新，是因为其中触发了 data.a.__ob__.dep.notify()，Vue.set 代码简化后如下：
+         *
+         * Vue.set = function (obj, key, val) {
+            defineReactive(obj, key, val)
+            obj.__ob__.dep.notify()
+          }
+
+          所以 __ob__ 属性以及 __ob__.dep 的主要作用是为了添加、删除属性时有能力触发依赖更新，而这就是 Vue.set 或 Vue.delete 的原理。
+         */
+        if (childOb) {
+          childOb.dep.depend()
+          // 如果是 obj[key] 是 数组，则触发数组响应式
+          if (Array.isArray(value)) {
+            // 为数组项为对象的项添加依赖
+            dependArray(value)
+          }
+        }
+      }
+      return value
+    },
+    // set 拦截对 obj[key] 的设置新值的操作，做了两件事：1.设置新值，2.触发依赖更新
+    set: function reactiveSetter (newVal) {
+      // 旧的 obj[key]
+      const value = getter ? getter.call(obj) : val
+      /* eslint-disable no-self-compare */
+      // 如果新老值一样，则直接 return，不触发响应式更新过程（判断了新老值都是 NaN 的情况）
+      if (newVal === value || (newVal !== newVal && value !== value)) {
+        return
+      }
+      /* eslint-enable no-self-compare */
+      if (process.env.NODE_ENV !== 'production' && customSetter) {
+        // customSetter 用来打印辅助信息
+        // initRender 中在定义 vm.$attrs 和 vm.$listeners 这两个属性的时候传递了这个参数
+        customSetter()
+      }
+      // setter 不存在说明该属性是一个只读属性，直接 return
+      // #7981: for accessor properties without setter
+      if (getter && !setter) return
+      // 设置新值
+      if (setter) {
+        setter.call(obj, newVal)
+      } else {
+        val = newVal
+      }
+      // 需要深度监测的时候，对新值进行观察，让新值也是响应式的，并且覆盖 childOb 为新的 __ob__ 对象
+      childOb = !shallow && observe(newVal)
+      // 当响应式数据更新时，依赖通知更新
+      dep.notify()
+    }
+  })
+}
+```
+</details>
+<br><br>
 
 处理之后，每个对象都会有一个 `__ob__` 属性，也就是 Observer 实例
 
@@ -127,6 +311,10 @@ Dep 类用于收集依赖。当响应式数据的 getter 被触发的时候，De
 
 
 以下是源码 `src\core\observer\dep.js`
+
+<details>
+<summary>点击查看代码</summary>
+
 
 ```js
 /**
@@ -200,6 +388,9 @@ export function popTarget () {
 }
 
 ```
+</details>
+<br><br>
+
 
 对象的每个属性都会有一个 Dep 实例的属性，也就是一个 key 一个 dep：
 
@@ -226,6 +417,9 @@ export function popTarget () {
 依赖收集以后的 watcher 被保存在 dep.subs 中，数据变动的时候 dep 会通知 watcher 实例，然后触发 watcher 实例的回调 cb 进行视图更新。
 
 `src\core\observer\watcher.js`
+
+<details>
+<summary>点击查看代码</summary>
 
 ```js
 /**
@@ -507,6 +701,10 @@ export default class Watcher {
   }
 }
 ```
+</details>
+<br><br>
+
+### 总结
 
 1. vue 初始化完成后，会执行 $mount 挂载流程。其中会对生成一个 watcher 实例，也就是说，一个组件对应一个渲染 watcher。传给 watcher 的第二个参数是 updateComponent 方法。
     * vm._render 函数的作用是调用 vm.$options.render 函数并返回生成的虚拟节点(vnode)
@@ -542,9 +740,10 @@ nextTick 函数的作用相当于 setTimeout(fn, 0)，这里有几个概念需�
 任务队列并非只有一个队列，可以将其分为 microtask（微任务） 和 task（宏任务）。当调用栈空闲后每次事件循环只会从 task 中读取一个任务并执行，而在同一次事件循环内会将 microtask 队列中所有的任务全部执行完毕，且要先于下一次 task。另外 task 中两个不同的任务之间可能穿插着 UI 的重渲染，那么我们只需要在 microtask 中把所有在 UI 重渲染之前需要更新的数据全部更新，这样只需要一次重渲染就能得到最新的 DOM 了。恰好 Vue 是一个数据驱动的框架，如果能在 UI 重渲染之前更新所有数据状态，这对性能的提升是一个很大的帮助，所有要优先选用 microtask 去更新数据状态而不是 task，这就是为什么不使用 setTimeout 的原因，因为 setTimeout 会将回调放到 task 队列中而不是 microtask 队列，所以理论上最优的选择是使用 Promise，当浏览器不支持 Promise 时再降级为 setTimeout。
 
 vue 代码对微任务的降级兼容处理：
+
 1. 优先使用 Promise，Promise 的 then 回调会被放入浏览器 microtask（微任务） 队列中执行。
 2. 如果不支持 Promise，使用 MutationObserver
 3. 否则 setImmediate
-4. 如果以上都不知道，使用 setTimeout
+4. 如果以上都不支持，使用 setTimeout
 
 

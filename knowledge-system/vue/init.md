@@ -4,6 +4,10 @@
 
 * 需要去看源码中的 `src\core\instance\init.js` 文件
 
+<details>
+<summary>点击查看代码</summary>
+
+
 ```js
 // 负责 Vue 的初始化过程
   Vue.prototype._init = function (options?: Object) {
@@ -104,10 +108,15 @@
     }
   }
 ```
+</details>
+<br><br>
+
 
 * 初始化组件实例关系属性，比如 $parent、$children、$root、$refs 等
 * 初始化自定义事件
-* 1. 解析组件的插槽信息，得到 vm.$slot，2. 处理渲染函数，定义 this._c  就是 createElement 方法，即 h 函数 3. vm.$attrs vm.listeners
+  1. 解析组件的插槽信息，得到 vm.$slot
+  2. 处理渲染函数，定义 this._c  就是 createElement 方法，即 h 函数
+  3. vm.$attrs vm.listeners
 * 调用 beforeCreate 生命周期函数
 * 初始化组件的 inject 配置项
 * 处理数据响应式， props、methods、data、computed、watch
