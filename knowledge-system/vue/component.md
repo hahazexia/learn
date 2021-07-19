@@ -658,7 +658,7 @@ export default {
         }
         
     ```
-9. patch 中会调用 createElm 根据 vnode 生成 dom
+9. patch （`src\core\vdom\patch.js`） 中会调用 createElm 根据 vnode 生成 dom
 
     ```js
         createElm(

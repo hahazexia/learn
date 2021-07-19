@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vue源码剖析</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="demo">
+        <p>{{obj.foo}}</p>
+        <div v-for="a in arr" :key="a">
+            {{ a }}
+        </div>
+    </div>
+    <script>
+        const app = new Vue({
+            el: '#demo',
+            data: {
+                obj: {
+                    foo: 'foo'
+                },
+                arr: ['foo', 'bar']
+            },
+            mounted() {
+                setTimeout(() => {
+                    this.obj.foo = 'fooooo'
+                }, 1000);
+                
+                setTimeout(() => {
+                    this.arr.push('baz')
+                }, 2000);
+            }
+        });
+        console.log(app)
+    </script>
+</body>
+
+</html>

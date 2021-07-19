@@ -44,6 +44,7 @@
         + [初始化](./vue/init.md)
         + [响应式](./vue/reactivity.md)
         + [组件化](./vue/component.md)
+        + [diff](./vue/diff.md)
 
 - 工程化
 
