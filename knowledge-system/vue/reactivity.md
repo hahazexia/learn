@@ -1281,7 +1281,7 @@ export default class Watcher {
     dep.notify()
     ```
 
-    会通过每个属性的 dep 的 subs 数组找到数据会影响的 watcher ，然后调用 watcher.update 方法
+    会通过每个属性的 dep 的 subs 数组找到数据会影响的 watcher ，然后调用 watcher.update 方法，watcher.updata 会调用 queueWatcher
 
     ```js
         // dep.notify()
@@ -1321,12 +1321,103 @@ export default class Watcher {
         }
     ```
 
-12. 
+12. queueWatcher （`src\core\observer\scheduler.js`） 将维护一个存放 watcher 的队列，然后定义了一个 flushSchedulerQueue 函数，flushSchedulerQueue 用于清空 watcher 队列，依次调用 watcher.run 去更新。然后将 flushSchedulerQueue 传递给 nextTick 方法，让其在本轮事件循环结束之前被调用（微任务）
 
+    ```js
+    /**
+    * 将 watcher 放入 watcher 队列 
+    */
+    export function queueWatcher (watcher: Watcher) {
+        const id = watcher.id
+        // 如果 watcher 已经存在，则跳过，不会重复入队
+        if (has[id] == null) {
+            // 缓存 watcher.id，用于判断 watcher 是否已经入队
+            has[id] = true
+            // 如果 flushing = false，表示当前 watcher 队列没有被刷新，watcher 直接入队
+            if (!flushing) {
+                queue.push(watcher)
+            } else {
+            // watcher 队列已经被刷新了，这时候 watcher 入队就需要特殊操作一下
+            // 从队列末尾开始倒序遍历，根据当前 watcher.id 找到它大于的 watcher.id 的位置，然后将自己插入到该位置之后的下一个位置
+            // 即将当前 watcher 放入已排序的队列中，且队列仍是有序的
+            // if already flushing, splice the watcher based on its id
+            // if already past its id, it will be run next immediately.
+                let i = queue.length - 1
+                while (i > index && queue[i].id > watcher.id) {
+                    i--
+                }
+                queue.splice(i + 1, 0, watcher)
+            }
+            // queue the flush
+            if (!waiting) {
+            // waiting 为 false 时，表示当前浏览器异步任务队列中没有 flushSchedulerQueue 函数
+            waiting = true
 
-2. 数据的 getter 触发后，dep 将当前 watcher 加入到 dep.subs 数组中。
-3. 数据的 setter 触发后，遍历 dep.subs 数组，调用每一个 watcher 的 update 方法去更新。
-4. 每次修改属性的值之后并没有立即重新求值，而是将需要执行更新操作的 watcher 放入一个队列中，如果同一个 watcher 被多次触发，只会被推入到队列中一次。调用 nextTick 在本次循环结束之前将 watcher 队列清空执行更新操作。
+            if (process.env.NODE_ENV !== 'production' && !config.async) {
+                // 同步执行，直接刷新调度队列
+                // 一般不会走这儿，Vue 默认是异步执行，如果改为同步执行，性能会大打折扣
+                flushSchedulerQueue()
+                return
+            }
+
+            /**
+            * 熟悉的 nextTick => vm.$nextTick、Vue.nextTick
+            *   1、将 回调函数（flushSchedulerQueue） 放入 callbacks 数组
+            *   2、通过 pending 控制向浏览器任务队列中添加 flushCallbacks 函数
+            */
+            nextTick(flushSchedulerQueue)
+            }
+        }
+    }
+    ```
+
+13. nextTick（`src\core\util\next-tick.js`）将 flushSchedulerQueue 用 try catch 包装后加入 callbacks，然后使用 promise 启动一个微任务，将 flushCallbacks 函数放入微任务中，flushCallbacks 在本轮循环结束之前被调用，会去遍历 callbacks 数组，然后调用其中函数，也就是 flushSchedulerQueue 被调用，每一个 watcher.run 被触发，然后重新执行 updateComponent，重新生成 vnode 然后走 patch 流程 
+
+    ```js
+    /**
+    * 完成两件事：
+    *   1、用 try catch 包装 flushSchedulerQueue 函数，然后将其放入 callbacks 数组
+    *   2、如果 pending 为 false，表示现在浏览器的任务队列中没有 flushCallbacks 函数
+    *     如果 pending 为 true，则表示浏览器的任务队列中已经被放入了 flushCallbacks 函数，
+    *     待执行 flushCallbacks 函数时，pending 会被再次置为 false，表示下一个 flushCallbacks 函数可以进入
+    *     浏览器的任务队列了
+    * pending 的作用：保证在同一时刻，浏览器的任务队列中只有一个 flushCallbacks 函数
+    * @param {*} cb 接收一个回调函数 => flushSchedulerQueue
+    * @param {*} ctx 上下文
+    * @returns 
+    */
+
+    // Vue.nextTick(function () { xxx }) 
+    export function nextTick (cb?: Function, ctx?: Object) {
+        let _resolve
+        // 将传入 nextTick 的回调函数用 try catch 包装一层，方便异常捕获
+        // 然后将包装后的函数放到 callbacks 数组里
+        callbacks.push(() => {
+            if (cb) {
+                try {
+                    cb.call(ctx)
+                } catch (e) {
+                    handleError(e, ctx, 'nextTick')
+                }
+            } else if (_resolve) { // 如果 cb 不是函数，说明是 nextTick().then(() => {}) 的调用形式，调用 _resolve 触发之后的 then 执行
+                _resolve(ctx)
+            }
+        })
+        // pending 为 false，执行 timerFunc
+        // 在浏览器的任务队列中（首选微任务队列）放入 flushCallbacks 函数
+        if (!pending) {
+            pending = true
+            timerFunc()
+        }
+        // $flow-disable-line
+        if (!cb && typeof Promise !== 'undefined') { // 没有 cb 生成 promise 存下 resolve 供给 callbacks 中的回调去触发 then 执行
+            return new Promise(resolve => {
+                _resolve = resolve
+            })
+        }
+    }
+
+    ```
 
 
 ### nextTick 的作用和原理
