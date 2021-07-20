@@ -1374,6 +1374,16 @@ export default class Watcher {
 13. nextTick（`src\core\util\next-tick.js`）将 flushSchedulerQueue 用 try catch 包装后加入 callbacks，然后使用 promise 启动一个微任务，将 flushCallbacks 函数放入微任务中，flushCallbacks 在本轮循环结束之前被调用，会去遍历 callbacks 数组，然后调用其中函数，也就是 flushSchedulerQueue 被调用，每一个 watcher.run 被触发，然后重新执行 updateComponent，重新生成 vnode 然后走 patch 流程 
 
     ```js
+    function flushCallbacks () {
+      pending = false
+      const copies = callbacks.slice(0)
+      callbacks.length = 0
+      // 遍历 callbacks 数组，执行其中存储的每个 flushSchedulerQueue 函数
+      for (let i = 0; i < copies.length; i++) {
+        copies[i]()
+      }
+    }
+    
     /**
     * 完成两件事：
     *   1、用 try catch 包装 flushSchedulerQueue 函数，然后将其放入 callbacks 数组
