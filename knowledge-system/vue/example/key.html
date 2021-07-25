@@ -1,0 +1,33 @@
+<body>
+    <div id="app">
+      <ul>
+        <li v-for="(value, index) in arr" :key="index">
+          <test />
+        </li>
+      </ul>
+      <button @click="handleDelete">delete</button>
+    </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    new Vue({
+      name: "App",
+      el: '#app',
+      data() {
+        return {
+          arr: [1, 2, 3]
+        };
+      },
+      methods: {
+        handleDelete() {
+          this.arr.splice(0, 1);
+        }
+      },
+      components: {
+        test: {
+          template: "<li>{{Math.random()}}</li>"
+        }
+      }
+    })
+</script>

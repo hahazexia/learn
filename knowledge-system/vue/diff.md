@@ -69,6 +69,25 @@
 
     sameVnode 判断两个 vnode 是否是相同节点，有很多个条件，但大体满足两个条件一般就是相同节点：1. key 相同 2. tag 相同。还有其他条件例如：如果是 input 元素那么类型必须一样
 
+    ```js
+        function sameVnode (a, b) {
+            return (
+                a.key === b.key && (
+                (
+                    a.tag === b.tag &&
+                    a.isComment === b.isComment &&
+                    isDef(a.data) === isDef(b.data) &&
+                    sameInputType(a, b)
+                ) || (
+                    isTrue(a.isAsyncPlaceholder) &&
+                    a.asyncFactory === b.asyncFactory &&
+                    isUndef(b.asyncFactory.error)
+                )
+                )
+            )
+        }
+    ```
+
 
     * diff 算法：同层比较 深度优先。同层比较可以降低时间复杂度
         * 比较两个VNode，包括三种类型操作：属性更新、文本更新、子节点更新
@@ -226,4 +245,137 @@
 
 
 ## key 的作用
+
+```html
+<div id="demo">
+    <p v-for="item in items" :key="item">{{item}}</p>
+</div>
+<script src="./vue.js"></script>
+<script>
+    const app = new Vue({
+        el: '#domo',
+        data: {items: ['A', 'B', 'C', 'D', 'E']},
+        mounted () {
+            setTimeout(() => {
+                this.items.splice(2, 0, 'F');
+            }, 2000)
+        }
+    })
+</script>
+```
+
+上面的例子是在 'c' 的前面插入一个 'f'，如果加上了 key ，则在 patch 过程中，会如下所示：
+
+```js
+// 第 1 次循环 A一样
+A B C D E
+A B F C D E
+
+// 第 2 次循环 B 一样
+B C D E
+B F C D E
+
+// 第 3 次循环 E 一样
+C D E
+F C D E
+
+// 第 4 次循环 D 一样
+C D
+F C D
+
+// 第 5 次循环 C 一样
+C
+F C
+
+// old 节点循环完毕，发现新的节点只剩一个 F，创建 F 插入到 C 前面
+```
+
+如果使用了 key ，可以发现 updateChildren 方法在比较子节点的时候，因为有 key，所以在头和尾碰到相同的节点，就去递归 patchVnode 操作，然后发现它们没有变化就什么都不做。直到最后新增 F 然后插入。也就是 5 次更新操作（因为没有变化，这 5 次操作什么也没做），然后 1 次创建操作，1 次插入操作。
+
+下面是没有 key 的情况。
+
+```js
+// 没有 key 则是 undefined，所以每次 key 的比较都是一样的
+
+// 第 1 次循环 A一样
+A B C D E
+A B F C D E
+
+// 第 2 次循环 B 一样
+B C D E
+B F C D E
+
+// 第 3 次循环认为 C 和 F 是同一节点，把 C 变成 F
+C D E
+F C D E
+
+// 第 4 次循环认为 D 和 C 是同一节点，把 D 变成 C
+D E
+C D E
+
+// 第 5 次循环认为 E 和 D 是同一节点，把 E 变成 D
+E
+D E
+
+// old 节点循环完毕，发现新的节点只剩一个 E，创建 E 插入到最后
+```
+
+如果没有用 key，可以发现每次比较都认为所有节点都是同一个节点，直接做 patchVnode 操作。因此做了 5 次更新操作（前 2 次什么也没做，后 3 次更新了文本节点），然后 1 次创建操作，1 次插入操作。
+
+* 有 key。5 次更新操作（因为没有变化，这 5 次操作什么也没做），然后 1 次创建操作，1 次插入操作
+* 没 key。5 次更新操作（前 2 次什么也没做，后 3 次更新了文本节点），然后 1 次创建操作，1 次插入操作
+
+对比可以发现，有 key 的时候比没 key 的时候，少了 3 次实际更新节点操作，因此节省了 dom 操作。这里的例子只是文本节点，更新操作不会有很大的开销，试想如果是复杂的 dom 结构，如果没有了 key，那么多出来的 dom 操作带来的性能消耗将是巨大的。
+
+总结：
+1. key 的作用主要是为例高效的更新虚拟 dom，原理是在 patch 过程中精准判断两个节点是否是同一个，从而避免频繁更新不同的元素，使整个 patch 过程中更加高效，减少 dom 操作，提高性能。
+2. 如果不设置 key 还可能在列表更新时引发一些隐蔽的 bug。
+3. vue 在使用相同标签名元素的过渡切换时，也会使用 key 属性，目的是为了让 vue 可以区分它们，否则 vue 只会替换其内部属性而不会触发过渡效果。
+
+## 为什么不要用数组 index 作为 key
+
+```html
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(value, index) in arr" :key="index">
+        <test />
+      </li>
+    </ul>
+    <button @click="handleDelete">delete</button>
+  </div>
+  </div>
+</body>
+<script>
+  new Vue({
+    name: "App",
+    el: '#app',
+    data() {
+      return {
+        arr: [1, 2, 3]
+      };
+    },
+    methods: {
+      handleDelete() {
+        this.arr.splice(0, 1);
+      }
+    },
+    components: {
+      test: {
+        template: "<li>{{Math.random()}}</li>"
+      }
+    }
+  })
+</script>
+```
+
+判断 sameNode 的时候，只会判断 key、 tag、是否有 data 的存在（不关心内部具体的值）、是否是注释节点、是否是相同的input type，来判断是否可以复用这个节点。
+
+这个例子中删除第一个节点之后的 vnode，第 2 个节点和第 3 个节点的 key 发生了变化，变成了 0 和 1。
+
+* 老节点text: 1 和 新节点的 text: 2 比较，key 一样，认为是同一个节点，复用。
+* 老节点text: 2 和 新节点的 text: 3 比较，key 一样，认为是同一个节点，复用。
+* 然后发现新节点里少了一个，直接把多出来的老节点 text: 3 丢掉。
+
+于是 1 2 3 ，删除 1 ，却变成了 1 2，产生了这样的 bug。
 
