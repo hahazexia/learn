@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="demo">
+        <comp></comp>
+        <comp></comp>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        Vue.component('comp', {
+            template:'<div @click="counter++">{{counter}}</div>',
+            data: {counter: 0}
+        })
+        const app = new Vue({
+            el: '#demo',
+        });
+    </script>
+</body>
+</html>
+

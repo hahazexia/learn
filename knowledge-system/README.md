@@ -39,6 +39,8 @@
 ![http](./img/vue.svg)
 [链接](https://www.processon.com/mindmap/60eedb4d1e085306ea6da81b)
 - vue
+    * 使用
+        + [组件通信](./vue/component_communicate.md)
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
@@ -46,6 +48,7 @@
         + [组件化](./vue/component.md)
         + [diff](./vue/diff.md)
         + [v-for和v-if](./vue/vfor_vif.md)
+        + [data](./vue/data.md)
 
 - 工程化
 
