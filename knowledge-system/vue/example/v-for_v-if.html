@@ -1,0 +1,30 @@
+<!DOCTYPE html> <html>
+<body>
+    <div id="demo">
+        <p v-for="child in children" v-if="isFolder">{{child.title}}</p>
+        <!-- <template v-if="isFolder">
+            <p v-for="child in children">{{child.title}}</p>
+        </template> -->
+    </div> 
+    <script src="./vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#demo',
+            data() {
+                return {
+                    children: [
+                        {title:'foo'},
+                        {title:'bar'},
+                    ]
+                }
+            },
+            computed: {
+                isFolder() {
+                    return this.children && this.children.length > 0
+                }
+            },
+        });
+        console.log(app.$options.render);
+    </script>
+</body>
+</html>

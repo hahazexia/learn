@@ -45,6 +45,7 @@
         + [响应式](./vue/reactivity.md)
         + [组件化](./vue/component.md)
         + [diff](./vue/diff.md)
+        + [v-for和v-if](./vue/vfor_vif.md)
 
 - 工程化
 
