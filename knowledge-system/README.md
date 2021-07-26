@@ -41,6 +41,7 @@
 - vue
     * 使用
         + [组件通信](./vue/component_communicate.md)
+        + [路由守卫](./vue/navigation_guards.md)
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
