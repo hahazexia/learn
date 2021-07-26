@@ -49,6 +49,7 @@
         + [diff](./vue/diff.md)
         + [v-for和v-if](./vue/vfor_vif.md)
         + [data](./vue/data.md)
+        + [ref](./vue/ref.md)
 
 - 工程化
 
