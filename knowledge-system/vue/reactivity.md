@@ -1658,16 +1658,50 @@ vue 代码对微任务的降级兼容处理：
             console.log('3:' + this.foo);
 
             Promise.resolve().then(() => {
-                console.log('promise:' + p1.innerHTML) // 第三次随机值
+                console.log('promise:' + p1.innerHTML)
             })
             
             this.$nextTick(() => {
-                console.log('p1.innerHTML:' + p1.innerHTML) // 第三次随机值
+                console.log('p1.innerHTML:' + p1.innerHTML)
             })
-
-            // 先打印 $nextTick 再打印 Promise.resolve().then()
             
         }
     });
 </script>
 ```
+
+
+<details>
+<summary>答案</summary>
+
+```js
+const app = new Vue({
+    el: '#demo',
+    data: { 
+        foo: 'ready~~'
+    },
+    mounted() {
+
+
+        this.foo = Math.random()
+        console.log('1:' + this.foo);
+        this.foo = Math.random()
+        console.log('2:' + this.foo);
+        this.foo = Math.random()
+        console.log('3:' + this.foo);
+
+        Promise.resolve().then(() => {
+            console.log('promise:' + p1.innerHTML) // 第三次随机值
+        })
+        
+        this.$nextTick(() => {
+            console.log('p1.innerHTML:' + p1.innerHTML) // 第三次随机值
+        })
+
+        // 先打印 $nextTick 再打印 Promise.resolve().then()
+        
+    }
+});
+```
+</details>
+<br><br>

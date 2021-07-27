@@ -43,6 +43,8 @@
         + [组件通信](./vue/component_communicate.md)
         + [路由守卫](./vue/navigation_guards.md)
         + [性能优化](./vue/performance_optimizing.md)
+        + [keep-alive应用](./vue/keep_alive_apply.md)
+        + [mixin和extend和use](./vue/mixin_extend_use.md)
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
@@ -52,6 +54,7 @@
         + [v-for和v-if](./vue/vfor_vif.md)
         + [data](./vue/data.md)
         + [ref](./vue/ref.md)
+        + [keep-alive](./vue/keep_alive.md)
 
 - 工程化
 
