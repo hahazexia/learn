@@ -45,7 +45,7 @@
         + [性能优化](./vue/performance_optimizing.md)
         + [keep-alive应用](./vue/keep_alive_apply.md)
         + [mixin和extend和use](./vue/mixin_extend_use.md)
-        + [slot](./vue/slot_apply.md)
+        + [slot应用](./vue/slot_apply.md)
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
@@ -56,6 +56,7 @@
         + [data](./vue/data.md)
         + [ref](./vue/ref.md)
         + [keep-alive](./vue/keep_alive.md)
+        + [slot](./vue/slot.md)
 
 - 工程化
 
