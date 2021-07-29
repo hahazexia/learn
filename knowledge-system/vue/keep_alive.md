@@ -158,4 +158,30 @@ export default {
     4. 如果缓存中不存在，在 this.cache 对象中存储该组件 vnode 并保存 key 值，之后检查缓存的 vnode 数量是否超过 max 的设置值，超过则根据 LRU 置换策略删除最近最久未使用的 vnode（即是下标为 0 的那个 key）。
     5. 最后一步很重要，将该组件 vnode 的 keepAlive 属性值设置为 true
 
-    
+## 关键问题
+
+* keep-alive 不会生成真正的DOM节点，这是怎么做到的？
+
+`src/core/instance/lifecycle.js`
+
+```js 
+export function initLifecycle (vm: Component) {
+  const options = vm.$options
+  // 找到第一个非abstract的父组件实例
+  let parent = options.parent
+  if (parent && !options.abstract) {
+    while (parent.$options.abstract && parent.$parent) {
+      parent = parent.$parent
+    }
+    parent.$children.push(vm)
+  }
+  vm.$parent = parent
+  // ...
+}
+```
+
+Vue 在初始化生命周期的时候，为组件实例建立父子关系会根据 abstract 属性决定是否忽略某个组件。在 keep-alive 中，设置了 abstract: true，那 Vue 就会跳过该组件实例。
+
+最后构建的组件树中就不会包含 keep-alive 组件，那么由组件树渲染成的 DOM 树自然也不会有 keep-alive 相关的节点了。
+
+* keep-alive 包裹的组件是如何使用缓存的？
