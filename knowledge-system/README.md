@@ -51,6 +51,7 @@
         + [初始化](./vue/init.md)
         + [响应式](./vue/reactivity.md)
         + [组件化](./vue/component.md)
+        + [编译器](./vue/compiler.md)
         + [diff](./vue/diff.md)
         + [v-for和v-if](./vue/vfor_vif.md)
         + [data](./vue/data.md)
