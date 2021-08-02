@@ -19,7 +19,15 @@
 
 - css & html
 
+![浏览器](./img/browser.svg)
+[链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
+
 - 浏览器
+    * [url到页面发生了什么](./browser/url_page.md)
+    * 数据存储
+        + [垃圾回收](./browser/garbage_collection.md)
+    * 页面
+        + [重绘和重排](./browser/repaint_reflow.md)
 
 ![http](./img/http.svg)
 [链接](https://www.processon.com/mindmap/60eba6ac1e08530964183b2b)
