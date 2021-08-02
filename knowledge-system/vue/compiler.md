@@ -176,9 +176,30 @@ export function parseHTML (html, options) {
 }
 ```
 
+parseHTML 中维护了一个栈 stack 数组，当碰到非一元标签的开始标签就 push 入栈，碰到对应的结束标签就出栈。这个栈结构用于判断是否有的标签没有结束标签。当所有 html 都解析完了，栈中还有剩余，说明有标签没有闭合。
+
+处理完开始标签后，栈中存储的数据是这样一个对象：
+
+```js
+{
+    tag: 'div',
+    lowerCasedTag: 'div',
+    attrs: [
+        name: attrName,
+        vale: attrValue,
+        start: 0,
+        end: 0 
+    ],
+    start: 0,
+    end: 11 
+}
+```
+
+
 解析的过程中
-* 对于起始标签，调用 options.start 处理
-* 对于结束标签，调用 options.end 处理
+
+* 对于起始标签，调用 options.start 处理 `options.start(tagName, attrs, unary, match.start, match.end)`
+* 对于结束标签，调用 options.end 处理 `options.end(stack[i].tag, start, end)`
 * 对于普通文本，调用 options.chars 处理
 * 对于注释，调用 options.comment 处理
 
@@ -816,3 +837,11 @@ export function parse (
   return root
 }
 ```
+
+1. 当开始处理标签的时候，start 被调用了，如果这时候 root 为空，说明是第一次处理标签，则设置当前标签的 ast 对象为 root，如果当前标签是不是一元标签，则设置 currentParent 为当前标签，然后当前开始标签 ast 入栈 stack
+2. 之后 start 被调用，这时已经有 root 了，如果当前标签是不是一元标签，则设置 currentParent 为当前标签 ast，然后当前开始标签 ast 入栈 stack
+3. 如果碰到了结束标签，end 被调用了，stack 里和结束标签对应的开始标签 ast 出栈，currentParent 设置为上一层的 ast，也就是 stack[stack.length - 1]。然后将刚才出栈的 ast 加入 currentParent.children，设置刚才出栈的 ast 的 parent 为 currentParent，设置父子关系。
+4. 依此类推，直到整个 ast 树建立完毕
+
+从上面流程可以看出 stack 栈用于碰到结束标签（有标签闭合了）后，恢复 currentParent 为之前上一层的 ast，这样才能正确地建立 ast 的父子关系。
+
