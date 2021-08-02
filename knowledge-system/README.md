@@ -45,7 +45,7 @@
         + [http 历史](./http/history.md)
         + [三次握手 四次挥手](./http/three_way_handshake.md)
 
-![http](./img/vue.svg)
+![vue](./img/vue.svg)
 [链接](https://www.processon.com/mindmap/60eedb4d1e085306ea6da81b)
 - vue
     * 使用
