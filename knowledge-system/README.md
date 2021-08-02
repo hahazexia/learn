@@ -24,6 +24,7 @@
 
 - 浏览器
     * [url到页面发生了什么](./browser/url_page.md)
+    * [浏览器安全](./browser/security.md)
     * 数据存储
         + [垃圾回收](./browser/garbage_collection.md)
     * 页面
