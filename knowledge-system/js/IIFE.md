@@ -42,7 +42,7 @@ void function () {}()
 ;(function() {}())
 ```
 
-IIFE（Immediately Invoked Function Expression） 的好处是外界访问此 IIFE 中的变量，而且又不会污染全局作用域。如果需要外界使用其中的变量，将变量返回出来即可。
+IIFE（Immediately Invoked Function Expression） 的好处是避免了外界访问此 IIFE 中的变量，而且又不会污染全局作用域。如果需要外界使用其中的变量，将变量返回出来即可。
 
 ```js
 var result = (function () {
