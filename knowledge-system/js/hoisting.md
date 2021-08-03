@@ -26,7 +26,7 @@ function catName(name) {
 
 变量提升也适用于其他数据类型和变量。变量可以在声明之前进行初始化和使用。但是如果没有初始化，就不能使用它们。
 
-`编译截断变量提升的时候，如果是同名的函数，JavaScript编译阶段会选择最后声明的那个。 如果变量和函数同名，那么在编译阶段，变量的声明会被忽略。`
+`编译阶段变量提升的时候，如果是同名的函数，JavaScript编译阶段会选择最后声明的那个。 如果变量和函数同名，那么在编译阶段，变量的声明会被忽略。`
 
 JavaScript 只会提升声明，不会提升其初始化。如果一个变量先被使用再被声明和赋值的话，使用时的值是 undefined。
 
@@ -65,6 +65,50 @@ notHoisted(); // TypeError: notHoisted is not a function
 var notHoisted = function() {
    console.log("bar");
 };
+```
+## 函数形参和变量函数声明同名
+
+函数的形参如果和函数中声明的变量重名了，那么变量声明的提升不影响函数形参：
+
+```js
+function foo(a) {
+    console.log('a1', a);
+    var a = 'test';
+    console.log('a2', a)
+}
+foo(1)
+
+// a1 1
+// a2 test
+```
+
+如果函数形参和函数中声明的新函数同名，那么新函数会覆盖掉新参：
+
+```js
+function foo(a) {
+    console.log('a1', a);
+    function a() {}
+    console.log('a2', a)
+}
+foo(1)
+
+// a1 a(){}
+// a2 a(){}
+```
+
+如果上面两种同时存在
+
+```js
+function foo(a) {
+    console.log('a1', a);
+    var a = 'test';
+    function a() {}
+    console.log('a2', a)
+}
+foo(1)
+
+// a1 a(){}
+// a2 test
 ```
 
 ## 题目
@@ -297,12 +341,12 @@ console.log(print())
 
 ```js
 if (true) {
-    console.log(print()) // 'aaa'
+    console.log(print()) // 'aaa' undefined
     function print() {
         console.log('aaa')
     }
 }
-console.log(print()) // 'aaa'
+console.log(print()) // 'aaa' undefined
 ```
 </details>
 <br><br>
@@ -323,7 +367,7 @@ if (true) {
 <details>
 <summary>答案</summary>
 
-无论条件判断是否成立，变量声明函数声明都会提升到条件语句外层的最上面。这时候函数 p 还是 undefined，调用会报错。
+ES6 浏览器环境中，块级作用域中声明函数，表现类似 var 声明，变量提升只会提升函数名 f ，然后赋值 undefined。
 
 ```js
 console.log(a) // undefined
@@ -377,7 +421,7 @@ fn()
 <details>
 <summary>答案</summary>
 
-函数和变量相比，会被优先提升。这意味着函数会被提升到更靠前的位置
+如果变量和函数同名，那么在编译阶段，变量的声明会被忽略。
 
 ```js
 var fn = 12
