@@ -163,6 +163,16 @@ var obj = {
 obj.getData();
 ```
 
+隐式绑定丢失的情况：
+
+* 函数别名
+* 将函数作为参数传递
+  * setTimeout setInterval 的回调
+  * 数组的遍历方法：forEach map filter 等
+* 对象的方法中的立即执行函数
+* 赋值表达式，条件表达式，逗号表达式的返回值
+
+
 ## 题目
 
 第一题
@@ -586,7 +596,7 @@ var obj = {
   })(n)
 }
 
-var fn = obj.fn;
+var fn = obj.fn; // window.n 4
 fn(3) // "n:" 5 "m:" 3 9
 obj.fn(3) // "n:" 6 "m:" 3 10
 console.log(n, obj.n) // 8 6

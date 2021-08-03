@@ -16,13 +16,13 @@
             * [事件循环](./js/event_loop.md)
             * [浮点数精度](./js/float.md)
             * [类型转换](./js/conversion.md)
-            * [promise]
-            * [严格模式]
-            * [柯里化]
-            * [递归]
             * [去抖和节流]
             * [类型判断]
             * [深浅拷贝]
+            * [严格模式]
+            * [柯里化]
+            * [递归]
+            * [promise]
             * [模块化]
             * [手写题]
 
@@ -34,6 +34,7 @@
 - 浏览器
     * [url到页面发生了什么](./browser/url_page.md)
     * [浏览器安全](./browser/security.md)
+    * [定时器](./browser/timer.md)
     * 数据存储
         + [垃圾回收](./browser/garbage_collection.md)
     * 页面
