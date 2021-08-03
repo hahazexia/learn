@@ -28,12 +28,16 @@
         + [手写题]
 
 - css & html
-    * [盒模型]
-    * [定位]
-    * [display]
-    * [flex]
-    * [浮动]
-    * [移动端适配]
+    * html
+    * css
+        + 布局
+            * [盒模型]
+            * [浮动]
+            * [定位]
+            * [display]
+            * [flex]
+        + 应用
+            * [移动端适配]
 
 ![浏览器](./img/browser.svg)
 [链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
