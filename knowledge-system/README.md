@@ -16,7 +16,7 @@
             * [事件循环](./js/event_loop.md)
             * [浮点数精度](./js/float.md)
             * [类型转换](./js/conversion.md)
-            * [严格模式]
+            * [严格模式](./js/strict_mode.md)
             * [promise]
     * 使用
         + [去抖和节流]
@@ -29,13 +29,25 @@
 
 - css & html
     * html
+        + 元素
+            * [<script>]
+            * [<link>]
+            * [<form>]
     * css
+        + 语言
+            * [@rule]
+            * [选择器]
+            * [伪类伪元素]
+            * [单位]
         + 布局
             * [盒模型]
             * [浮动]
             * [定位]
             * [display]
             * [flex]
+            * [居中问题]
+        + 绘制
+            * [文字相关]
         + 应用
             * [移动端适配]
 
@@ -43,13 +55,22 @@
 [链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
 
 - 浏览器
-    * [url到页面发生了什么](./browser/url_page.md)
-    * [浏览器安全](./browser/security.md)
-    * [定时器](./browser/timer.md)
-    * 数据存储
+    * [url到页面发生了什么]
+    * [浏览器安全]
+    * webAPI
+        * [定时器](./browser/timer.md)
+        * [XMLHttpRequest]
+        * [fetch]
+        * [requestAnimationFrame]
+        * [history]
+    * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
+    * 浏览器数据存储
+        + [cookie和localStorage和sessionStorage]
+        + [indexedDB]
     * 页面
-        + [重绘和重排](./browser/repaint_reflow.md)
+        + [渲染流水线]
+        + [重绘和重排]
 
 ![http](./img/http.svg)
 [链接](https://www.processon.com/mindmap/60eba6ac1e08530964183b2b)
@@ -76,6 +97,7 @@
         + [keep-alive应用](./vue/keep_alive_apply.md)
         + [mixin和extend和use](./vue/mixin_extend_use.md)
         + [slot应用](./vue/slot_apply.md)
+        + [修饰符]
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
@@ -87,7 +109,8 @@
         + [data](./vue/data.md)
         + [ref](./vue/ref.md)
         + [keep-alive](./vue/keep_alive.md)
-        + [slot](./vue/slot.md)
+        + [slot]
+        + [v-model]
 
 - 工程化
 
