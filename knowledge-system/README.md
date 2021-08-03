@@ -30,9 +30,9 @@
 - css & html
     * html
         + 元素
-            * [<script>]
-            * [<link>]
-            * [<form>]
+            * [script]
+            * [link]
+            * [form]
     * css
         + 语言
             * [@rule]
