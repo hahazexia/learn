@@ -19,9 +19,9 @@
             * [严格模式](./js/strict_mode.md)
             * [promise]
     * 使用
-        + [去抖和节流]
-        + [类型判断]
-        + [深浅拷贝]
+        + [去抖和节流](./js/debounce_throttle.md)
+        + [类型判断](./js/type_check.md)
+        + [深浅拷贝](./js/clone.md)
         + [柯里化]
         + [递归]
         + [模块化]
