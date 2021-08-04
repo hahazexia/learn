@@ -1,0 +1,131 @@
+# 柯里化
+
+柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回接受余下的参数且返回结果的新函数的技术。
+
+柯里化是在一个函数的基础上进行变换，得到一个新的预置了参数的函数。最后在调用新函数时，实际上还是会调用柯里化前的原函数。
+
+## 参数定长的柯里化
+
+```js
+function curry(fn) {
+  const argLen = fn.length;
+  const presetArgs = [].slice.call(arguments, 1)
+
+  return function() {
+    const restArgs = [].slice.call(arguments)
+    const allArgs = [...presetArgs, ...restArgs]
+
+    if (allArgs.length >= argLen) {
+      return fn.apply(this, allArgs)
+    } else {
+      return curry.call(null, fn, ...allArgs)
+    }
+  }
+}
+
+```
+
+测试用例
+
+```js
+function fn(a, b, c) {
+  return a + b + c;
+}
+var curried = curry(fn);
+curried(1, 2, 3); // 6
+curried(1, 2)(3); // 6
+curried(1)(2, 3); // 6
+curried(1)(2)(3); // 6
+curried(7)(8)(9); // 24
+
+```
+
+## 参数不定长的柯里化
+
+```js
+function curry(fn) {
+    let presetArgs = [].slice.call(arguments, 1);
+
+    function curried() {
+        let restArgs = [].slice.call(arguments);
+        let allArgs = [...presetArgs, ...restArgs];
+
+        return curry.call(null, fn, allArgs);
+    }
+
+    curried.toString = function () {
+        return fn.apply(null, presetArgs);
+    }
+    return curried;
+}
+```
+
+测试
+
+```js
+function dynamicAdd() {
+  return [...arguments].reduce((prev, curr) => {
+    return prev + curr
+  }, 0)
+}
+var add = curry(dynamicAdd);
+(add(1)(2)(3)(4)).toString() // 10
+(add(1, 2)(3, 4)(5, 6)).toString() // 21
+```
+
+## 题目
+
+第一题
+
+实现 add(1)(2)(3)(4) 的打印结果为 10，并且要求可以随意调用，不过每次只传一个参数，如 add(1)(2)(3)(4)(5) 的打印结果为 15
+
+<details>
+<summary>答案</summary>
+
+
+```js
+function add(x) {
+    let sum = x;
+
+    function curry(y) {
+        sum += y;
+        return curry
+    }
+
+    curry.toString = function () {
+        return sum;
+    }
+
+    return curry;
+}
+```
+</details>
+<br><br>
+
+
+第二题
+
+实现 add(1, 2)(3) 的打印结果为 6，add(1)(2, 3, 4)(5) 结果为 15， 意思就是传递的参数个数不固定
+
+<details>
+<summary>答案</summary>
+
+
+```js
+function add(x) {
+    let args = [].slice.call(arguments);
+
+    function curry() {
+        args = [...args, ...[].slice.call(arguments)];
+        return curry
+    }
+
+    curry.toString = function () {
+        return args.reduce((acc, i) => (acc += i, acc), 0);
+    }
+
+    return curry;
+}
+```
+</details>
+<br><br>
