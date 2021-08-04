@@ -73,6 +73,35 @@ var add = curry(dynamicAdd);
 (add(1, 2)(3, 4)(5, 6)).toString() // 21
 ```
 
+最新浏览器中 toString 已经不起作用了，总是会打印函数，于是修改一下：
+
+```js
+function curry(fn) {
+    let args = [].slice.call(arguments, 1)
+
+    function curried () {
+        if (arguments.length) {
+            args = [...args, ...[].slice.call(arguments)];
+            return curried;
+        } else {
+            return fn.apply(null, args);
+        }
+    }
+
+    return curried
+}
+
+function dynamicAdd() {
+    console.log(arguments, '看看')
+  return [...arguments].reduce((prev, curr) => {
+    return prev + curr
+  }, 0)
+}
+var add = curry(dynamicAdd);
+
+add(1, 2)(3, 4)(5, 6)() // 21
+```
+
 ## 题目
 
 第一题
@@ -88,12 +117,9 @@ function add(x) {
     let sum = x;
 
     function curry(y) {
+        if (arguments.length === 0) return sum;
         sum += y;
         return curry
-    }
-
-    curry.toString = function () {
-        return sum;
     }
 
     return curry;
