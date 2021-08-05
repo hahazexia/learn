@@ -49,7 +49,7 @@
         + 绘制
             * [文字相关]
         + 应用
-            * [移动端适配]
+            * [移动端适配](./html_css/mobile.md)
 
 ![浏览器](./img/browser.svg)
 [链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
