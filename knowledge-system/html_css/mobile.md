@@ -11,7 +11,7 @@
 
 * 像素，是一个拥有位置和颜色属性的小方块。电脑屏幕就是由像素组成的。
     * 物理像素。物理像素等同于设备像素（dp:device pixel），顾名思义，显示屏是由一个个物理像素点组成的，通过控制每个像素点的颜色使屏幕显示出不同的图像，屏幕上面的物理像素点是固定不变的，单位pt。其中，我们通常说的显示器分辨率，其实是指操作系统设定的分辨率，而不是显示器的物理分辨率。
-    * 设备独立像素（dip）。iPhone3，它的分辨率是 320x480，它的分辨率是 640*960，正好是 iPhone3 的两倍。然而 iPhone4 和 iPhone3 的尺寸是一样的，都是3.5英寸。在 iPhone4 使用的视网膜屏幕中，把 2x2 个像素当 1 个像素使用，这样让屏幕看起来更精致，但是元素的大小却不会改变。我们必须用一种单位来同时告诉不同分辨率的手机，它们在界面上显示元素的大小是多少，这个单位就是设备独立像素(Device Independent Pixels)简称 DIP 或DP。如果列表的宽度为 300 个像素，实际上我们可以说：列表的宽度为 300 个设备独立像素。打开 chrome 的开发者工具，我们可以模拟各个手机型号的显示情况，每种型号上面会显示一个尺寸，比如 iPhone X显示的尺寸是 375x812，实际 iPhone X的分辨率会比这高很多，这里显示的就是设备独立像素 DIP。
+    * 设备独立像素（dip）。iPhone3，它的分辨率是 320x480，iPhone4 的分辨率是 640*960，正好是 iPhone3 的两倍。然而 iPhone4 和 iPhone3 的尺寸是一样的，都是3.5英寸。在 iPhone4 使用的视网膜屏幕中，把 2x2 个像素当 1 个像素使用，这样让屏幕看起来更精致，但是元素的大小却不会改变。我们必须用一种单位来同时告诉不同分辨率的手机，它们在界面上显示元素的大小是多少，这个单位就是设备独立像素(Device Independent Pixels)简称 DIP 或DP。如果列表的宽度为 300 个像素，实际上我们可以说：列表的宽度为 300 个设备独立像素。打开 chrome 的开发者工具，我们可以模拟各个手机型号的显示情况，每种型号上面会显示一个尺寸，比如 iPhone X显示的尺寸是 375x812，实际 iPhone X的分辨率会比这高很多，这里显示的就是设备独立像素 DIP。
     * 设备像素比（dpr）。设备像素比 device pixel ratio 简称 dpr，即物理像素和设备独立像素的比值。浏览器为我们提供了window.devicePixelRatio 来帮助我们获取 dpr。 在 css 中，可以使用媒体查询 min-device-pixel-ratio，区分 dpr：
     ```css
         @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){ }
@@ -50,18 +50,151 @@
         * 首先如果不设置 meta viewport 标签，那么移动设备上浏览器默认的宽度值为 800px，980px，1024px 等这些，总之是大于屏幕宽度的。这里的宽度所用的单位 px 都是指 css 中的 px，它跟代表实际屏幕物理像素的 px 不是一回事。
         * 每个移动设备浏览器中都有一个理想的宽度，这个理想的宽度是指 css 中的宽度，跟设备的物理宽度没有关系，在 css 中，这个宽度就相当于100% 所代表的那个宽度。我们可以用 meta 标签把 viewport 的宽度设为那个理想的宽度，如果不知道这个设备的理想宽度是多少，那么用device-width 这个特殊值就行了，同时 initial-scale=1 也有把 viewport 的宽度设为理想宽度的作用。所以，我们可以使用 `<meta name="viewport" content="width=device-width, initial-scale=1">` 来得到一个理想的 viewport（也就是前面说的ideal viewport）。
 
+* 自己总结
+
+`<meta name="viewport" content="width=device-width, initial-scale=1">`
+
+meta 标签设置 viewport 宽度等于设备宽度，这个设置是很重要的。如果不设置，页面将使用布局视口（layout viewport），默认宽度 980 px，那么页面中的元素将变得非常小，看不清楚。设置了 width=device-width 后，页面会将布局视口（layout viewport）的默认文档宽度设置为理想视口（ideal viewport）的宽度，即使用设备独立像素的页面宽度进行布局。
+
+而 visual viewport宽度 = ideal viewport宽度 / 当前缩放值。如果在 viewport 的设置中同时出现了 width=device-width 和initial-scale=xx ，则 layout viewport 会在 device-width 和 visual viewport 的宽度值中取一个最大值作为其宽度值。
+
+例子：如果手机是高清屏幕，其实际物理像素为 750x1134 ，dpr 为 2，则 css 像素为 375x667。设置 width=device-width 后，视口宽度将为 375，再设置 initial-scale=0.5 后，通过计算 visual viewport 宽度等于 375 / 0.5 = 750。则最终视口宽度为 750。实现了物理像素和 css 像素 1:1。
+
+
 ## 适配方案
 
 ### flexible
 
-flexible 核心代码非常简单
+<details>
+<summary>完整 flexible 代码</summary>
 
 ```js
-function setRemUnit () {
-    var rem = document.documentElement.clientWidth / 10
-    document.documentElement.style.fontSize = rem + 'px'
-}
-setRemUnit();
+;(function(win, lib) {
+    var doc = win.document;
+    var docEl = doc.documentElement;
+    var metaEl = doc.querySelector('meta[name="viewport"]');
+    var flexibleEl = doc.querySelector('meta[name="flexible"]');
+    var dpr = 0;
+    var scale = 0;
+    var tid;
+    var flexible = lib.flexible || (lib.flexible = {});
+    
+    if (metaEl) {
+        console.warn('将根据已有的meta标签来设置缩放比例');
+        var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+        if (match) {
+            scale = parseFloat(match[1]);
+            dpr = parseInt(1 / scale);
+        }
+    } else if (flexibleEl) {
+        var content = flexibleEl.getAttribute('content');
+        if (content) {
+            var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+            var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+            if (initialDpr) {
+                dpr = parseFloat(initialDpr[1]);
+                scale = parseFloat((1 / dpr).toFixed(2));    
+            }
+            if (maximumDpr) {
+                dpr = parseFloat(maximumDpr[1]);
+                scale = parseFloat((1 / dpr).toFixed(2));    
+            }
+        }
+    }
 
+    if (!dpr && !scale) {
+        var isAndroid = win.navigator.appVersion.match(/android/gi);
+        var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+        var devicePixelRatio = win.devicePixelRatio;
+        if (isIPhone) {
+            // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+            if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {                
+                dpr = 3;
+            } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
+                dpr = 2;
+            } else {
+                dpr = 1;
+            }
+        } else {
+            // 其他设备下，仍旧使用1倍的方案
+            dpr = 1;
+        }
+        scale = 1 / dpr;
+    }
+
+    docEl.setAttribute('data-dpr', dpr);
+    if (!metaEl) {
+        metaEl = doc.createElement('meta');
+        metaEl.setAttribute('name', 'viewport');
+        metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+        if (docEl.firstElementChild) {
+            docEl.firstElementChild.appendChild(metaEl);
+        } else {
+            var wrap = doc.createElement('div');
+            wrap.appendChild(metaEl);
+            doc.write(wrap.innerHTML);
+        }
+    }
+
+    function refreshRem(){
+        var width = docEl.getBoundingClientRect().width;
+        if (width / dpr > 540) {
+            width = 540 * dpr;
+        }
+        var rem = width / 10;
+        docEl.style.fontSize = rem + 'px';
+        flexible.rem = win.rem = rem;
+    }
+
+    win.addEventListener('resize', function() {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+    }, false);
+    win.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            clearTimeout(tid);
+            tid = setTimeout(refreshRem, 300);
+        }
+    }, false);
+
+    if (doc.readyState === 'complete') {
+        doc.body.style.fontSize = 12 * dpr + 'px';
+    } else {
+        doc.addEventListener('DOMContentLoaded', function(e) {
+            doc.body.style.fontSize = 12 * dpr + 'px';
+        }, false);
+    }
+    
+
+    refreshRem();
+
+    flexible.dpr = win.dpr = dpr;
+    flexible.refreshRem = refreshRem;
+    flexible.rem2px = function(d) {
+        var val = parseFloat(d) * this.rem;
+        if (typeof d === 'string' && d.match(/rem$/)) {
+            val += 'px';
+        }
+        return val;
+    }
+    flexible.px2rem = function(d) {
+        var val = parseFloat(d) / this.rem;
+        if (typeof d === 'string' && d.match(/px$/)) {
+            val += 'rem';
+        }
+        return val;
+    }
+
+})(window, window['lib'] || (window['lib'] = {}));
 ```
+</details>
+<br><br>
+
+1. 使用 rem 模拟 vw 特性适配多种屏幕尺寸
+
+rem 是相对于 html 元素的 font-size 来做计算的计算属性值。通过设置 documentElement 的 fontSize 属性值就可以统一整个页面的布局标准。Flexible 将整个页面的宽度切成了 10 份，然后将计算出来的页面宽度的 1/10 设置为 html 节点的 fontSize。
+
+2. 控制 viewport 的 width 和 scale 值适配高倍屏显示。
+
+设置 viewport 的 width 为 device-width，改变浏览器 viewport（布局视口和视觉视口）的默认宽度为理想视口宽度，从而使得用户可以在理想视口内看到完整的布局视口的内容。设置 viewport 的 initial-scale、maximum-scale、minimum-scale 的值，从而实现 1物理像素 = 1css像素，以适配高倍屏的显示效果。
 
