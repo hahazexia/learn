@@ -24,7 +24,7 @@
         + [深浅拷贝](./js/clone.md)
         + [柯里化](./js/curry.md)
         + [递归](./js/recursion.md)
-        + [模块化]
+        + [模块化](./js/module.md)
         + [手写题]
 
 - css & html
