@@ -23,7 +23,7 @@
         + [类型判断](./js/type_check.md)
         + [深浅拷贝](./js/clone.md)
         + [柯里化](./js/curry.md)
-        + [递归]
+        + [递归](./js/recursion.md)
         + [模块化]
         + [手写题]
 
