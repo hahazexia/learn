@@ -190,11 +190,8 @@ meta 标签设置 viewport 宽度等于设备宽度，这个设置是很重要�
 </details>
 <br><br>
 
-1. 使用 rem 模拟 vw 特性适配多种屏幕尺寸
 
-rem 是相对于 html 元素的 font-size 来做计算的计算属性值。通过设置 documentElement 的 fontSize 属性值就可以统一整个页面的布局标准。Flexible 将整个页面的宽度切成了 10 份，然后将计算出来的页面宽度的 1/10 设置为 html 节点的 fontSize。
-
-2. 控制 viewport 的 width 和 scale 值适配高倍屏显示。
-
-设置 viewport 的 width 为 device-width，改变浏览器 viewport（布局视口和视觉视口）的默认宽度为理想视口宽度，从而使得用户可以在理想视口内看到完整的布局视口的内容。设置 viewport 的 initial-scale、maximum-scale、minimum-scale 的值，从而实现 1物理像素 = 1css像素，以适配高倍屏的显示效果。
-
+1. 如果不设置 viewport 的 width=device-width，默认 layout viewport（document.documentElement.clientWidth） 和 visual viewport（window.innerWidth） 宽度为 980px。
+2. 设置 width=device-width 后，layout viewport（document.documentElement.clientWidth） 和 visual viewport（window.innerWidth）宽度都变成和 ideal-viewport 一样了。
+3. 在 dpr（物理像素 与 CSS像素 比值） 大于 1 的设备上，css 里设置 1px 的边框，会实际使用 2px 的物理像素（因为我们设置了 width=device-width，使视口宽度和理想视口一样。所以举个例子， 750 的物理像素宽度变成了 375，这时候 css 中的 1px 实际使用了 2px 的物理像素 ）。这时候根据 dpr（物理像素 与 CSS像素 比值） 作缩放，visual viewport宽度 = ideal viewport宽度 / 当前缩放值。对 dpr 为 2 的设备，就将其 initial-scale 设置为 0.5，则可以计算出 visual viewport宽度 =  ideal viewport宽度 * 2。也就是说 375 * 2 = 750。于是 layout viewport（document.documentElement.clientWidth） 和 visual viewport（window.innerWidth）宽度都乘 2 从 ideal-viewport 的 375 变成了 750，从而实现了 1物理像素 = 1css像素。
+4. 使用 rem 模拟 vw 特性适配多种屏幕尺寸。rem 是相对于 html 元素的 font-size 来做计算的计算属性值。通过设置 documentElement 的 fontSize 属性值就可以统一整个页面的布局标准。Flexible 将整个页面的宽度切成了 10 份，然后将计算出来的页面宽度的 1/10 设置为 html 节点的 fontSize。
