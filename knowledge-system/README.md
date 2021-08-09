@@ -58,13 +58,12 @@
 [链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
 
 - 浏览器
-    * [url到页面发生了什么]
     * [浏览器安全]
     * webAPI
         * [定时器](./browser/timer.md)
         * [XMLHttpRequest]
         * [fetch]
-        * [requestAnimationFrame]
+        * [requestAnimationFrame](./browser/requestAnimationFrame.md)
         * [history]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
@@ -72,6 +71,7 @@
         + [cookie和localStorage和sessionStorage]
         + [indexedDB]
     * 页面
+        * [url到页面发生了什么]
         + [渲染流水线]
         + [重绘和重排]
 

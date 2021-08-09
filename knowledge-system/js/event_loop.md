@@ -23,7 +23,7 @@
 ## 事件循环和消息队列
 
 1. 所有任务都在主线程上执行。
-2. 主线程之外，还存在一个消息队列。只要其他任务有了运行结果，就放在消息队列中排队等待执行。例如 输入事件（鼠标滚动、点击、移动）、微任务、文件读写、WebSocket、JavaScript 定时器等等。
+2. 主线程之外，还存在一个消息队列。只要其他任务有了运行结果，就放在消息队列中排队等待执行。例如 输入事件（鼠标滚动、点击、移动）、文件读写、WebSocket、JavaScript 定时器等等。
 3. 一旦主线程中的所有任务执行完毕，系统就会读取消息队列，看看里面有哪些在排队的任务。那些任务结束等待状态，进入主线程执行栈，开始执行。
 
 主线程不断重复上面的第三步。这就是事件循环和消息队列。
@@ -73,6 +73,33 @@
 
 其中 process.nextTick() 和 promise.then() 将在每个阶段之后立即执行，它们类似浏览器中的微任务定义。
 
+## html 规范中的事件循环流程
+
+[html文档链接](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)
+
+1. 执行宏任务（task）
+    1. 选中一个任务队列为要执行的任务队列，从这个任务队列中取出最早入队的一个 Task，
+        * 因为任务队列不止一个。以下是规范原文。For example, a user agent could have one task queue for mouse and key events (to which the user interaction task source is associated), and another to which all other task sources are associated. Then, using the freedom granted in the initial step of the event loop processing model, it could give keyboard and mouse events preference over other tasks three-quarters of the time, keeping the interface responsive but not starving other task queues. Note that in this setup, the processing model still enforces that the user agent would never process events from any one task source out of order. 大意：浏览器可以有一个任务队列存储鼠标和键盘事件，而剩余的其他任务则放在另外一个任务队列中。浏览器会在保持任务顺序的前提下，可能分配四分之三的优先权给鼠标和键盘事件，保证用户的输入得到最高优先级的响应，而剩下的优先级交给其他 Task，并且保证不会“饿死”它们。
+    2. 让这个最早的 Task 执行
+2. 执行微任务（Microtasks）
+    1. 循环微任务队列，执行并清空为任务队列
+3. 更新渲染
+4. 判断是否启动空闲时间算法（window.requestIdleCallback()）
+5. 不断重复以上过程
+
+## 总结
+
+1. 事件循环每轮的 task 执行完成后，不一定都会伴随页面的更新渲染；
+    * Browsing context rendering opportunities are determined based on hardware constraints such as display refresh rates and other factors such as page performance or whether the page is in the background. Rendering opportunities typically occur at regular intervals. 会根据 Rendering opportunities 来判断每轮事件循环是否需要进行更新渲染，会根据浏览器刷新率以及页面性能或是否后台运行等因素判断的。如果 hasARenderingOpportunity 为 true，需要更新渲染。下面是更新渲染流程：
+        1. 触发 resize、scroll事件，评估媒体查询并且提交变化
+        2. 更新 css 动画 
+        3. 执行动画回调（window.requestAnimationFrame 回调）；
+        4. 执行 intersection observations 回调
+        5. 更新渲染；
+2. 事件循环中碰到以下情况会跳过渲染：
+    1. 浏览器判断更新渲染不会带来视觉上的改变
+    2. 有时候浏览器希望两次定时器任务是合并的，他们之间只会穿插着微任务的执行，而不会穿插页面渲染相关的流程。
+    3. map of animation frame callbacks 为空，也就是帧动画回调为空。
 
 
 ## 题目
