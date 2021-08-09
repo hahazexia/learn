@@ -71,8 +71,8 @@
         + [cookie和localStorage和sessionStorage]
         + [indexedDB]
     * 页面
-        * [url到页面发生了什么]
-        + [渲染流水线]
+        * [从url到页面发生了什么](./browser/url_to_page.md)
+        + [渲染流程](./browser/browser_render_process.md )
         + [重绘和重排]
 
 ![http](./img/http.svg)
