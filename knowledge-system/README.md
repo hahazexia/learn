@@ -33,6 +33,7 @@
 - css & html
     * html
         + 元素
+            * [property和attribute](./html_css/property_attribute.md)
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
@@ -67,13 +68,14 @@
         * [history]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
+        + [js如何执行](./browser/js_how_to_run.md)
     * 浏览器数据存储
         + [cookie和localStorage和sessionStorage]
         + [indexedDB]
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
         + [渲染流程](./browser/browser_render_process.md )
-        + [重绘和重排]
+        + [重绘和重排](./browser/repaint_reflow.md)
 
 ![http](./img/http.svg)
 [链接](https://www.processon.com/mindmap/60eba6ac1e08530964183b2b)
