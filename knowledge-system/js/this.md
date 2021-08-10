@@ -174,6 +174,7 @@ obj.getData();
 * 将函数作为参数传递
   * setTimeout setInterval 的回调
   * 数组的遍历方法：forEach map filter 等
+  * addEventListener 传递的回调也会隐式丢失，this 会绑定到事件添加到的那个 html 元素上
 * 对象的方法中的立即执行函数
 * 赋值表达式，条件表达式，逗号表达式的返回值
 
