@@ -62,7 +62,7 @@
     * [浏览器安全]
     * webAPI
         * [定时器](./browser/timer.md)
-        * [XMLHttpRequest]
+        * [XMLHttpRequest](./browser/XMLHttpRequest.md)
         * [fetch]
         * [requestAnimationFrame](./browser/requestAnimationFrame.md)
         * [history]
