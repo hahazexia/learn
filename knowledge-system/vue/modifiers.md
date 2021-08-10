@@ -66,3 +66,22 @@
 * .prop - 作为一个 DOM property 绑定而不是作为 attribute 绑定。
 * .camel - (2.1.0+) 将 kebab-case attribute 名转换为 camelCase。
 * .sync (2.3.0+) 语法糖，会扩展成一个更新父组件绑定值的 v-on 侦听器。
+
+在有些情况下，我们可能需要对一个 prop 进行“双向绑定”。
+
+```html
+// 子组件
+this.$emit('update:title', newTitle)
+
+// 父组件
+<text-document
+  v-bind:title="doc.title"
+  v-on:update:title="doc.title = $event"
+></text-document>
+```
+
+如上例子，子组件发射一个事件，父组件监听这个事件然后更新传给子组件的 props 数据。这种模式的一个缩写，即 .sync 修饰符
+
+```html
+<text-document v-bind:title.sync="doc.title"></text-document>
+```
