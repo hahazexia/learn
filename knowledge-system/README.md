@@ -102,7 +102,7 @@
         + [keep-alive应用](./vue/keep_alive_apply.md)
         + [mixin和extend和use](./vue/mixin_extend_use.md)
         + [slot应用](./vue/slot_apply.md)
-        + [修饰符]
+        + [修饰符](./vue/modifiers.md)
     * 原理
         + [mvvm](./vue/mvvm.md)
         + [初始化](./vue/init.md)
