@@ -91,37 +91,39 @@ function debounce (func, wait, immediate) {
 实现一：
 
 ```js
-function throttle(func, wait) {
-  let timeout;
-  return function () {
-    const context = this;
-    const args = arguments;
-    if (!timeout) {
-      timeout = setTimeout(function () {
-        timeout = null;
-        func.apply(context, args)
-      }, wait)
-    }
+function throttle(fn, wait) {
+    let timer;
 
-  }
+    return function () {
+        const context = this;
+        const args = arguments;
+
+        if (!timer) {
+            fn.apply(this, args);
+            timer = setTimerout(() => {
+                timer = null
+            }, wait);
+        }
+    }
 }
 ```
 
 实现二：
 
 ```js
-function throttle(func, wait) {
-  let context, args;
-  let previous = 0;
+function throttle(fn, wait) {
+    let timer;
+    let prev = 0;
 
-  return function () {
-    let now = +new Date();
-    context = this;
-    args = arguments;
-    if (now - previous > wait) {
-      func.apply(context, args);
-      previous = now;
+    return function () {
+        const context = this;
+        const args = arguments;
+        let now = Date.now();
+
+        if (now - prev > wait) {
+            fn.apply(this, args);
+            prev = now;
+        }
     }
-  }
 }
 ```

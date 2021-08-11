@@ -70,7 +70,7 @@
         + [垃圾回收](./browser/garbage_collection.md)
         + [js如何执行](./browser/js_how_to_run.md)
     * 浏览器数据存储
-        + [cookie和localStorage和sessionStorage]
+        + [cookie和localStorage和sessionStorage](./browser/cookie_storage.md)
         + [indexedDB]
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
