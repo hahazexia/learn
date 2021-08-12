@@ -6,6 +6,13 @@ webpack 是一个用于现代 JavaScript 应用程序的 静态模块打包工�
 
 它可以把浏览器不认识的 web 资源， 比如 sass、less、ts，经过编译后能够在浏览器中正常工作。
 
+## module chunk bundle
+
+这三个术语在 webpack 文档里经常见到，它们的含义：
+* module：就是源代码中的模块，一个文件就是一个模块，例如 commonjs 的模块，es6 module 的模块
+* chunk：webpack 在执行过程中根据源代码的 module 的引用关系形成的文件就是 chunk
+* bundle：最终输出的文件，能够直接在浏览器里运行
+
 ## entry
 
 entry 指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始。
@@ -286,9 +293,9 @@ webpack 会根据不同 mode 执行不同的优化，这些预设的优化可以
 * 下面几个值不会生成 source-map
     * false：不使用 source-map，也就是没有任何和 source-map 相关的内容。
     * none：production 模式下的默认值，不生成 source-map。
-    * eval：development 模式下的默认值，不生成 source-map 但是它会在eval执行的代码中，添加 //# sourceURL=；它会被浏览器在执行时解析，并且在调试面板中生成对应的一些文件目录，方便我们调试代码；
+    * eval：development 模式下的默认值，不生成单独的 source-map 文件，但是它会在eval执行的代码中，添加 //# sourceURL=；它会被浏览器在执行时解析，并且在调试面板中生成对应的一些文件目录，方便我们调试代码；
 
-* source-map值 生成一个独立的 source-map 文件，并且在 bundle 文件中有一个注释，指向 source-map 文件；bundle 文件中有如下的注释：开发工具会根据这个注释找到 source-map 文件，并且解析；
+* source-map：生成一个独立的 source-map 文件，并且在 bundle 文件中有一个注释，指向 source-map 文件；bundle 文件中有如下的注释：开发工具会根据这个注释找到 source-map 文件，并且解析；
 
 ```js
 //# sourceMappingURL=bundle.js.map
@@ -297,15 +304,16 @@ webpack 会根据不同 mode 执行不同的优化，这些预设的优化可以
 * eval-source-map：会生成 sourcemap，但是 source-map 是以 DataUrl 添加到 eval 函数的后面
 * inline-source-map：会生成 sourcemap，但是 source-map 是以 DataUrl 添加到 bundle 文件的后面
 * cheap-source-map：会生成 sourcemap，但是会更加高效一些（cheap低开销），因为它没有生成列映射（Column Mapping）因为在开发中，我们只需要行信息通常就可以定位到错误了。
-* cheap-module-source-map：会生成 sourcemap，类似于 cheap-source-map，但是对源自 loader 的 sourcemap 处理会更好。这里有一个很模糊的概念：对源自 loader 的 sourcemap 处理会更好，官方也没有给出很好的解释。其实是如果 loader 对我们的源码进行了特殊的处理，比如 babel；
 * hidden-source-map：会生成 sourcemap，但是不会对 source-map 文件进行引用；相当于删除了打包文件中对 sourcemap 的引用注释；如果我们手动添加进来，那么 sourcemap 就会生效了
 * nosources-source-map：会生成 sourcemap，但是生成的 sourcemap 只有错误信息的提示，不会生成源代码文件；
+* cheap-module-source-map：会生成 sourcemap，类似于 cheap-source-map，但是对源自 loader 的 sourcemap 处理会更好。这里有一个很模糊的概念：对源自 loader 的 sourcemap 处理会更好，官方也没有给出很好的解释。其实是如果 loader 对我们的源码进行了特殊的处理，比如 babel；
 
 
-* 事实上，webpack提供给我们的26个值，是可以进行多组合的。
+
+* 事实上，webpack 提供给我们的 26 个值，是可以进行多组合的。
     * inline-|hidden-|eval：三个值时三选一；
     * nosources：可选值；
-    * cheap 可选值，并且可以跟随module的值；
+    * cheap 可选值，并且可以跟随 module 的值；
 
 ```
 [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map

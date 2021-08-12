@@ -121,7 +121,9 @@
 [链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
 
 - 工程化
-
-- webpack
-    * 使用
-        + [webpack基础](./webpack/webpack_base.md)
+    - webpack
+        * 使用
+            + [webpack基础](./webpack/webpack_base.md)
+            + [webpack优化](./webpack/webpack_optimise.md)
+        * 原理
+            + [source-map原理](./webpack/source-map.md)
