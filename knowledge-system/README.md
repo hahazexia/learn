@@ -126,4 +126,5 @@
             + [webpack基础](./webpack/webpack_base.md)
             + [webpack优化](./webpack/webpack_optimise.md)
         * 原理
-            + [source-map原理](./webpack/source-map.md)
+            + [source-map](./webpack/source-map.md)
+            + [HMR](./webpack/hmr.md)

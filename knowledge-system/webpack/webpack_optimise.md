@@ -41,3 +41,39 @@ webpack 官网都建议加上 eval 关键字，因为加上后模块构建速度
 
 ### HMR（hot module replacement 模块热替换）
 
+devServer 启动一个代理服务器。启动过后修改代码就会自动刷新浏览器了，但这个并不是 HMR。HMR 是指替换、添加或删除模块，而无需重新加载整个页面。
+
+当我们对代码修改并保存后，Webpack 将会对代码进行重新打包，并将新的模块发送到浏览器端，浏览器用新的模块替换掉旧的模块，以实现在不刷新浏览器的前提下更新页面。最明显的优势就是相对于刷新整个页面而言，HMR 并不会丢失应用的状态，提高开发效率。
+
+
+```js
+{
+    // 注意：Webpack 升级到 5.0后，target 默认值值会根据 package.json 中的 browserslist 改变，导致 devServer 的自动更新失效。所以development 环境下直接配置成 web。
+    target: "web",
+    devServer: {
+        contentBase: path.resolve(__dirname, "dist"),
+        hot: true,//开启 HMR 功能
+    },
+    plugins: {
+        HotModuleReplacementPlugin: new webpack.HotModuleReplacementPlugin()
+    }
+}
+```
+
+开启 HMR 后，还需要进行一些配置才能生效。
+
+* 样式文件：style-loader 内部实现，所以只要 loader 中配置了 style-loade 就可直接使用 HMR 功能
+* vue 文件：vue-loader 内部实现，同理配置 vue-loader 直接使用 HMR。
+* js 文件：需要修改源代码，接收更新通知，代码如下
+
+```js
+import test from "./test.js"
+
+if (module.hot) {
+    module.hot.accept("./test.js",() => {
+        console.log('Accepting the updated test module!');
+    })
+}
+```
+
+当 test 文件被改动时，更新事件会一层层往上传递，直到传递到入口文件中。而在传递的过程中，任何地方接收了这个更新事件，即上面的 module.hot.accept 方法，就会停止传递，执行回调。如果一直未接收，最后就会通知 Webpack 刷新整个页面。
