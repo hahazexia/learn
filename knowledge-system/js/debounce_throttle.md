@@ -112,7 +112,6 @@ function throttle(fn, wait) {
 
 ```js
 function throttle(fn, wait) {
-    let timer;
     let prev = 0;
 
     return function () {
