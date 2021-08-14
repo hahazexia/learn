@@ -162,7 +162,7 @@ function Sub (value) {
 const F = function () {};
 F.prototype = Super.prototype;
 Sub.prototype = new F();
-
+Sub.prototype.constructor = Sub;
 
 ```
 

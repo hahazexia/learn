@@ -20,12 +20,13 @@
             * [promise]
     * 使用
         + [去抖和节流](./js/debounce_throttle.md)
-        + [类型判断](./js/type_check.md)
         + [深浅拷贝](./js/clone.md)
         + [柯里化](./js/curry.md)
         + [递归](./js/recursion.md)
+        + [类型判断](./js/type_check.md)
         + [模块化](./js/module.md)
-        + [手写题]
+        + [获取对象的属性]
+        + [手写题](./js/achieve_byself.md)
 
 ![html&css](./img/html&css.svg)
 [链接](https://www.processon.com/mindmap/610e0572f346fb2a2e982bcc)

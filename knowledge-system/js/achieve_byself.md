@@ -25,3 +25,17 @@
 
 #### 实现 new
 
+<details>
+<summary>答案</summary>
+
+```js
+function _new(constructor) {
+    const args = [].slice.call(arguments, 1);
+    const context = Object.create(constructor.prototype);
+    const res = constructor.apply(context, args);
+    return (typeof res === 'object' && res !== null) ? res : context;
+}
+```
+</details>
+<br><br>
+
