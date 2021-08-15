@@ -16,6 +16,7 @@
             * [事件循环](./js/event_loop.md)
             * [浮点数精度](./js/float.md)
             * [类型转换](./js/conversion.md)
+            * [规范中的隐式转换](./js/conversion_specification.md)
             * [严格模式](./js/strict_mode.md)
             * [promise]
     * 使用
@@ -25,7 +26,7 @@
         + [递归](./js/recursion.md)
         + [类型判断](./js/type_check.md)
         + [模块化](./js/module.md)
-        + [获取对象的属性]
+        + [遍历对象的属性](./js/get_object_key.md)
         + [手写题](./js/achieve_byself.md)
 
 ![html&css](./img/html&css.svg)

@@ -48,6 +48,10 @@ Number([5]) // 5
 // 对象转换时，先调用 valueOf 方法, 结果返回对象本身，然后调用 toString 方法，这时返回字符串[object Object]
 
 // 而数组转换时，先调用 valueOf 返回数组本身，然后调用 toString ，[1, 2, 3] 返回 '1,2,3' 而 [5] 返回 '5'
+
+// 对象和数组调用 valueOf 都返回自身
+// 对象调用 toString 返回 [object Object] 字符串
+// 数组调用 toString 返回 逗号分隔元素列表字符串
 ```
 
 原因：
@@ -91,13 +95,14 @@ String([1, 2, 3]) // "1,2,3"
 
 ### Boolean()
 
+* false
 * 0（+0 和 -0）
 * ''
 * null
 * undefined
 * NaN
 
-这 5 个返回 false，其它都返回 true
+这 6 个返回 false，其它都返回 true
 
 ## 自动转换
 
