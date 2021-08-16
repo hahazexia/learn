@@ -301,3 +301,36 @@ ToPrimitive 操作其实就是将非原始类型的值（比如对象和数组�
 4. 布尔值都是 true 或 都是 false 返回 true，否则返回 false
 5. Symbol 如果是同一个 Symbol 值，返回 true，否则返回 false
 6. 如果是同一个对象，返回 true，否则返回 false
+
+## 总结
+
+### 基础运算符（加减乘除，指数，位运算，二进制左移右移）
+
+1. 运算符是加号 + 的情况单独处理
+  1. 调用 ToPrimitive 将左右操作数变成原始类型
+    1. 此处开始 ToPrimitive 操作。如果参数是对象类型，获取这个类型的 toPrimitive 方法
+    2. 如果类型对应的 toPrimitive 方法存在，则设置 hint 为 default（没有期望），string（期望字符串），number（期望数字）然后返回 toPrimitive 方法调用结果作为结果
+    3. 如果 toPrimitive 方法不存在，则按照期望类型先后调用 valueOf toString （期望 number），toString valueOf（期望字符串），然后返回结果
+  2. 如果左右操作数中有一个是字符串，则两个都转换为字符串，然后返回字符串拼接的结果
+2. 其他情况都是数字计算的情况，两个操作数都转换成数字然后计算
+
+### 非相等运算符（大于，小于，大于等于，小于等于）
+
+1. 调用 ToPrimitive 将左右操作数中非原始类型的转换成原始类型
+2. 如果左右操作数都是 String，就按照字典顺序比较
+3. 如果左右操作数一个是 BigInt 一个是 String，就将 String 转换成 BigInt 然后比较
+4. 其他情况，将两个操作数都转换成 Number 比较
+
+### 不严格相等运算符
+
+1. 如果 x 和 y 类型一样，返回 IsStrictlyEqual(x, y) 的比较结果（其实就和严格相等运算符一样）
+2. x 和 y 如果是 null 或 undefined，直接返回 true
+3. x 和 y 中有对象类型存在，就调用 toPrimitive 转换成原始类型然后再比较
+4. x 和 y 都是原始类型，都转换成数字比较
+5. x 和 y 是 BigInt 和 String ，把 String 转换成 BigInt 然后再比较
+
+### 严格相等运算符
+
+1. 如果 x 和 y 类型不一样，返回 false
+2. 如果是 Number 或者 BigInt 类型，调用 equal(x, y)
+3. 否则调用 SameValueNonNumeric(x, y)
