@@ -67,15 +67,17 @@ Number([5]) // 5
 
 * 原始类型值
     * 数值：转为相应的字符串。
-    * 布尔值：true转为字符串"true"，false转为字符串"false"。
-    * undefined：转为字符串"undefined"。
-    * null：转为字符串"null"。
+    * 布尔值：true 转为字符串 "true"，false 转为字符串 "false"。
+    * undefined：转为字符串 "undefined"。
+    * null：转为字符串 "null"。
+    * NaN：转为字符串 "NaN"
 
 ```js
 String(123) // "123"
 String(true) // "true"
 String(undefined) // "undefined"
 String(null) // "null"
+String(NaN) // 'NaN'
 ```
 
 * 对象
