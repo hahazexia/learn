@@ -131,7 +131,7 @@ Sub.prototype.constructor = Sub;
 
 ```js
 function Sub(value) {
-    Super.all(this);
+    Super.call(this);
     this.prop = value
 }
 
@@ -145,7 +145,7 @@ Sub.prototype.constructor = Sub;
 
 ```js
 function Sub(value) {
-    Super.all(this);
+    Super.call(this);
     this.prop = value
 }
 
