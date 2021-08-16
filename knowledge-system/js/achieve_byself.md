@@ -487,3 +487,216 @@ function duplicateRemoval (arr) {
 
 #### 解析 url params
 
+
+<details>
+<summary>答案</summary>
+
+```js
+function urlSearch(href) {
+    let name, value;
+    let str = href;
+    let num = str.indexOf("?");
+    str = str.substr(num + 1);
+    let arr = str.split("&");
+    let json = {};
+    for (let i = 0; i < arr.length; i++) {
+        num = arr[i].indexOf("=");
+        if (num > 0) {
+            name = arr[i].substring(0, num);
+            value = arr[i].substr(num + 1);
+            json[name] = value;
+        }
+    }
+    return json;
+}
+
+
+function parseParam(url) {
+    const paramsStr = /.+\?(.+)$/.exec(url)[1];
+    const paramsArr = paramsStr.split('&');
+    let paramsObj = {};
+
+    paramsArr.forEach(param => {
+        if (/=/.test(param)) {
+            let [key, val] = param.split('=');
+            val = decodeURIComponent(val);
+            val = /^\d+$/.test(val) ? parseFloat(val) : val;
+            if (paramsObj.hasOwnProperty(key)) {
+                paramsObj[key] = [].concat(paramsObj[key], val);
+            } else {
+                paramsObj[key] = val;
+            }
+        } else {
+            paramsObj[param] = true;
+        }
+    })
+    
+    return paramsObj;
+}
+
+
+function parseParam(url) {
+    const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后面的字符串取出来
+    //exec() 方法用于检索字符串中的正则表达式的匹配。
+    const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
+    let paramsObj = {};
+    // 将 params 存到对象中
+    paramsArr.forEach(param => {
+        if (/=/.test(param)) { // 处理有 value 的参数
+            let [key, val] = param.split('='); // 分割 key 和 value
+            val = decodeURIComponent(val); // 解码
+            val = /^\d+$/.test(val) ? parseFloat(val) : val; // 判断是否转为数字
+               //test() 方法用于检测一个字符串是否匹配某个模式.
+            if (paramsObj.hasOwnProperty(key)) { // 如果对象有 key，则添加一个值
+                paramsObj[key] = [].concat(paramsObj[key], val);
+                //concat() 方法用于连接两个或多个数组。
+                //该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
+            } else { // 如果对象没有这个 key，创建 key 并设置值
+                paramsObj[key] = val;
+            }
+        } else { // 处理没有 value 的参数
+            paramsObj[param] = true;
+        }
+    })
+    
+    return paramsObj;
+}
+
+function parseSearch(search) {
+    let data = new URLSearchParams(search);
+    let res = {};
+    for (let i of data) {
+        res[i[0]] = i[1];
+    }
+    return res
+}
+
+```
+</details>
+<br><br>
+
+#### 实现 a == 1 && a == 2 && a == 3 的结果为 true
+
+
+<details>
+<summary>答案</summary>
+
+```js
+// 对象定义自定义 toString 或者 valueOf
+ const a = {
+   i: 0,
+   toString: function() {
+     this.i++
+     return this.i
+   }
+ }
+
+ const a = {
+   i: 0,
+   valueOf: function() {
+     this.i++
+     return this.i
+   }
+ };
+ console.log(a == 1 && a == 2 && a == 3);
+
+// 定义对象 getter
+ let a = {
+   i: 0
+ };
+
+ let temp = 0
+ Object.defineProperty(a, 'i', {
+   get(val) {
+     return ++temp
+   },
+   set() {
+     return temp
+   }
+ });
+
+let a = {
+  i: 0
+};
+const currentA = new Proxy(a, {
+  get: function(obj) {
+    return ++obj.i
+  }
+});
+console.log(currentA.i == 1 && currentA.i == 2 && currentA.i == 3);
+```
+</details>
+<br><br>
+
+#### 洗牌算法
+
+
+<details>
+<summary>答案</summary>
+
+```js
+function shuffle(arr) {
+  const array = arr.slice(0);
+
+  for (let i = (array.length - 1); i > 0; i -= 1) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+  }
+
+  return array;
+}
+```
+</details>
+<br><br>
+
+#### 判断字符串中的括号是否是合法闭合的括号
+
+
+<details>
+<summary>答案</summary>
+
+
+```js
+function isClosed(str) {
+  if (!str) return true;
+  const array = str.split('');
+
+  const stack = [];
+
+  const targetsMap = {
+    '[': 1,
+    ']': -1,
+    '(': 2,
+    ')': -2,
+    '{': 3,
+    '}': -3
+  }
+
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === '(' || array[i] === '[' || array[i] === '{') {
+      stack.push(targetsMap[array[i]]);
+    } else {
+      const l = stack.length;
+      if (targetsMap[array[i]]) {
+        if (l > 0 && ((stack[l - 1] + targetsMap[array[i]]) === 0)) {
+          stack.pop();
+        } else {
+          stack.push(targetsMap[array[i]]);
+        }
+      }
+    }
+  }
+
+  return stack.length ? false : true;
+}
+
+isClosed('{}'); // true
+isClosed('()[]{}'); // true
+isClosed('{()[][{()}][]}'); // true
+isClosed('{)'); // false
+isClosed('{(])}'); // false
+isClosed('{(}[)]'); // false
+isClosed('('); // false
+```
+</details>
+<br><br>
