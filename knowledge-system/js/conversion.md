@@ -97,12 +97,12 @@ String([1, 2, 3]) // "1,2,3"
 
 ### Boolean()
 
-* false
 * 0（+0 和 -0）
+* NaN
 * ''
+* false
 * null
 * undefined
-* NaN
 
 这 6 个返回 false，其它都返回 true
 

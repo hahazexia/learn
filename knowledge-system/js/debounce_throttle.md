@@ -99,7 +99,7 @@ function throttle(fn, wait) {
         const args = arguments;
 
         if (!timer) {
-            fn.apply(this, args);
+            fn.apply(context, args);
             timer = setTimerout(() => {
                 timer = null
             }, wait);
@@ -120,7 +120,7 @@ function throttle(fn, wait) {
         let now = Date.now();
 
         if (now - prev > wait) {
-            fn.apply(this, args);
+            fn.apply(context, args);
             prev = now;
         }
     }
