@@ -79,7 +79,7 @@
 
 1. 执行宏任务（task）
     1. 选中一个任务队列为要执行的任务队列，从这个任务队列中取出最早入队的一个 Task，
-        * 因为任务队列不止一个。以下是规范原文。For example, a user agent could have one task queue for mouse and key events (to which the user interaction task source is associated), and another to which all other task sources are associated. Then, using the freedom granted in the initial step of the event loop processing model, it could give keyboard and mouse events preference over other tasks three-quarters of the time, keeping the interface responsive but not starving other task queues. Note that in this setup, the processing model still enforces that the user agent would never process events from any one task source out of order. 大意：浏览器可以有一个任务队列存储鼠标和键盘事件，而剩余的其他任务则放在另外一个任务队列中。浏览器会在保持任务顺序的前提下，可能分配四分之三的优先权给鼠标和键盘事件，保证用户的输入得到最高优先级的响应，而剩下的优先级交给其他 Task，并且保证不会“饿死”它们。
+        * 因为任务队列不止一个。以下是[规范原文](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops)。For example, a user agent could have one task queue for mouse and key events (to which the user interaction task source is associated), and another to which all other task sources are associated. Then, using the freedom granted in the initial step of the event loop processing model, it could give keyboard and mouse events preference over other tasks three-quarters of the time, keeping the interface responsive but not starving other task queues. Note that in this setup, the processing model still enforces that the user agent would never process events from any one task source out of order. 大意：浏览器可以有一个任务队列存储鼠标和键盘事件，而剩余的其他任务则放在另外一个任务队列中。浏览器会在保持任务顺序的前提下，可能分配四分之三的优先权给鼠标和键盘事件，保证用户的输入得到最高优先级的响应，而剩下的优先级交给其他 Task，并且保证不会“饿死”它们。
     2. 让这个最早的 Task 执行
 2. 执行微任务（Microtasks）
     1. 循环微任务队列，执行并清空为任务队列
