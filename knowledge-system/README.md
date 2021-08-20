@@ -48,6 +48,8 @@
             * [值与单位](./html_css/values_and_units.md)
         + 布局
             * [盒模型](./html_css/box_model.md)
+            * [视觉格式模型](./html_css/visual_formatting_model)
+            * [BFC]
             * [浮动]
             * [定位]
             * [display]
