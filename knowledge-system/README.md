@@ -49,8 +49,7 @@
         + 布局
             * [盒模型](./html_css/box_model.md)
             * [视觉格式模型](./html_css/visual_formatting_model)
-            * [BFC]
-            * [浮动]
+            * [浮动和BFC](./html_css/float_BFC.md)
             * [定位]
             * [display]
             * [flex]
@@ -64,19 +63,20 @@
 [链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
 
 - 浏览器
-    * [浏览器安全]
     * webAPI
         * [定时器](./browser/timer.md)
         * [XMLHttpRequest](./browser/XMLHttpRequest.md)
-        * [fetch]
+        * [fetch](./browser/fetch.md)
         * [requestAnimationFrame](./browser/requestAnimationFrame.md)
-        * [history]
+        * [history](./browser/history.md)
+        * [serviceWorker]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
         + [js如何执行](./browser/js_how_to_run.md)
     * 浏览器数据存储
         + [cookie和localStorage和sessionStorage](./browser/cookie_storage.md)
         + [indexedDB]
+    * [浏览器安全](./browser/security.md)
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
         + [渲染流程](./browser/browser_render_process.md )
