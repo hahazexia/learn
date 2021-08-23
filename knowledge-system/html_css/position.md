@@ -57,3 +57,14 @@ For the purposes of any operation targetting the scroll position of a sticky pos
 
 对于以粘性定位元素（或其后代之一）的滚动位置为目标的任何操作，粘性定位元素必须被视为位于其初始（非偏移）位置。
 
+## 对 sticky 的理解
+
+粘性定位的元素是依赖于用户的滚动，在 position:relative 与 position:fixed 定位之间切换。它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
+
+## 如何查找最近的滚动祖先
+
+一般而言只要往父级查找，遇到的第一个 overflow 不是 visible 的元素就是最近滚动祖先(scrollport)。找不到时，viewport 就是最近滚动祖先。
+
+[css-overflow-3](https://www.w3.org/TR/css-overflow-3/#overflow-propagation) 的 3.5. Overflow Viewport Propagation 中有这样一句：If visible is applied to the viewport, it must be interpreted as auto. 
+
+如果 overflow:visible 被应用于 viewport，那么要被解释为 overflow:auto。所以 viewport 始终是可以滚动的，它会作为最终的滚动祖先。
