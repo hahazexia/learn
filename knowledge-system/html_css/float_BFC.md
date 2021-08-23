@@ -1,4 +1,4 @@
-# 浮动和 BFC
+# float 和 BFC
 
 ## 概念
 

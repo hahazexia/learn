@@ -49,8 +49,8 @@
         + 布局
             * [盒模型](./html_css/box_model.md)
             * [视觉格式模型](./html_css/visual_formatting_model)
-            * [浮动和BFC](./html_css/float_BFC.md)
-            * [定位]
+            * [float和BFC](./html_css/float_BFC.md)
+            * [position](./html_css/position.md)
             * [display]
             * [flex]
             * [居中问题]
