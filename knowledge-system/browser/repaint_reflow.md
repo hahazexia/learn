@@ -51,6 +51,8 @@ CSS 的 transform 来实现动画效果，这可以避开重排和重绘阶段�
 * 浏览器窗口尺寸改变，resize事件发生时
 * 查询某些属性或调用某些计算方法：offsetWidth、offsetHeight 等
 
+可以去 [csstriggers](https://csstriggers.com/) 网站查看哪些 css 样式的修改会重新触发 layout paint composite。
+
 ### 如何降低重排的用时？
 
 * 减少不必要的 DOM 深度。在 DOM 树中的一个级别进行更改可能会致使该树的所有级别（上至根节点，下至所修改节点的子级）都随之变化。这会导致花费更多的时间来执行重排。
