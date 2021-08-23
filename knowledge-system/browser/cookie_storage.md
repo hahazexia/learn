@@ -134,7 +134,7 @@ var docCookies = {
 设置一条 cookie 的时候，一条 cookie 的组成部分按顺序如下：
 
 * cookie名字=cookie值 （cookie 的名字和值）
-* ;expres=xxx;max-age=xxx （cookie 的过期时间或有效期。过期时间是字符串或者 Date 对象，有效期是数字，单位秒）
+* ;expires=xxx;max-age=xxx （cookie 的过期时间或有效期。过期时间是字符串或者 Date 对象，有效期是数字，单位秒）
 * ;domain=xxx （cookie 的域名。默认为当前文档位置的路径的域名部分）
 * ;path=xxx （cookie 的路径。默认为当前文档位置的路径）
 * ;secure （cookie 是否只通过 https 协议传输，这个没有值）
@@ -158,12 +158,12 @@ Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
 
 ### cookie 作用域
 
-* Domain 指定了哪些主机可以接受 Cookie。如果不指定，默认为 origin，不包含子域名。如果指定了 Domain，则一般包含子域名。
-* Path 标识指定了主机下的哪些路径可以接受 Cookie
+* Domain 指定了哪些域名可以接受 Cookie。如果不指定，默认为 origin，不包含子域名。如果指定了 Domain，则一般包含子域名。
+* Path 标识指定了域名下的哪些路径可以接受 Cookie
 * SameSite Cookie 允许服务器要求某个 cookie 在跨站请求时不会被发送，从而可以阻止跨站请求伪造攻击（CSRF）。
     * SameSite=None 浏览器会在同站请求、跨站请求下继续发送 cookies，不区分大小写。
     * SameSite=Strict 浏览器将只在访问相同站点时发送 cookie。
-    * SameSite=Lax 与 Strict 类似，但用户从外部站点导航至URL时（例如通过链接）除外。
+    * SameSite=Lax 在跨站点的情况下，从第三方站点的链接打开和从第三方站点提交 Get 方式的表单这两种方式都会携带 Cookie。但如果在第三方站点中使用 Post 方法，或者通过 img、iframe 等标签加载的 URL，这些场景都不会携带 Cookie。
     ```js
     Set-Cookie: key=value; SameSite=Strict
     ```
