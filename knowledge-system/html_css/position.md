@@ -31,4 +31,29 @@ sticky 定位类似于 relative 定位，除了它的偏移是参考最近的滚
 
 * For a sticky positioned box, the inset properties represent insets from the respective edges of the nearest scrollport, defining the sticky view rectangle used to constrain the box’s position. (For this purpose an auto value represents a zero inset.) If this results in a sticky view rectangle size in any axis less than the size of the border box of the sticky box in that axis, then the effective end-edge inset in the affected axis is reduced (possibly becoming negative) to bring the sticky view rectangle’s size up to the size of the border box in that axis.
 
-对于一个 sticky 定位的盒子，inset 属性（也就是 top right bottom left 的 另外一种速记写法，具体查看 [MDN 讲解](https://developer.mozilla.org/en-US/docs/Web/CSS/inset)）代表了距离各自最近的滚动视口边缘的 insets 值，并定义了粘性视图矩形（sticky view rectangle）用来限制盒子的位置。（因为这个目的，如果值是 auto ，那就代表 inset 值为 0）
+对于一个 sticky 定位的盒子，inset 属性（也就是 top right bottom left 的 另外一种速记写法，具体查看 [MDN 讲解](https://developer.mozilla.org/en-US/docs/Web/CSS/inset)）代表了距离各自最近的滚动视口边缘的 insets 值，并定义了粘性视图矩形（sticky view rectangle）用来限制盒子的位置。（基于这个目的，如果值是 auto ，那就代表 inset 值为 0）如果任意一个坐标轴的粘性视图矩形的大小在此坐标轴中比 sticky 盒子的 border box 要小，那么在这个被影响的坐标轴中生效的 end-edge inset 就会被减少（可能变成负值），这是为了让粘性视图矩形的大小能够包含 border box 的大小。
+
+* For example, if the nearest scrollport is 300px tall, the sticky box’s border box is 200px tall, and it has top: 20px, then the top-edge inset of the nearest scrollport is 20px, and the bottom-edge inset is 0px, yielding a sticky view rectangle that is 280px tall.
+But if the nearest scrollport were only 100px tall, then the effective bottom-edge inset becomes -120px, resulting in a sticky view rectangle that’s 200px tall, enough to fully contain the margin box of the sticky box.
+
+一个例子，如果最近的滚动视口是 300px 高，sticky 盒子的 border box 是 200px 高，它设置了 top:20px，那么最近的滚动视口的 top-edge inset 就是 20px，那么 bottom-edge inset 就是 0，这样产生的粘性视图矩形就是 280px 高。
+
+但是如果最近的滚动视口只有 100px 高，然后能够生效的 bottom-edge inset 就变成 -120px，这样粘性视图矩形就是 200px 高，足以包含 sticky 盒子的 margin 盒子。
+
+* For each side of the box, if the corresponding inset property is not auto, and the corresponding border edge of the box would be outside the corresponding edge of the sticky view rectangle, then the box must be visually shifted (as for relative positioning) to be inward of that sticky view rectangle edge, insofar as it can while its position box remains contained within its containing block. The position box is its margin box, except that for any side for which the distance between its margin edge and the corresponding edge of its containing block is less than its corresponding margin, that distance is used in place of that margin.
+
+对于盒子的每一边，如果相应的 inset 属性值不是 auto，并且盒子的相应的 border 边缘会在相应的粘性视图矩形的边缘之外，那么盒子必须在视觉上被移动（例如绝对定位）为了在粘性视图矩形边缘的内部，只要它的 position box 保持被包含在它的包含块中就可以。position box 就是它的 margin box，不同的是对于任意一边，它的 margin edge 和对应的它的包含块的边缘的距离比它对应的 margin 要小，那个距离被用来替代这个 margin。
+
+* Note: A sticky positioned element with a non-auto top value and an auto bottom value will only ever be pushed down by sticky positioning; it will never be offset upwards.
+
+如果 top 不是 auto ，但 bottom 是 auto，那么 position:sticky 元素只会向下偏移(相对其初始位置)，永远不会向上偏移 。
+
+* Note: Multiple sticky positioned boxes in the same container are offset independently, and therefore might overlap.
+
+同一个容器中的多个粘性定位盒子是独立偏移的，因此可能会重叠。
+
+* 3.4.1. Scroll Position of Sticky-Positioned Boxes
+For the purposes of any operation targetting the scroll position of a sticky positioned element (or one of its descendants), the sticky positioned element must be considered to be positioned at its initial (non-offsetted) position.
+
+对于以粘性定位元素（或其后代之一）的滚动位置为目标的任何操作，粘性定位元素必须被视为位于其初始（非偏移）位置。
+
