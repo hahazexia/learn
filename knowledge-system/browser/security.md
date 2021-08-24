@@ -70,6 +70,10 @@ CSRF 英文全称是 Cross-site request forgery，所以又称为“跨站请求
 
 和 XSS 不同的是，CSRF 攻击不需要将恶意代码注入用户的页面，仅仅是利用服务器的漏洞和用户的登录状态来实施攻击。
 
+### 为什么黑客的网站和要攻击的网站不同域，请求也可以获取到 cookie？
+
+虽然黑客网站和目标网站域名不同，是跨域的，但是 img 标签的 src 可以加载不同域名的数据发起 get 请求，并携带对应域名的 cookie，而表单一般用于提交数据，可以跨域发请求，只是拿不到响应而已，所以浏览器不限制利用表单发送跨域请求。在不同域名页面下使用 img 和 表单请求携带的 cookie 被称为第三方 cookie。
+
 ### 如何防止 CSRF
 
 1. 充分利用好 Cookie 的 SameSite 属性。在 HTTP 响应头中，通过 set-cookie 字段设置 Cookie 时，可以带上 SameSite 选项。SameSite 选项通常有 Strict、Lax 和 None 三个值。
