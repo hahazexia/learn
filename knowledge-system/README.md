@@ -103,7 +103,7 @@
 - vue
     * 使用
         + [组件通信](./vue/component_communicate.md)
-        + [路由守卫](./vue/navigation_guards.md)
+        + [导航守卫](./vue/navigation_guards.md)
         + [性能优化](./vue/performance_optimizing.md)
         + [keep-alive应用](./vue/keep_alive_apply.md)
         + [mixin和extend和use](./vue/mixin_extend_use.md)
