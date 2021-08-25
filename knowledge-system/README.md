@@ -18,6 +18,7 @@
             * [类型转换](./js/conversion.md)
             * [规范中的隐式转换](./js/conversion_specification.md)
             * [严格模式](./js/strict_mode.md)
+            * [事件]
             * [promise]
     * 使用
         + [去抖和节流](./js/debounce_throttle.md)
@@ -29,6 +30,7 @@
         + [遍历对象的属性](./js/get_object_key.md)
         + [手写题](./js/achieve_byself.md)
         + [排序算法]
+        + [查找算法]
 
 ![html&css](./img/html&css.svg)
 [链接](https://www.processon.com/mindmap/610e0572f346fb2a2e982bcc)
@@ -48,6 +50,7 @@
             * [伪类伪元素](./html_css/pseudo.md)
             * [值与单位](./html_css/values_and_units.md)
         + 布局
+            * [block和inline和inline-block]
             * [盒模型](./html_css/box_model.md)
             * [视觉格式模型](./html_css/visual_formatting_model)
             * [float和BFC](./html_css/float_BFC.md)
@@ -55,6 +58,7 @@
             * [display]
             * [flex]
             * [居中问题]
+            * [瀑布流]
         + 绘制
             * [文字相关]
         + 应用
