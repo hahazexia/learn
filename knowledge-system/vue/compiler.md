@@ -839,7 +839,7 @@ export function parse (
 ```
 
 1. 当开始处理标签的时候，start 被调用了，如果这时候 root 为空，说明是第一次处理标签，则设置当前标签的 ast 对象为 root，如果当前标签是不是一元标签，则设置 currentParent 为当前标签，然后当前开始标签 ast 入栈 stack
-2. 之后 start 被调用，这时已经有 root 了，如果当前标签是不是一元标签，则设置 currentParent 为当前标签 ast，然后当前开始标签 ast 入栈 stack
+2. 之后 start 被调用，这时已经有 root 了，如果当前标签不是一元标签，则设置 currentParent 为当前标签 ast，然后当前开始标签 ast 入栈 stack
 3. 如果碰到了结束标签，end 被调用了，stack 里和结束标签对应的开始标签 ast 出栈，currentParent 设置为上一层的 ast，也就是 stack[stack.length - 1]。然后将刚才出栈的 ast 加入 currentParent.children，设置刚才出栈的 ast 的 parent 为 currentParent，设置父子关系。
 4. 依此类推，直到整个 ast 树建立完毕
 
