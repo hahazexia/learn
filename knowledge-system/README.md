@@ -18,7 +18,7 @@
             * [类型转换](./js/conversion.md)
             * [规范中的隐式转换](./js/conversion_specification.md)
             * [严格模式](./js/strict_mode.md)
-            * [事件]
+            * [事件](./js/event.md)
             * [promise]
     * 使用
         + [去抖和节流](./js/debounce_throttle.md)
@@ -70,6 +70,7 @@
 - 浏览器
     * webAPI
         * [定时器](./browser/timer.md)
+        * [获取元素]
         * [XMLHttpRequest](./browser/XMLHttpRequest.md)
         * [fetch](./browser/fetch.md)
         * [requestAnimationFrame](./browser/requestAnimationFrame.md)
