@@ -57,7 +57,7 @@
             * [float和BFC](./html_css/float_BFC.md)
             * [position](./html_css/position.md)
             * [display]
-            * [flex]
+            * [flex](./html_css/flex.md)
             * [居中问题]
             * [瀑布流]
         + 绘制
