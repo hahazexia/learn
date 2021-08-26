@@ -44,6 +44,8 @@
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
             * [处理元素class]
+            * [获取元素]
+            * [获取元素尺寸]
     * css
         + 语言
             * [@rule](./html_css/html_at_rule.md)
@@ -71,7 +73,6 @@
 - 浏览器
     * webAPI
         * [定时器](./browser/timer.md)
-        * [获取元素]
         * [XMLHttpRequest](./browser/XMLHttpRequest.md)
         * [fetch](./browser/fetch.md)
         * [requestAnimationFrame](./browser/requestAnimationFrame.md)
