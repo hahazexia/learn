@@ -43,6 +43,7 @@
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
+            * [处理元素class]
     * css
         + 语言
             * [@rule](./html_css/html_at_rule.md)
