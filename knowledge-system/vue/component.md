@@ -606,7 +606,8 @@ export default {
     ```
     这里调用后会执行 _c("ComponentA")。
 
-5. _c 最后调用的是 _createElement (`src\core\vdom\create-element.js`)。_createElement 会判断字符串 "ComponentA" 是否是保留标签，发现不是，说明是组件名称，于是获取到之前 Vue.extend 生成的全局组件的子类构造函数，然后调用 createComponent 去生成 vnode
+5. _c 最后调用的是 _createElement (`src\core\vdom\create-element.js`)。_createElement 会判断字符串 "ComponentA" 是否是保留标签，发现不是，说明是组件名称，于是获取到之前 Vue.extend 生成的全局组件的子类构造函数，然后调用 createComponent 去生成 vnode。createComponent 调用的时候，第一个参数是 resolveAsset 从 this.$options 中找到的 Ctor，如果是全局组件 Ctor 就是子类构造函数，如果是局部组件，这时候 Ctor 是局部组件的配置对象。局部组件的配置对象传递给 createComponent 后会调用 Vue.extend 创建子类构造函数，然后作为 componentOptions 的一部分传递给 Vnode 构造函数。
+
     ```js
         function _createElement() {
             if (typeof tag === 'string') {
