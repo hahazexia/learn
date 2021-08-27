@@ -127,7 +127,7 @@
         + [data](./vue/data.md)
         + [ref](./vue/ref.md)
         + [keep-alive](./vue/keep_alive.md)
-        + [slot]
+        + [slot](./vue/slot.md)
         + [v-model]
 
 ![engineering](./img/engineering.svg)

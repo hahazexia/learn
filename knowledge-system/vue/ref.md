@@ -69,7 +69,7 @@ export function genData (el: ASTElement, state: CodegenState): string {
 }
 ```
 
-* 最后等到 DOM 创建后，会执行 ref 模块的 create 钩子函数
+* 之后 patch 过程中第一次渲染的时候，会执行 ref 模块的 create 钩子函数，组件更新的时候会调用 update 钩子，销毁的时候会调用 destroy 钩子，其内部都是调用 registerRef 方法去注册 ref 应用
 
 `src\core\vdom\modules\ref.js`
 

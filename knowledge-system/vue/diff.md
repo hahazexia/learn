@@ -381,3 +381,4 @@ D E
 
 于是 1 2 3 ，删除 1 ，却变成了 1 2，产生了这样的 bug。
 
+从源码角度看这个 bug 出现的原因是因为比较 vnode 和 oldvnode 的时候，比较的节点不是原生节点的 vnode，而是组件的占位符 vnode，因为 key 相同，认为是相同节点，因此直接调用 patchVnode，而组件 vnode 上没有 children，也没有 text 属性，因此 patchVnode 的时候认为不需要更新任何东西，所以就复用了。

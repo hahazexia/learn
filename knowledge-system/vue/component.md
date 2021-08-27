@@ -633,7 +633,7 @@ export default {
             return vnode
         }
     ```
-7. _c("ComponentA") 执行完成返回了 ComponentA 组件的占位符 vnode（占位符 vnode 的名字为 vue-component-1-ComponentA），接下来执行 _c("div", [_c("ComponentA")], 1)，接着 vm._render() 结束，返回了 App.vue 组件对应的 vnode，传递给 vm._update
+7. _c("ComponentA") 执行完成返回了 ComponentA 组件的占位符 vnode（占位符 vnode 的名字为 vue-component-1-ComponentA），接下来执行 `_c("div", [_c("ComponentA")], 1)`，接着 vm._render() 结束，返回了 App.vue 组件对应的 vnode，传递给 vm._update
     ```js
         updateComponent = function () {
             vm._update(vm._render(), hydrating);

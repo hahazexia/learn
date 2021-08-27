@@ -1,0 +1,20 @@
+<body>
+  <div id="app">
+    <test>
+      <p>slot content</p>
+    </test>
+  </div>
+  </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+  new Vue({
+    name: "App",
+    el: '#app',
+    components: {
+      test: {
+        template: "<div><slot></slot></div>"
+      }
+    }
+  })
+</script>
