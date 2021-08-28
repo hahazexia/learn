@@ -156,3 +156,165 @@
 ```
 
 可以看到插槽对应的 vnode 已经插入到了 render 函数中 _c 的第二个参数中，等到之后调用 _createElement 作为 children 传入，然后去生成 vnode。之后的流程就是生成 vnode 和 patch 了，和 slot 无关了。
+
+## 具名插槽和作用域插槽
+
+```js
+<body>
+  <div id="app">
+    <test>
+      <template v-slot:test="slotData">
+        <p>test content {{slotData.testData}}</p>
+      </template>
+    </test>
+  </div>
+  </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+  new Vue({
+    name: "App",
+    el: '#app',
+    components: {
+      test: {
+        template: "<div><slot name='test' :testData='count' ></slot></div>",
+        data () {
+          return {
+            count: 1
+          }
+        }
+      }
+    }
+  })
+</script>
+```
+
+1. 父组件 render 函数：
+
+```js
+(function anonymous() {
+    with (this) {
+        return _c('div', {
+            attrs: {
+                "id": "app"
+            }
+        }, [_c('test', {
+            scopedSlots: _u([{
+                key: "test",
+                fn: function(slotData) {
+                    return [_c('p', [_v("test content " + _s(slotData.testData))])]
+                }
+            }])
+        })], 1)
+    }
+}
+)
+
+```
+
+其中 _u 就是 resolveScopedSlots 方法，用于将子组件占位符 vnode 的 scopedSlots 参数转换成对象的形式。
+
+```js
+[
+    {
+        key: 'test',
+        fn: function(slotData) {
+            return [_c('p', [_v("test content " + _s(slotData.testData))])]
+        }
+    }
+]
+
+// 转换为
+{
+    test: function(slotData) {
+        return [_c('p', [_v("test content " + _s(slotData.testData))])]
+    }
+    // 可能还有其他的具名插槽，或者 default 插槽
+}
+```
+
+转换成对象形式后 scopedSlots 对象将作为子组件占位符 vnode 的 data 属性。
+
+生成的 vnode：
+
+```js
+{
+    tag: 'div',
+    children: [
+        {
+            tag: "vue-component-1-test",
+            componentOptions: {
+                Ctor: f(),
+                tag: "test"
+            }，
+            data：{
+                scopedSlots: {
+                    test: function(slotData) {
+                        return [_c('p', [_v("test content " + _s(slotData.testData))])]
+                    }
+                }
+            }
+        }
+    ]
+}
+```
+
+
+3. 父组件走 $mount 流程时 patch 的时候会走子组件的初始化流程，然后子组件初始化。然后走到子组件的 $mount 流程。
+
+在 updateComponent 调用 _render 时，调用子组件的 render 方法之前先会去调用 normalizeScopedSlots 将 _parentVnode （子组件占位符 vnode） 上的 data.scopedSlots 标准化，然后加入到子组件实例的 vm.$scopedSlots 上，以供之后 render 函数调用的时候使用。
+
+这样处理之后子组件实例  vm.$scopedSlots 就变成了如下：
+
+```js
+{
+    test:  function(slotData) {
+        return [_c('p', [_v("test content " + _s(slotData.testData))])]
+    }
+}
+```
+
+然后调用子组件的 render 函数
+
+```js
+(function anonymous() {
+    with (this) {
+        return _c('div', [_t("test", null, {
+            "testData": count
+        })], 2)
+    }
+})
+
+```
+
+_t 是 renderSlot，它会去判断是否存在 `this.$scopedSlots[name]`，也就是这里对应的 this.$scopedSlots.test，如果没有就说明是普通插槽，如果有就说明是具名插槽或作用域插槽。注意 _t 也就是 renderSlot 传递的第三个参数，形参是 bindObject 也就是绑定的子组件的作用域，这里是 {testData: count}，也就是 {testData: 1}。将 bindObject 浅复制了一下生成一个新对象，然后传给 this.$scopedSlots.test 这个函数，然后将其调用结果返回。然后 _t 也就是 renderSlot 的作用就完成了。render 函数会变成下面的样子：
+
+```js
+(function anonymous() {
+    with (this) {
+        return _c('div', [_c('p', [_v("test content " + _s(1))])], 2)
+    }
+})
+```
+
+这样就把引用的子组件作用域的数据给替换进去了。
+
+下面是 _render 生成的子组件的 vnode
+
+```js
+{
+    tag: "div",
+    children: [
+        {
+            tag: "p",
+            children: [
+                {
+                    text: "test content 1"
+                }
+            ]
+        }
+    ]
+}
+```
+
+之后的流程就是生成 patch 了，和 slot 无关了。

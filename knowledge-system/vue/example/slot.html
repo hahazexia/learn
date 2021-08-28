@@ -1,7 +1,9 @@
 <body>
   <div id="app">
     <test>
-      <p>slot content</p>
+      <template v-slot:test="slotData">
+        <p>test content {{slotData.testData}}</p>
+      </template>
     </test>
   </div>
   </div>
@@ -13,7 +15,12 @@
     el: '#app',
     components: {
       test: {
-        template: "<div><slot></slot></div>"
+        template: "<div><slot name='test' :testData='count' ></slot></div>",
+        data () {
+          return {
+            count: 1
+          }
+        }
       }
     }
   })
