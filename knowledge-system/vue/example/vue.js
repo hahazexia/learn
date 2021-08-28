@@ -2677,7 +2677,7 @@
     props,
     bindObject
   ) {
-    debugger
+    
     var scopedSlotFn = this.$scopedSlots[name];
     var nodes;
     if (scopedSlotFn) { // scoped slot
@@ -3490,7 +3490,7 @@
     var options = vm.$options;
     var parentVnode = vm.$vnode = options._parentVnode; // the placeholder node in parent tree
     var renderContext = parentVnode && parentVnode.context;
-    debugger
+    
     vm.$slots = resolveSlots(options._renderChildren, renderContext);
     vm.$scopedSlots = emptyObject;
     // bind the createElement fn to this instance
@@ -3531,7 +3531,6 @@
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
-      console.log(render, '看看组件 render 方法')
       var _parentVnode = ref._parentVnode;
 
       if (_parentVnode) {
@@ -3588,8 +3587,7 @@
       }
       // set parent
       vnode.parent = _parentVnode;
-      console.log(vnode, '看看 vnode')
-      debugger
+      
       return vnode
     };
   }
@@ -4965,7 +4963,7 @@
 
   function initMixin (Vue) {
     Vue.prototype._init = function (options) {
-      debugger
+      
       var vm = this;
       // a uid
       vm._uid = uid$3++;
@@ -11189,6 +11187,7 @@
   }
 
   function genDirectives (el, state) {
+
     var dirs = el.directives;
     if (!dirs) { return }
     var res = 'directives:[';
