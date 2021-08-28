@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        div {
+            box-sizing: border-box;
+        }
+        .box {
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .inner-box {
+            padding: 30px;
+        }
+        .inner-box-1 {
+            align-self: flex-start;
+            background-color: blueviolet;
+        }
+        .inner-box-2 {
+            align-self: center;
+            background-color: dodgerblue;
+        }
+        .inner-box-3 {
+            align-self: flex-end;
+            background-color: forestgreen;
+        }
+    </style>
+    <div class="box">
+        <div class="inner-box inner-box-1"></div>
+        <div class="inner-box inner-box-2"></div>
+        <div class="inner-box inner-box-3"></div>
+    </div>
+</body>
+</html>

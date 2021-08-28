@@ -55,7 +55,8 @@
         + 布局
             * [block和inline和inline-block]
             * [盒模型](./html_css/box_model.md)
-            * [视觉格式模型](./html_css/visual_formatting_model)
+            * [视觉格式模型](./html_css/visual_formatting_model.md)
+            * [书写模式](./html_css/writing_mode.md)
             * [float和BFC](./html_css/float_BFC.md)
             * [position](./html_css/position.md)
             * [display]
