@@ -29,7 +29,7 @@
         + [模块化](./js/module.md)
         + [遍历对象的属性](./js/get_object_key.md)
         + [手写题](./js/achieve_byself.md)
-        + [排序算法]
+        + [排序算法](./js/sort.md)
         + [查找算法]
 
 ![html&css](./img/html&css.svg)
