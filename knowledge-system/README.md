@@ -62,7 +62,7 @@
             * [display](./html_css/display.md)
             * [flex](./html_css/flex.md)
             * [居中问题](./html_css/in_the_middle.md)
-            * [瀑布流]
+            * [常见布局]
         + 绘制
             * [文字相关]
             * [动画]
