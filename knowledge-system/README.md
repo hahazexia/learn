@@ -43,8 +43,8 @@
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
-            * [处理元素class]
-            * [获取元素]
+            * [处理元素class](./html_css/handle_className.md)
+            * [获取元素](./html_css/get_element.md)
             * [获取元素尺寸]
     * css
         + 语言
@@ -61,10 +61,11 @@
             * [position](./html_css/position.md)
             * [display]
             * [flex](./html_css/flex.md)
-            * [居中问题]
+            * [居中问题](./html_css/in_the_middle.md)
             * [瀑布流]
         + 绘制
             * [文字相关]
+            * [动画]
         + 应用
             * [移动端适配](./html_css/mobile.md)
 
