@@ -59,7 +59,7 @@
             * [书写模式](./html_css/writing_mode.md)
             * [float和BFC](./html_css/float_BFC.md)
             * [position](./html_css/position.md)
-            * [display]
+            * [display](./html_css/display.md)
             * [flex](./html_css/flex.md)
             * [居中问题](./html_css/in_the_middle.md)
             * [瀑布流]
