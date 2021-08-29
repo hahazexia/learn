@@ -53,7 +53,7 @@
             * [伪类伪元素](./html_css/pseudo.md)
             * [值与单位](./html_css/values_and_units.md)
         + 布局
-            * [block和inline和inline-block]
+            * [block和inline](./html_css/block_inline.md)
             * [盒模型](./html_css/box_model.md)
             * [视觉格式模型](./html_css/visual_formatting_model.md)
             * [书写模式](./html_css/writing_mode.md)
