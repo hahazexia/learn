@@ -30,7 +30,7 @@
         + [遍历对象的属性](./js/get_object_key.md)
         + [手写题](./js/achieve_byself.md)
         + [排序算法](./js/sort.md)
-        + [查找算法]
+        + [查找算法](./js/search.md)
 
 ![html&css](./img/html&css.svg)
 [链接](https://www.processon.com/mindmap/610e0572f346fb2a2e982bcc)
