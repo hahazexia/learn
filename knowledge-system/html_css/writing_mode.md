@@ -7,7 +7,7 @@
 * block flow direction（块流方向）：块级盒子（block-level boxes）堆叠的方向，或者行盒（line boxes）在块容器中堆叠的方向。
 * inline base direction（内联基础方向）：一行中的内容的主要方向，还定义了哪一端是行的开始和结束。direction 和 unicode-bidi 属性规定了一个盒子的 inline base direction，还规定了任意文本内容的继承来的方向，决定了一行中的内联级别内容的顺序。
 * horizontal writing mode（水平书写模式）：文本是水平的行。例如，向下的块流或者向上的块流。
-* vertical writing mode（垂直书写模式）：文本时垂直的行。例如，向左或向右的块流。
+* vertical writing mode（垂直书写模式）：文本是垂直的行。例如，向左或向右的块流。
 * typographic mode （排版印刷模式）：决定是否使用排版印刷时的惯例来指定对垂直脚本使用垂直流（vertical typographic mode 垂直排版印刷模式）或者排版印刷惯例的水平书写模式（horizontal typographic mode 水平排版印刷模式）。这个概念使垂直排版有别于旋转的水平排版。
 
 ## writing-mode
