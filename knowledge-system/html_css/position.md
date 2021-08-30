@@ -21,6 +21,15 @@
 |  fixed  |  固定定位。元素会脱离流（Out of Flow），不会为它原来正常流的位置留占位空间。相对于屏幕视口（viewport）的位置来指定元素位置，偏移由 top right bottom left 的值来决定。元素的位置在屏幕滚动时不会改变。  |
 |  sticky  |  粘性定位。和 relative 一样会为元素原来正常流的位置留下占位空间，偏移后不会影响其他元素的位置。区别是，它的偏移不是相对于自己，而是相对于最近的拥有滚动机制（例如设置了 overflow 属性出现了滚动条）的滚动容器祖先的滚动视口。  |
 
+
+## inset 值同时设置的策略
+
+inset 是 top right bottom left 的简写形式。
+
+* 当 relative 定位时，不论是否设置了元素的 width，left/right 同时设置，如果父级 direction 是 ltr，则 left 生效；如果 rtl，则 right 生效。
+* absolute 定位时，如果设置了元素的 width，left/right 同时设置，如果父级 direction 是 ltr，则 left 生效；如果 rtl，则 right 生效。如果没有设置元素 width ，left/right 同时设置都生效，元素的 width 会被扩展以适应。如果设置元素的 height，top/bottom 同时设置，top 生效 bottom 被忽略。如果没设置元素 height，top/bottom 同时设置都生效。
+
+
 ## 规范中对于 sticky 的讲解
 
 规范文档 [CSS Positioned Layout Module Level 3](https://drafts.csswg.org/css-position-3/#stickypos-insets) 的 3.4. Sticky positioning 章节的原文这样描述：
