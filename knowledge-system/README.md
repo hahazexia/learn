@@ -43,9 +43,9 @@
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
-            * [处理元素class](./html_css/handle_className.md)
             * [获取元素](./html_css/get_element.md)
             * [获取元素尺寸](./html_css/get_element_size.md)
+            * [处理元素class](./html_css/handle_className.md)
     * css
         + 语言
             * [@rule](./html_css/html_at_rule.md)

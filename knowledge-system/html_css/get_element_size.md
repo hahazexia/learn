@@ -1,6 +1,6 @@
 # 获取元素尺寸
 
-## offsetHeight offsetWidth
+## offsetWidth offsetHeight 
 
 ```js
 element.offsetWidth
