@@ -7,7 +7,7 @@ let cName = element.className;
 element.className = cName;
 ```
 
-* 获取或设置指定元素的 class属性的值
+* 获取或设置指定元素的 class 属性的值
 
 ## Element.classList
 
