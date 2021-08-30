@@ -30,6 +30,26 @@ css 的普通规则 qualified rule 主要是由选择器和声明区块构成。
             * pseudo-class （伪类选择器）
         - pseudo-element （伪元素）
 
+
+下面是兄弟选择器的例子：
+
+```html
+    <style>
+        div + p {
+            background-color: blue;
+        }
+        .last ~ p {
+            background-color: green;
+        }
+    </style>
+
+    <div></div>
+    <p>111</p> <!-- 111 的 p 标签会是蓝色背景色 -->
+    <p class="last">222</p>
+    <p>333</p> <!-- 333 和 444 的 p 标签会是绿色背景色 -->
+    <p>444</p>
+```
+
 ## 优先级
 
 CSS 标准用一个三元组 (a, b, c) 来构成一个复杂选择器的优先级。
