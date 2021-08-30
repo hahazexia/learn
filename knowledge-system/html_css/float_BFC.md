@@ -2,7 +2,7 @@
 
 ## 概念
 
-浮动让一个元素应沿其容器的左侧或右侧放置，允许文本和内联元素环绕它。该元素从网页的正常流中移除，尽管仍然保持部分的流动性。
+浮动让一个元素应沿其容器的左侧或右侧放置，允许文本和行内元素环绕它。该元素从网页的正常流中移除，尽管仍然保持部分的流动性。
 
 当一个元素没有设置高度，子元素浮动会脱离正常流，造成父级的高度无法包住子元素。
 
@@ -86,7 +86,7 @@
     }
 ```
 
-clear 属性让添加的这个伪元素的无论哪个方向（both 左边和右边）都不会出现浮动元素，所以伪元素只能到最下方另起一个新行。并且必须设置伪元素为 display: block; 因为伪元素默认为 inline 元素。为什么必须要 display: block; 因为如果不设置为 block 元素，inline 元素默认可以和其他元素在同一行，就不会到所有浮动元素的最下面再另起一个新行。
+clear 属性让添加的这个伪元素的无论哪个方向（both 左边和右边）都不会出现浮动元素，所以伪元素只能到最下方另起一个新行。并且必须设置伪元素为 display: block; 因为伪元素默认为 inline 元素。为什么必须要 display: block？因为根据 [css规范](https://drafts.csswg.org/css2/#flow-control) Note. This property applied to all elements in CSS1. Implementations may therefore have supported this property on all elements. In CSS2 (1998) and CSS 2 the clear property only applies to block-level elements. Therefore authors should only use this property on block-level elements. clear 属性只作用于块级元素。
 
 ## BFC
 
