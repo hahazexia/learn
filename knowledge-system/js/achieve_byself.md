@@ -90,13 +90,15 @@ Function.prototype._bind = function (context) {
         return fToBind.apply(fNoP.prototype.isPrototypeOf(this) ? this : context, allArgs);
     }
 
-    if (this.prototype) {
-      fNoP.prototype = this.prototype;
+    if (fToBind.prototype) {
+      fNoP.prototype = fToBind.prototype;
     }
     fBound.prototype = new fNoP();
 
     return fBound;
 }
+
+// 新建一个空函数 fNoP 作为中间者维护原型关系，不让 fBound 指向 fToBind 的原型，以防 fToBind 的原型被修改
 ```
 </details>
 <br><br>
@@ -177,8 +179,9 @@ Object._assign = function assign(target) {
 ```js
 // 循环 + 递归
 Array.prototype._flat = function (d = 1) {
-    return d > 0 ? this.reduce((acc, item) => acc.concat(Array.isArray(item) ? item._flat(d - 1) : item), []) 
-                 : this.slice();
+    return d > 0 ?
+    this.reduce((acc, item) => acc.concat(Array.isArray(item) ? item._flat(d - 1) : item), []) 
+    : this.slice();
 }
 
 Array.prototype._flat = function (d = 1) {
@@ -636,7 +639,7 @@ console.log(currentA.i == 1 && currentA.i == 2 && currentA.i == 3);
 
 ```js
 function shuffle(arr) {
-  const array = arr.slice(0);
+  const array = arr.slice();
 
   for (let i = (array.length - 1); i > 0; i -= 1) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
