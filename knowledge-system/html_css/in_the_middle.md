@@ -24,9 +24,9 @@
 
 2. line-height + vertical-align
 
-把当前元素设置为行内元素，然后通过设置父元素的 text-align: center; 实现水平居中；同时通过设置当前元素的 vertical-align: middle; 来实现垂直居中；
+把当前元素设置为 inline-block，然后通过设置父元素的 text-align: center; 实现水平居中；同时通过设置当前元素的 vertical-align: middle; 来实现垂直居中；
 
-最后设置当前元素的 line-height: initial; 来继承父元素的line-height。
+最后设置当前元素的 line-height: initial; 来继承父元素的 line-height。
 
 3. table 表格元素
 
