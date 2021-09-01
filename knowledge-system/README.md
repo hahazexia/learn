@@ -147,3 +147,4 @@
 - 前端实践
     * [ESLint代码规范](./frontend_practice/eslint.md)
     * [stylelint代码规范](./frontend_practice/stylelint.md)
+    * [prettier代码规范](./frontend_practice/prettier.md)
