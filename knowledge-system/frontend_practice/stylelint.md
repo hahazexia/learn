@@ -108,8 +108,13 @@ severity 有两个值:
 
 ## 忽略规则
 
+下面三种注释分别是忽略此行之后所有代码，忽略下一行，忽略下一行的特定规则。
+
 ```js
 /* stylelint-disable */
+.a {}
+
+/* stylelint-disable-next-line */
 .a {}
 
 /* stylelint-disable-next-line block-no-empty */
