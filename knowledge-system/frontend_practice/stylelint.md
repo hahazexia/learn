@@ -6,7 +6,7 @@ stylelint 用于检查 css 代码的风格和错误。
 
 ```js
 // vue 项目安装下面三个
-yarn add -D stylelint stylelint-config-standard stylelint-webpack-plugin
+yarn add -D stylelint stylelint-scss stylelint-config-standard stylelint-webpack-plugin
 ```
 
 ### 配置文件
@@ -113,6 +113,9 @@ severity 有两个值:
 ```js
 module.exports = {
     "extends": "stylelint-config-standard",
+    "plugins": [
+      "stylelint-scss"
+    ],
     "rules": {
         // 不要使用已被 autoprefixer 支持的浏览器前缀
         'media-feature-name-no-vendor-prefix': true,
