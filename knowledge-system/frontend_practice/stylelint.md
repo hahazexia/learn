@@ -106,6 +106,16 @@ severity 有两个值:
 }
 ```
 
+## 忽略规则
+
+```js
+/* stylelint-disable */
+.a {}
+
+/* stylelint-disable-next-line block-no-empty */
+.a {}
+```
+
 ## 为 vue 配置 stylelint
 
 项目目录下新建 stylelint.config.js 文件，其中写入下列配置:
