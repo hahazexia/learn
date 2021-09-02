@@ -148,3 +148,4 @@
     * [ESLint代码规范](./frontend_practice/eslint.md)
     * [stylelint代码规范](./frontend_practice/stylelint.md)
     * [prettier代码规范](./frontend_practice/prettier.md)
+    * [webpack-bundle-analyzer](./frontend_practice/webpack_bundle_analyzer.md)
