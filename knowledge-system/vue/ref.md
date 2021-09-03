@@ -17,7 +17,7 @@ ref 被用来给元素或子组件注册引用信息。引用信息将会注册�
 
 ## 源码
 
-* _init 初始化的时候会执行 initLifecycle() 函数，该函数会初始化当前Vue实例的 $refs 为一个空对象。
+* _init 初始化的时候会执行 initLifecycle() 函数，该函数会初始化当前 Vue 实例的 $refs 为一个空对象。
 
 * 挂载的时候首先会将模板解析成一个 AST 对象，此时会执行 processElement() 函数，该函数又会执行 processRef 去解析 ref 属性，如下:
 
