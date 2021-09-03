@@ -604,9 +604,7 @@ function parseSearch(search) {
  console.log(a == 1 && a == 2 && a == 3);
 
 // 定义对象 getter
- let a = {
-   i: 0
- };
+ let a = {};
 
  let temp = 0
  Object.defineProperty(a, 'i', {
@@ -617,7 +615,9 @@ function parseSearch(search) {
      return temp
    }
  });
+a.i == 1 && a.i == 2 && a.i == 3
 
+// Proxy 代理
 let a = {
   i: 0
 };
@@ -691,6 +691,36 @@ function isClosed(str) {
   }
 
   return stack.length ? false : true;
+}
+
+// 简化一下
+
+function isClosed(str) {
+    if (!str) return true;
+    const arr = str.split('');
+    const stack = [];
+
+    const map = {
+        '[': 1,
+        ']': -1,
+        '(': 2,
+        ')': -2,
+        '{': 3,
+        '}': -3,
+    };
+
+    for (let i = 0; i < arr.length; i++) {
+        let temp = arr[i];
+        if (map[temp]) {
+            if ((map[temp] + stack[stack.length - 1]) === 0) {
+                stack.pop();
+            } else {
+                stack.push(map[temp]);
+            }
+        }
+    }
+
+    return stack.length ? false : true;
 }
 
 isClosed('{}'); // true
