@@ -94,7 +94,7 @@ genDefaultModel 中对于当前例子设置 valueExpression 为 '$event.target.v
 ```js
 <input
   v-bind:value="test"
-  v-on:input="message=$event.target.value">
+  v-on:input="test=$event.target.value">
 ```
 
 其实就是动态绑定了 input 的 value 指向了 test 变量，并且在触发 input 事件的时候去动态把 test 设置为目标值，这样实际上就完成了数据双向绑定了，所以说 v-model 实际上就是语法糖。
