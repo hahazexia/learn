@@ -1450,6 +1450,17 @@ vue 代码对微任务的降级兼容处理：
 3. 否则 setImmediate
 4. 如果以上都不支持，使用 setTimeout
 
+## update 生命周期更新顺序
+
+如果子组件数据改变影响到了父组件，或者父组件数据改变影响到了子组件，那么它们的渲染 watcher 都入队列，并且按照 id 升序排列，id 小的是父组件，大的是子组件。flushSchedulerQueue 的时候遍历 watcher 队列，先调用父组件的 watcher.before() 触发 beforeUpdate 生命周期钩子，然后再触发子组件的 beforeUpdate。等到遍历调用 watcher.run() 结束了，这时候遍历 watcher 队列数组，注意这里是从队列结尾处往回遍历，所以是先子后父调用 update。
+
+所以父子组件数据都被改变的时候，它们的 update 生命周期顺序：
+
+父 beforeUpdate
+子 beforeUpdate
+子 updated
+父 updated
+
 ## 题目
 
 第一题
