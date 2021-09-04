@@ -80,3 +80,110 @@ if (module.hot) {
 
 ## 生产环境
 
+### oneOf
+
+webpack 原本的是将每个文件都过一遍所有的 rules，比如 rules 中有 10 个 loader，第一个是处理 js 文件的 loader，当第一个 loader 处理完成后 webpack 不会自动跳出，而是会继续拿着这个 js 文件去尝试匹配剩下的 9 个 loader，相当于没有 break。而 oneOf 就相当于这个 break。
+
+```js
+rules:[
+    {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+    },
+    {
+        //  以下 loader 一种文件只会匹配一个 
+        oneOf: [
+            // 不能有两个配置处理同一种类型文件，如果有，另外一个规则要放到外面。
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "babel-loader",
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                ],
+            },
+        ],
+    },
+]
+
+```
+
+### cache-loader 缓存
+
+在编译打包时可对文件做缓存，有两种方式，一种是解析文件的 loader 自身带有缓存功能（如 babel-loader, vue-loader），第二种就是使用专门的 loader（cache-loader）。
+开启缓存后，对于未改动的文件，webpack 直接从缓存中读取而不用再次编译，大大加快构建速度。
+
+
+```js
+{
+    test: /\.js$/,
+    use: [ // 使用 cache-loader，放在 babel-loader 前可对 babel 编译后的 js  文件做缓存。
+        "cache-loader",
+        {
+            loader: "babel-loader",
+            options: {
+                presets: [
+                    [
+                        "@babel/preset-env",// 预设：指示babel做怎么样的兼容处理 
+                    ]
+                ],
+                // 开启 babel 缓存，第二次构建时，会读取之前的缓存。
+                cacheDirectory: true,
+            }
+        }
+    ]
+}
+```
+
+@vue/cli-service 也依赖了 cache-loader
+
+### 多进程打包 thread-loader
+
+```js
+// thread-loader 放在 babel-loader 前，就会在 babel-loader 工作时进行多进程工作。
+{
+    loader: "thread-loader",
+    options: {
+        workers: 2, // 启动进程个数，默认是电脑 cpu 核数 -1
+    },
+},
+{
+    loader: "babel-loader",
+    options: {
+        presets: [
+            [
+                "@babel/preset-env",
+            ],
+        ],
+    },
+},
+
+```
+
+### externals
+
+externals 用来告诉 Webpack 要构建的代码中使用了哪些不用被打包的模块，这些模块可能是通过外部环境（如 CDN）引入的。
+
+```js
+module.export = {
+  externals: {
+    // 把导入语句里的 jquery 替换成运行环境里的全局变量 jQuery
+    jquery: 'jQuery'
+  }
+}
+
+// 源代码
+ import $ from "jquery"
+
+```
+
+配置了 externals 后，即使你代码中引入了这个库，Webpack 也不会将库打包进 bundle，而是直接使用全局变量。
