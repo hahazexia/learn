@@ -43,9 +43,11 @@
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
+            * [Image]
             * [表单元素和属性]
             * [获取元素](./html_css/get_element.md)
             * [获取元素尺寸](./html_css/get_element_size.md)
+            * [获取元素位置]
             * [处理元素class](./html_css/handle_className.md)
     * css
         + 语言
