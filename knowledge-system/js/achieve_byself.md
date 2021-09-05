@@ -480,7 +480,7 @@ function duplicateRemoval (arr) {
 }
 
 function duplicateRemoval (arr) {
-    return arr.reduce((acc, i) => (!acc.includes(i) ? acc.push(i) : '', acc) , [])
+    return arr.reduce((acc, i) => (acc.includes(i) ? acc : [...acc, i]) , [])
 }
 
 ```

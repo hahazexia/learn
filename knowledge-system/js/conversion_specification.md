@@ -326,7 +326,7 @@ ToPrimitive 操作其实就是将非原始类型的值（比如对象和数组�
 1. 如果 x 和 y 类型一样，返回 IsStrictlyEqual(x, y) 的比较结果（其实就和严格相等运算符一样）
 2. x 和 y 如果是 null 或 undefined，直接返回 true
 3. x 和 y 中有对象类型存在，就调用 toPrimitive 转换成原始类型然后再比较
-4. x 和 y 都是原始类型，都转换成数字比较
+4. x 和 y 都是原始类型，且类型不一样，那就都转换成数字比较
 5. x 和 y 是 BigInt 和 String ，把 String 转换成 BigInt 然后再比较
 
 ### 严格相等运算符

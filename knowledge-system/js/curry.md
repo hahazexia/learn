@@ -73,7 +73,7 @@ var add = curry(dynamicAdd);
 (add(1, 2)(3, 4)(5, 6)).toString() // 21
 ```
 
-最新浏览器中 toString 已经不起作用了，总是会打印函数，于是修改一下：
+toString 的调用如果不对函数结果进行隐式转换就不会起作用，总是会打印函数，于是修改一下：
 
 ```js
 function curry(fn) {
@@ -100,6 +100,36 @@ function dynamicAdd() {
 var add = curry(dynamicAdd);
 
 add(1, 2)(3, 4)(5, 6)() // 21
+```
+
+再次优化，每次计算结果后将后来追加的参数置空，这样不会发生再次调用参数不断累加的情况
+
+```js
+function curry(fn) {
+    let preArgs = [].slice.call(arguments, 1);
+    let resArgs = [];
+
+    function curried() {
+        if (arguments.length) {
+            resArgs = [...resArgs, ...([].slice.call(arguments))];
+            return curried;
+        } else {
+            let allArgs = [...preArgs, ...resArgs];
+            resArgs = [];
+            return fn.apply(this, allArgs);
+        }
+    }
+
+    return curried;
+}
+
+function sum() {
+    return [].slice.call(arguments).reduce((acc, i) => (acc += i, acc), 0);
+}
+let s = curry(sum, 1);
+console.log(s(2, 3)(4)());
+console.log(s(2, 3)(4)());
+// 两次都是 10
 ```
 
 ## 题目
