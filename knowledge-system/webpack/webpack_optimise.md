@@ -187,3 +187,191 @@ module.export = {
 ```
 
 配置了 externals 后，即使你代码中引入了这个库，Webpack 也不会将库打包进 bundle，而是直接使用全局变量。
+
+### dll
+
+dll（动态链接库）：使用dll技术对公共库进行提前打包，可大大提升构建速度。公共库一般情况下是不会有改动的，所以这些模块只需要编译一次就可以了，并且可以提前打包好。在主程序后续构建时如果检测到该公共库已经通过 dll 打包了，就不再对其编译而是直接从动态链接库中获取。
+
+实现 dll 打包需要以下三步：
+
+* 抽取公共库，打包到一个或多个动态链接库中。
+* 将打包好的动态链接库在页面中引入。
+* 主程序使用了动态链接库中的公共库时，不能被打包入 bundle，应该直接去动态链接库中获取。
+
+针对这个步骤的代码
+
+1. 新建一个 webpack.dll.js 用来提前打包动态链接库
+
+```js
+// webpack.dll.js
+module.exports = {
+    // JS 执行入口文件
+    entry: {
+        // 把 vue 相关模块的放到一个单独的动态链接库
+        vendor: ['vue', 'axios'],
+        // 其他模块放到另一个动态链接库
+        other: ['jquery', 'lodash'],
+    },
+    output: {
+        // 输出的动态链接库的文件名称，[name] 代表当前动态链接库的名称（"vendor" 和 "other"）
+        filename: '[name].dll.js',
+        // 输出的文件都放到 dist 目录下的 dll文件夹中
+        path: path.resolve(__dirname, 'dist', "dll"),
+        // 存放动态链接库的向外暴露的变量名，例如对应 vendor 来说就是 _dll_vendor
+        library: '_dll_[name]',
+    },
+    plugins: [
+        //  打包生成一个 mainfest.json 文件。告诉 webpack 哪些库不参与后续的打包，已经通过 dll 事先打包好了。
+        new webpack.DllPlugin({
+            // 动态链接库的库名，需要和 output.library 中保持一致
+            // 该字段的值也就是输出的 manifest.json 文件 中 name 字段的值
+            // 例如 vendor.manifest.json 中就有 "name": "_dll_vendor"
+            name: '_dll_[name]',
+            // 描述动态链接库的 manifest.json 文件输出时的文件名称
+            path: path.join(__dirname, 'dist', "dll", '[name].manifest.json'),
+        }),
+    ],
+};
+
+```
+
+2. 在模板页 index.html 中引入打包好的动态链接库
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpack</title>
+    <script src="./dll/vendor.dll.js"></script>
+    <script src="./dll/other.dll.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
+```
+
+3. 在主程序的 Webpack 配置中使用 webpack.DllReferencePlugin 插件，读取 webpack.DllPlugin 生成的manifest.json 文件，从中获取依赖关系。
+
+```js
+// webpack.config.js
+module.exports = {
+    mode: "production",
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./index.html"
+        }),
+        // 告诉 Webpack 使用了哪些动态链接库
+        new webpack.DllReferencePlugin({
+            // manifest 文件告诉 webpack 哪些库已经通过 dll 事先打包好了，后续构建直接去动态链接库里获取。
+            manifest: path.resolve(__dirname, "dist", "./dll/vendor.manifest.json"),
+        }),
+        new webpack.DllReferencePlugin({
+            manifest: path.resolve(__dirname, "dist", "./dll/other.manifest.json"),
+        }),
+    ],
+}
+
+```
+
+### Tree Shaking
+
+移除 JavaScript 上下文中的未引用代码。将整个应用程序想象成一棵树，绿色的树叶表示实际用到的，灰色的树叶则表示未被使用的代码，是枯萎的树叶。为了除去这些死去的无用的树叶，你需要摇动这棵树使其落下。这就是 Tree Shaking的名称由来。
+
+```js
+// 入口文件 index.js
+import test from "./test.js"
+console.log(test.add(2, 3));
+
+// 测试文件 test.js
+const add = (x, y) => x + y
+const print = (msg) => {
+    console.log(msg);
+}
+export default { add, print }
+
+// 最终打包输出的 bundle：main.js 文件
+!function(){"use strict";console.log(2+3)}();
+
+```
+
+从上面示例可以看出，index.js 中虽然引入了 test 文件，但是因为 test 文件暴露的 print 方法没有被使用，所以在最终打包中被去除。
+这一点在 Webpack4 中还做不到，Webpack4 中只会去除从未被使用的模块。带入上面的例子，如果 test 在 index.js文件中没有被用到，才会被 Tree Shaking。之所以这样，是因为 Webpack4 默认认为所有文件的代码都是有副作用的。如何告知 Webpack 你的代码是否有副作用，可通过 package.json 中的 sideEffects 字段。
+
+```js
+// 所有文件都有副作用
+{
+ "sideEffects": true
+}
+// 所有文件都没有副作用
+{
+ "sideEffects": false
+}
+// 只有这些文件有副作用，所有其他文件都可以 Tree Shaking，但会保留这些文件
+{
+ "sideEffects": [
+  "./src/file1.js",
+  "./src/file2.js"
+ ]
+}
+
+```
+
+Webpack5 默认设置中认为样式文件是有副作用的，所以引入样式文件虽然没有被使用（样式文件肯定是不使用的）也不会被去除，但是如果设置了 sideEffects：false，就会进行 Tree Shaking 将代码去除。
+
+其实不用特别配置，只要将 mode 设置为 "production"，Webpack 就自动启用 Tree Shaking 了。有两点说明下：
+
+* 源代码必须使用 静态的 ES6 模块化语法。原因是 Webpack 在构建时通过静态分析，分析出代码之间的依赖关系。而动态导入如 require 语法只有在执行时才知道导入了哪个模块，所以无法做 Tree Shaking。
+* 三方库无法做 Tree Shaking。原因猜测是 Webpack 无法保证三方库导入是否会直接对程序产生影响。
+
+### Code Split 代码分割
+
+Webpack 默认会将所有依赖的文件打包输出到一个 bundle.js 中（单入口时），当应用程序逐渐复杂，这个 bundle.js 文件也会越来越大，浏览器加载的速度也会越来越慢，所以就需要使用代码分割来将不同代码单独打包成不同 trunk 输出。主要有两种方法：
+
+1. 通过 optimization 将公共代码单独打包成 trunk
+
+```js
+optimization: {
+    splitChunks: {
+        // 选择哪些 chunk 进行优化，默认async，即只对动态导入形成的trunk进行优化。
+        chunks: 'all', 
+        // 提取chunk最小体积
+        minSize: 20000,
+        // 要提取的chunk最少被引用次数
+        minChunks: 1,
+        // 对要提取的trunk进行分组
+        cacheGroups: {
+            // 匹配node_modules中的三方库，将其打包成一个trunk
+            defaultVendors: {
+                test: /[\\/]node_modules[\\/]/,
+                // trunk名称
+                name: 'vendors',
+                priority: -10,
+            },
+            default: {
+                // 将至少被两个 trunk引 入的模块提取出来打包成单独trunk
+                minChunks: 2,
+                name: 'default',
+                priority: -20,
+            },
+        },
+    },
+},
+
+```
+
+2. import 动态导入
+
+当想要根据业务拆分 bundle 时推荐用这种方式。import 动态导入的模块 Webpack 会将其作为单独的 trunk 打包。
+
+```js
+import( /* webpackChunkName: 'test' */ './test.js').then((result) => {
+    console.log(result);
+}).catch(() => {
+    console.log('加载失败！');
+});
+
+```
