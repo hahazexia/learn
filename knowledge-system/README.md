@@ -90,6 +90,8 @@
         + [cookie和localStorage和sessionStorage](./browser/cookie_storage.md)
         + [indexedDB]
     * [浏览器安全](./browser/security.md)
+        + [csp]
+        + [预防csrf攻击]
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
         + [渲染流程](./browser/browser_render_process.md )
