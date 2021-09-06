@@ -34,6 +34,10 @@ Pragma: no-cache
 
 * Cache-Control
 
+**cache-control 既是请求头也是响应头。**
+
+前端无法通过 meta 标签的 http-equiv 属性设置 cache-control，因为根据 [whatwg html 规范](https://html.spec.whatwg.org/multipage/semantics.html#pragma-directives)可知，meta 标签的 http-equiv 属性只允许设置 content-language content-type  default-style  set-cookie  x-ua-compatible  content-security-policy 这些值。
+
 ```js
 Cache-Control: max-age=<seconds>
 Cache-Control: max-stale[=<seconds>]

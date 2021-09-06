@@ -91,8 +91,9 @@
     * 浏览器数据存储
         + [cookie和localStorage和sessionStorage](./browser/cookie_storage.md)
         + [indexedDB]
-    * [浏览器安全](./browser/security.md)
-        + [csp]
+    * 浏览器安全
+        + [安全概述](./browser/security.md)
+        + [csp](./browser/csp.md)
         + [预防csrf攻击]
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
