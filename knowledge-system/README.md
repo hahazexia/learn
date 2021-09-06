@@ -45,7 +45,6 @@
             * [script](./html_css/html_script.md)
             * [link](./html_css/html_link.md)
             * [form](./html_css/html_form.md)
-            * [Image]
             * [表单元素和属性]
             * [获取元素](./html_css/get_element.md)
             * [获取元素尺寸](./html_css/get_element_size.md)
@@ -84,6 +83,7 @@
         * [fetch](./browser/fetch.md)
         * [requestAnimationFrame](./browser/requestAnimationFrame.md)
         * [history](./browser/history.md)
+        * [Image](./browser/image.md)
         * [serviceWorker]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
