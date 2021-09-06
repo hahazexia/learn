@@ -30,6 +30,7 @@
         + [遍历对象的属性](./js/get_object_key.md)
         + [数组方法]
         + [字符串方法]
+        + [对象方法]
         + [手写题](./js/achieve_byself.md)
         + [排序算法](./js/sort.md)
         + [查找算法](./js/search.md)
