@@ -13,6 +13,7 @@
 * 定时器
 * 实现数组去重
 * 解析 url params 为对象
+* 实现 promisify
 
 其他 js 题
 
@@ -770,5 +771,27 @@ function compareVersion(v1, v2) {
 compareVersion('1.11.0', '1.9.9') // 1
 ```
 
+</details>
+<br><br>
+
+#### 实现 promisify
+
+<details>
+<summary>答案</summary>
+
+```js
+function promisify(fn) {
+    return function(...arg) {
+        return new Promise((resolve, reject) => {
+            fn.apply(null, [...arg, function (err, data) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(data);
+            }]);
+        });
+    }
+}
+```
 </details>
 <br><br>

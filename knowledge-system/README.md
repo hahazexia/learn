@@ -144,6 +144,14 @@
 ![engineering](./img/engineering.svg)
 [链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
 
+- nodejs
+    * 基础
+        - [path]
+        - [fs]
+        - [Buffer]
+        - [stream]
+        - [http]
+
 - 工程化
     - webpack
         * 使用
