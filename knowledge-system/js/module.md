@@ -622,6 +622,8 @@ es6 之后的模块化主要由 import 和 export 命令实现。export 用于�
 
 ```js
 // 以下两种为错误
+// 因为 export 要导出的不是变量或者具体值，导出的是接口
+
 export 1;
 
 const a = 1;
@@ -630,18 +632,17 @@ export a;
 
 
 // 以下为正确
+// export 后面跟声明和赋值语句，就是导出接口
+// export 后面跟花括号，花括号不是对象的意思，而是接口列表，里面放逗号分开的变量名
 
 const a = 1;
 export { a };
 
-// 接口名与模块内部变量之间，建立了一一对应的关系
 export const a = 1, b = 2;
 
-// 接口名与模块内部变量之间，建立了一一对应的关系
 export const a = 1;
 export const b = 2;
 
-// 或者用 as 来命名
 const a = 1;
 export { a as outA };
 
@@ -650,14 +651,17 @@ const b = 2;
 export { a as outA, b as outB };
 
 
+// export default 后面是一个值，和 export 不一样， export 后面是一个接口
+// export default 后面的花括号就是对象的意思了，不是接口列表
+
 const a = 1;
 export default a;
 
 const a = 1;
 export default { a };
 
-export default function() {}; // 可以导出一个函数
-export default class(){}; // 也可以出一个类
+export default function() {};
+export default class(){};
 
 const a = 1;
 export defalut a;
@@ -666,15 +670,14 @@ export { a as default }
 
 
 
+// import 导入的时候，如果对应的是 export 导出的接口，则 import 的时候也要导入接口，放在花括号里
+// 如果对应的是 export default 导出的值，则不用放在花括号里
 
 // 某个模块的导出 moudule.js
 export const a = 1;
 
-// 模块导入
-// 这里的 a 要和输出的接口名对应
 import { a } from './module'
 
-// 使用 as 换名
 import { a as myA } from './module'
 
 // 若是只想要运行被加载的模块可以这样写，但是即使加载 2 次也只是运行一次
@@ -683,7 +686,7 @@ import './module'
 // 整体加载
 import * as module from './module'
 
-// default接口和具名接口
+// default 接口和具名接口
 import module, { a } from './module'
 ```
 
