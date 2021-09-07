@@ -157,6 +157,9 @@
         * 使用
             + [webpack基础](./webpack/webpack_base.md)
             + [webpack优化](./webpack/webpack_optimise.md)
+            + [browserslist]
+            + [babel-loader]
+            + [style-loader和css-loader和postcss-loader]
         * 原理
             + [source-map](./webpack/source-map.md)
             + [HMR](./webpack/hmr.md)
