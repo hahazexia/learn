@@ -95,7 +95,7 @@
     * 浏览器安全
         + [安全概述](./browser/security.md)
         + [csp](./browser/csp.md)
-        + [预防csrf攻击]
+        + [csrf](./browser/csrf.md)
     * 页面
         * [从url到页面发生了什么](./browser/url_to_page.md)
         + [渲染流程](./browser/browser_render_process.md )
