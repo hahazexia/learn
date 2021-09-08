@@ -79,13 +79,13 @@
 
 - 浏览器
     * webAPI
-        * [定时器](./browser/timer.md)
-        * [XMLHttpRequest](./browser/XMLHttpRequest.md)
-        * [fetch](./browser/fetch.md)
-        * [requestAnimationFrame](./browser/requestAnimationFrame.md)
-        * [history](./browser/history.md)
-        * [Image](./browser/image.md)
-        * [serviceWorker]
+        + [定时器](./browser/timer.md)
+        + [XMLHttpRequest](./browser/XMLHttpRequest.md)
+        + [fetch](./browser/fetch.md)
+        + [requestAnimationFrame](./browser/requestAnimationFrame.md)
+        + [history](./browser/history.md)
+        + [Image](./browser/image.md)
+        + [serviceWorker]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
         + [js如何执行](./browser/js_how_to_run.md)
@@ -147,23 +147,23 @@
 
 - nodejs
     * 基础
-        - [path]
-        - [fs]
-        - [Buffer]
-        - [stream]
-        - [http]
+        + [path]
+        + [fs]
+        + [Buffer]
+        + [stream]
+        + [http]
 
 - 工程化
-    - webpack
-        * 使用
-            + [webpack基础](./webpack/webpack_base.md)
-            + [webpack优化](./webpack/webpack_optimise.md)
-            + [browserslist]
-            + [babel-loader]
-            + [style-loader和css-loader和postcss-loader]
-        * 原理
-            + [source-map](./webpack/source-map.md)
-            + [HMR](./webpack/hmr.md)
+    * webpack
+        + 使用
+            * [webpack基础](./webpack/webpack_base.md)
+            * [webpack优化](./webpack/webpack_optimise.md)
+            * [browserslist]
+            * [babel-loader]
+            * [style-loader和css-loader和postcss-loader]
+        + 原理
+            * [source-map](./webpack/source-map.md)
+            * [HMR](./webpack/hmr.md)
 
 - 前端实践
     * [ESLint代码规范](./frontend_practice/eslint.md)
