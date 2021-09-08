@@ -86,7 +86,7 @@ align-items 控制 flex 项目在侧轴方向的对齐方式。
 
 |   值   |  含义  |
 |  ----  | ----  |
-|  stretch  |  flex 项目示显式设置 height (或 width )，flex 项目在侧轴方向被拉伸到与容器相同的高度或宽度  |
+|  stretch  |  flex 项目未显式设置 height (或 width )的时候，flex 项目在侧轴方向被拉伸到与容器相同的高度或宽度  |
 |  flex-start  |  flex 项目向 cross-start 对齐  |
 |  flex-end  |  flex 项目向 cross-end 对齐  |
 |  center  |  flex 项目在侧轴上居中  |
