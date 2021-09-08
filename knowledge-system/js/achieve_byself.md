@@ -13,7 +13,6 @@
 * 定时器
 * 实现数组去重
 * 解析 url params 为对象
-* 实现 promisify
 
 其他 js 题
 
@@ -21,6 +20,7 @@
 * 洗牌算法
 * 判断字符串中的括号是否是合法闭合的括号
 * 实现判断版本号的方法
+* 实现 promisify
 
 ## 题目
 
@@ -47,7 +47,7 @@ function _new(constructor) {
 
 ```js
 function _instanceof(obj, constructor) {
-    if (typeof obj !== 'object' || typeof obj !== 'function' || obj === null) return false;
+    if ((typeof obj !== 'object' && typeof obj !== 'function') || obj === null) return false;
     let objProto = obj.__proto__;
     while(true) {
         if (objProto === null) return false;
