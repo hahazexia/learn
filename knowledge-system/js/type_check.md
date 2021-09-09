@@ -91,3 +91,28 @@ function f() {
     Object.prototype.toString.call(arguments) // [object Arguments]
 }
 ```
+
+## 题目
+
+第一题
+
+判断一个值是否是数组？
+
+<details>
+<summary>答案</summary>
+
+```js
+Array.isArray(obj);
+
+obj instanceof Array
+
+obj.constructor === Array;
+
+typeof obj === 'object' && typeof obj.length === 'number'
+
+Array.prototype.isPrototypeOf(obj)
+
+Object.prototype.toString.call(obj) === '[object Array]'
+```
+</details>
+<br><br>

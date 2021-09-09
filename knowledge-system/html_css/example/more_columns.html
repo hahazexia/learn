@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .layout {
+            width: 700px;
+            margin: 0 auto;
+        }
+        h4 {
+            position: relative;
+        }
+        h4::before {
+            content: '#';
+            display: block;
+            position: absolute;
+            left: -20px;
+            top: 0;
+            color: #4ea25d;
+            font-size: 18px;
+        }
+        main {
+            overflow: hidden;
+        }
+        section {
+            float: left;
+            width: 33.33%;
+            color: #fff;
+        }
+        .padmar {
+            padding-bottom: 1000px;
+            margin-bottom: -1000px;
+        }
+        .green {
+            background-color: #41ab3e;
+        }
+        p {
+            margin: 0;
+        }
+        .orange {
+            background-color: orange;
+        }
+        .blue {
+            background-color: #4ba0d8;
+        }
+        .bg {
+            background: url(https://bubuzou.oss-cn-shenzhen.aliyuncs.com/blog/202102/line_bg.png) repeat-y;
+            background-size: 700px 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <h4>padding + 负margin</h4>
+        <main>
+          <section class="padmar green">
+            <p>111</p>
+          </section>
+          <section class="padmar orange">
+            <p>222</p>
+            <p>222</p>
+            <p>222</p>
+            <p>222</p>
+          </section>
+          <section class="padmar blue">
+            <p>333</p>
+            <p>333</p>
+          </sectoin>
+        </main>
+        <h4>background</h4>
+        <main class="bg">
+          <section class="green">
+            <p>111</p>
+          </section>
+          <section class="orange">
+            <p>222</p>
+            <p>222</p>
+            <p>222</p>
+            <p>222</p>
+          </section>
+          <section class="blue">
+            <p>333</p>
+            <p>333</p>
+          </sectoin>
+        </main>
+      </div>
+</body>
+</html>
