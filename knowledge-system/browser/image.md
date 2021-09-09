@@ -12,7 +12,7 @@ width 和 height 参数用来指定宽高的像素值。
 function loadImg(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.src = ur;
+        img.src = url;
         img.onload = function () {
             resolve(img);
         }
