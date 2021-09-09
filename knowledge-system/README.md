@@ -161,7 +161,13 @@
             * [webpack优化](./webpack/webpack_optimise.md)
             * [browserslist]
             * [babel-loader]
-            * [style-loader和css-loader和postcss-loader]
+            * [css相关loader]
+            * [url-loader和file-loader]
+            * [html-webpack-plugin]
+            * [terser-webpack-plugin]
+            * [mini-css-extract-plugin]
+            * [css-minimizer-webpack-plugin]
+            * [optimize-css-assets-webpack-plugin]
         + 原理
             * [source-map](./webpack/source-map.md)
             * [HMR](./webpack/hmr.md)
