@@ -154,6 +154,11 @@ http 2.0 是基于 SPDY 的。区别：
 3. header 压缩： 如上文中所言，对前面提到过 HTTP1.x 的 header 带有大量信息，而且每次都要重复发送，HTTP2.0 使用 encoder 来减少需要传输的header 大小，通讯双方各自 cache 一份 header fields 表，既避免了重复 header 的传输，又减小了需要传输的大小。
 4. 服务端推送（Server Push）： 同 SPDY 一样，HTTP2.0 也具有 Server Push 功能。
 
+有关 http2 需要注意的：
+
+1. 根据 IETF 规范，http 2 并不强制要求必须使用 TLS（https）
+2. 但是主流浏览器 Firefox, Chrome, Safari, Opera, IE, Edge 声明它们只会实现基于 TLS 的 http 2
+
 #### http 2.0 和 http 1.1 的区别
 
 ##### 帧和流
