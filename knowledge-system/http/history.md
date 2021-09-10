@@ -157,7 +157,10 @@ http 2.0 是基于 SPDY 的。区别：
 有关 http2 需要注意的：
 
 1. 根据 IETF 规范，http 2 并不强制要求必须使用 TLS（https）
-2. 但是主流浏览器 Firefox, Chrome, Safari, Opera, IE, Edge 声明它们只会实现基于 TLS 的 http 2
+2. 但是主流浏览器 Firefox, Chrome, Safari, Opera, IE, Edge 声明它们只会实现基于 TLS 的 http 2。原因可以查看 [why-do-browser-implementations-of-http-2-require-tls](https://stackoverflow.com/questions/34076231/why-do-browser-implementations-of-http-2-require-tls) 和 [https://stackoverflow.com/questions/61051169/is-tls-mandatory-for-http-2](https://stackoverflow.com/questions/61051169/is-tls-mandatory-for-http-2)
+
+
+
 
 #### http 2.0 和 http 1.1 的区别
 
