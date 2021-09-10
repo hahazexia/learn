@@ -135,7 +135,7 @@
         + [组件化](./vue/component.md)
         + [编译器](./vue/compiler.md)
         + [diff](./vue/diff.md)
-        + [computed和watch]
+        + [computed和watch](./vue/computed_watch.md)
         + [v-for和v-if](./vue/vfor_vif.md)
         + [data](./vue/data.md)
         + [ref](./vue/ref.md)
