@@ -149,7 +149,7 @@
 
 - nodejs
     * 基础
-        + [path]
+        + [path](./nodejs/path.md)
         + [fs]
         + [Buffer]
         + [stream]
