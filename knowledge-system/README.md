@@ -150,9 +150,9 @@
 - nodejs
     * 基础
         + [path](./nodejs/path.md)
-        + [fs]
-        + [Buffer]
-        + [stream]
+        + [fs](./nodejs/fs.md)
+        + [Buffer](./nodejs/buffer.md)
+        + [stream](./nodejs/stream.md)
         + [http]
 
 - 工程化

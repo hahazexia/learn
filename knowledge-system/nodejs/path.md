@@ -128,3 +128,60 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 // If the current working directory is /home/myself/node,
 // this returns '/home/myself/node/wwwroot/static_files/gif/image.gif'
 ```
+
+### `path.format(pathObject)`
+
+```js
+path.format(pathObject)
+// pathObject Object 任意对象包含以下属性
+// dir String
+// root String
+// base String
+// name String
+// ext String
+// return String
+```
+
+path.format 方法基于一个对象返回路径字符串。这个方法和 path.parse 的作用相反。对象中的属性是有优先级的：pathObject.dir 存在则 pathObject.root 会被忽略。如果 pathObject.base 存在则 pathObject.ext 和 pathObject.name 被忽略。
+
+下面的例子对于 POSIX （可移植系统操作接口）：
+
+```js
+// If `dir`, `root` and `base` are provided,
+// `${dir}${path.sep}${base}`
+// will be returned. `root` is ignored.
+path.format({
+  root: '/ignored',
+  dir: '/home/user/dir',
+  base: 'file.txt'
+});
+// Returns: '/home/user/dir/file.txt'
+
+// `root` will be used if `dir` is not specified.
+// If only `root` is provided or `dir` is equal to `root` then the
+// platform separator will not be included. `ext` will be ignored.
+path.format({
+  root: '/',
+  base: 'file.txt',
+  ext: 'ignored'
+});
+// Returns: '/file.txt'
+
+// `name` + `ext` will be used if `base` is not specified.
+path.format({
+  root: '/',
+  name: 'file',
+  ext: '.txt'
+});
+// Returns: '/file.txt'
+```
+
+下面的例子对于 windows
+
+```js
+path.format({
+  dir: 'C:\\path\\dir',
+  base: 'file.txt'
+});
+// Returns: 'C:\\path\\dir\\file.txt'
+```
