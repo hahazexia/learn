@@ -19,7 +19,7 @@
             * [规范中的隐式转换](./js/conversion_specification.md)
             * [严格模式](./js/strict_mode.md)
             * [事件](./js/event.md)
-            * [promise]
+            * [promise](./js/promise.md)
     * 使用
         + [去抖和节流](./js/debounce_throttle.md)
         + [深浅拷贝](./js/clone.md)
