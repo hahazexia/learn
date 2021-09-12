@@ -195,3 +195,145 @@ meta 标签设置 viewport 宽度等于设备宽度，这个设置是很重要�
 2. 设置 width=device-width 后，layout viewport（document.documentElement.clientWidth） 和 visual viewport（window.innerWidth）宽度都变成和 ideal-viewport 一样了。
 3. 在 dpr（物理像素 与 CSS像素 比值） 大于 1 的设备上，css 里设置 1px 的边框，会实际使用 2px 的物理像素（因为我们设置了 width=device-width，使视口宽度和理想视口一样。所以举个例子， 750 的物理像素宽度变成了 375，这时候 css 中的 1px 实际使用了 2px 的物理像素 ）。这时候根据 dpr（物理像素 与 CSS像素 比值） 作缩放，visual viewport宽度 = ideal viewport宽度 / 当前缩放值。对 dpr 为 2 的设备，就将其 initial-scale 设置为 0.5，则可以计算出 visual viewport宽度 =  ideal viewport宽度 * 2。也就是说 375 * 2 = 750。于是 layout viewport（document.documentElement.clientWidth） 和 visual viewport（window.innerWidth）宽度都乘 2 从 ideal-viewport 的 375 变成了 750，从而实现了 1物理像素 = 1css像素。
 4. 使用 rem 模拟 vw 特性适配多种屏幕尺寸。rem 是相对于 html 元素的 font-size 来做计算的计算属性值。通过设置 documentElement 的 fontSize 属性值就可以统一整个页面的布局标准。Flexible 将整个页面的宽度切成了 10 份，然后将计算出来的页面宽度的 1/10 设置为 html 节点的 fontSize。
+
+### vw vh 方案
+
+* vw(Viewport's width)：1vw 等于视觉视口的 1%
+* vh(Viewport's height) :1vh 为视觉视口高度的 1%
+* vmin : vw 和 vh 中的较小值
+* vmax : 选取 vw 和 vh 中的最大值
+
+如果视觉视口为 375px，那么 1vw = 3.75px，这时 UI 给定一个元素的宽为 75px（设备独立像素），我们只需要将它设置为 75 / 3.75 = 20vw。
+
+可以使用 PostCSS 的 postcss-px-to-viewport 插件来计算。
+
+## 1px 问题
+
+而在设备像素比大于 1 的屏幕上，我们写的 1px 实际上是被多个物理像素渲染，这就会出现 1px 在有些屏幕上看起来很粗的现象。
+
+1. 媒体查询利用设备像素比缩放，设置小数像素；
+
+优点：简单，好理解
+
+缺点：兼容性差，目前之余 IOS8+ 才支持，在 IOS7 及其以下、安卓系统都是显示 0px。
+
+```css
+.border { border: 1px solid #999 }
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+    .border { border: 0.5px solid #999 }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 3) {
+    .border { border: 0.333333px solid #999 }
+}
+```
+
+2. border-image
+
+缺点：需要制作图片，圆角可能出现模糊
+
+border-width：指定边框的宽度，可以设定四个值，分别为上右下左 border-width: top right bottom left;
+
+border-image：该例意为：距离图片上方 2px（属性值上没有单位）裁剪边框图片作为上边框，下方 2px 裁剪作为下边框。距离左右 0 像素裁剪图片即没有边框，以拉伸方式展示。
+
+
+```css
+.border-image-1px {
+    border-width: 1px 0px;
+    -webkit-border-image: url("border.png") 2 0 stretch;
+    border-image: url("border.png") 2 0 stretch;
+}
+```
+
+3. background-image
+
+缺点：需要制作图片，圆角可能出现模糊
+
+```css
+.border_1px{
+        @media only screen and (-webkit-min-device-pixel-ratio:2){
+            .border_1px{
+                background: url(../img/1pxline.png) repeat-x left bottom;
+                background-size: 100% 1px;
+            }
+        }
+```
+
+4. box-shadow
+
+优点是没有圆角问题，缺点是颜色不好控制
+
+```css
+div {
+    -webkit-box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.5);
+}
+```
+
+box-shadow 属性的用法：`box-shadow: h-shadow v-shadow [blur] [spread] [color] [inset]`
+
+参数分别表示: 水平阴影位置，垂直阴影位置，模糊距离， 阴影尺寸，阴影颜色，将外部阴影改为内部阴影，后四个可选；
+
+该例中为何将阴影尺寸设置为负数。设置成 -1px 是为了让阴影尺寸稍小于 div 元素尺寸，这样左右两边的阴影就不会暴露出来，实现只有底部一边有阴影的效果。从而实现分割线效果（单边边框）。
+
+5. viewport + rem
+
+通过设置缩放，让 CSS 像素等于真正的物理像素。例如：当设备像素比为 3 时，我们将页面缩放 1/3 倍，这时 1px 等于一个真正的屏幕像素。
+
+6. 伪类 + transform
+
+这种方式可以满足各种场景，如果需要满足圆角，只需要给伪类也加上 border-radius 即可
+
+```css
+.border_1px:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #000;
+    transform-origin: 50% 0%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio:2){
+    .border_1px:before{
+        transform: scaleY(0.5);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio:3){
+    .border_1px:before{
+        transform: scaleY(0.33);
+    }
+}
+
+```
+
+```scss
+border-1px($color = #ccc, $radius = 2PX, $direction = all)
+  position: relative
+  &::after
+    content: ""
+    pointer-events: none
+    display: block
+    position: absolute
+    border-radius: $radius
+    box-sizing border-box
+    width 100%
+    height 100%
+    left: 0
+    top: 0
+    transform-origin: 0 0
+    if $direction == all
+      border: 1PX solid $color
+    else
+      border-{$direction}: 1PX solid $color
+    @media only screen and (-webkit-min-device-pixel-ratio:2)
+      width: 200%
+      height: 200%
+      border-radius: $radius * 2
+      transform: scale(.5)
+    @media only screen and (-webkit-min-device-pixel-ratio:3)
+      width: 300%
+      height: 300%
+      border-radius: $radius * 3
+      transform: scale(.333)
+
+```
