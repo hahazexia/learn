@@ -65,7 +65,7 @@ class EventBus {
   once(type, handler) {
     const _this = this
     function cb() {
-        _this.off(type, handler)
+        _this.off(type, cb)
         handler.apply(_this, arguments);
     }
     this.on(type, cb)
@@ -81,7 +81,9 @@ class EventBus {
         delete this.map[type]
       } else {
         let index = this.map[type].indexOf(handler)
-        this.map[type].splice(index, 1)
+        if (index >= 0) {
+          this.map[type].splice(index, 1)
+        }
       }
     }
   }
