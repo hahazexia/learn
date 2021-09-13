@@ -327,9 +327,9 @@ _t 是 renderSlot，它会去判断是否存在 `this.$scopedSlots[name]`，也�
     3. 子组件初始化接下来走到 initRender 方法，会将刚才的 vm.$options._renderChildren 加入到子组件 vm.$slots 中的 default 属性中，因为它是普通插槽，没有起名字，所以 default。
     4. 然后子组件实例化结束，开始走 $mount 流程，先根据 render 方法生成子组件的 vnode，然后再去 patch。生成子组件 vnode 的时候会调用 _t 也就是 renderSlot 函数获取到 vm.$slots.default 返回
     5. 之后就是 patch 流程了
-
-普通插槽简化解释：编译器解析 template 的时候将子组件标签中的内容编译成的 render 函数在生成子组件占位符 vnode 的时候，将插槽内容生成为占位符 vnode 的 componentOptions.children，然后子组件初始化的时候会将占位符 vnode 的 componentOptions.children 的内容转移到 vm.$options._renderChildren 上，后续又转移到 vm.$slots.default 上。等到子组件真的去生成 vnode 的时候，从 vm.$slots.default 取出对应内容，然后生成 vnode，后续走 patch 流程
+ 
+普通插槽简化解释：编译器解析 template 的生成的 render 函数在生成子组件占位符 vnode 的时候，将插槽内容生成为占位符 vnode 的 componentOptions.children，然后子组件初始化的时候会将占位符 vnode 的 componentOptions.children 的内容转移到 vm.$options._renderChildren 上，后续又转移到 vm.$slots.default 上。等到子组件真的去生成 vnode 的时候，从 vm.$slots.default 取出对应内容，然后生成 vnode，后续走 patch 流程
 
 2. 具名插槽和作用域插槽
 
-编译器解析 template 的时候生成的 render 函数会为生成的子组件占位符 vnode 生成 data.scopedSlots，data.scopedSlots 对象的 key 就是具名插槽的名字，value 是一个函数，用于获取到子组件作用域的数据后生成子组件 vnode。子组件 $mount 流程的时候会将 data.scopedSlots 转移到 vm.$scopedSlots 上，之后子组件的 render 方法中插槽的部分会用 _t 方法找到 vm.$scopedSlots 替换进去，然后生成 vnode，后续走 patch 流程
+编译器解析 template 生成的 render 函数会为生成的子组件占位符 vnode 生成 data.scopedSlots，data.scopedSlots 对象的 key 就是具名插槽的名字，value 是一个函数，用于获取到子组件作用域的数据后生成子组件 vnode。子组件 $mount 流程的时候会将 data.scopedSlots 转移到 vm.$scopedSlots 上，之后子组件的 render 方法中插槽的部分会用 _t 方法找到 vm.$scopedSlots 替换进去，然后生成 vnode，后续走 patch 流程
