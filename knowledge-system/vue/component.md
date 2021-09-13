@@ -814,6 +814,13 @@ export default {
     7. 子组件的 mounted
     8. 父组件的 mounted
 
+12. 如果父子传给子级一个 props 数据，然后父级改变了这个数据，那么更新的钩子函数是这样的顺序：
+    1. 父 beforeUpdate
+    2. 子 beforeUpdate
+    3. 子 updated
+    4. 父 updated
+
+
 ## 题目
 
 你对组件化有什么理解？
