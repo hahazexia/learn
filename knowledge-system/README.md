@@ -36,8 +36,8 @@
         + [查找算法](./js/search.md)
     * 设计模式
         + [发布订阅模式](./js/publish_subscribe.md)
+        + [策略模式](./js/strategy.md)
         + [责任链模式]
-        + [策略模式]
 
 ![html&css](./img/html&css.svg)
 [链接](https://www.processon.com/mindmap/610e0572f346fb2a2e982bcc)
