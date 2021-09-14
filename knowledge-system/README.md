@@ -182,3 +182,4 @@
     * [stylelint代码规范](./frontend_practice/stylelint.md)
     * [prettier代码规范](./frontend_practice/prettier.md)
     * [webpack-bundle-analyzer](./frontend_practice/webpack_bundle_analyzer.md)
+    + [vue+nodejs配置多版本打包](./frontend_practice/vue_nodjes_multiple_version.md)
