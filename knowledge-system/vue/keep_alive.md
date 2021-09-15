@@ -277,7 +277,7 @@ function initComponent (vnode, insertedVnodeQueue) {
 }
 ```
 
-这里会有 vnode.elm 缓存了 vnode 创建生成的 DOM 节点。所以对于首次渲染而言，除了在 <keep-alive> 中建立缓存，和普通组件渲染没什么区别。
+这里会有 vnode.elm 缓存了 vnode 创建生成的 DOM 节点。所以对于首次渲染而言，除了在 `<keep-alive>` 中建立缓存，和普通组件渲染没什么区别。
 
 3. 当我们从 B 组件再次点击 switch 切换到 A 组件，就会命中缓存渲染。当数据发送变化，在 patch 的过程中会执行 patchVnode 的逻辑，它会对比新旧 vnode 节点。patchVnode 在做各种 diff 之前，会先执行 prepatch 的钩子函数，它的定义在 `src/core/vdom/create-component`
 

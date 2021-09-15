@@ -90,6 +90,7 @@
         + [history](./browser/history.md)
         + [Image](./browser/image.md)
         + [serviceWorker]
+        + [WebSocket]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
         + [js如何执行](./browser/js_how_to_run.md)
@@ -186,3 +187,4 @@
     * [webpack-bundle-analyzer](./frontend_practice/webpack_bundle_analyzer.md)
     + [vue+nodejs配置多版本打包](./frontend_practice/vue_nodjes_multiple_version.md)
     + [点击空白处关闭弹框](./frontend_practice/click_blank_close.md)
+    + [ssr]
