@@ -37,8 +37,8 @@ class HomeController extends Controller {
 然后访问页面地址为以下即可：
 
 ```js
-http://127.0.0.1:7001/5315/message
-// 5315 是不同的版本号
+http://127.0.0.1:7001/5.3.15/message
+// 5.3.15 是不同的版本号
 ```
 
 ## hash
@@ -63,6 +63,6 @@ module.exports = {
 然后 node 端返回页面的时候返回默认的 public/index.html 就可以了不需要改动，只是不同版本访问页面的时候将访问地址修改即可：
 
 ```js
-http://127.0.0.1:7001/5315/index.html#message
-// 5315 是不同的版本号
+http://127.0.0.1:7001/5.3.15/index.html#message
+// 5.3.15 是不同的版本号
 ```
