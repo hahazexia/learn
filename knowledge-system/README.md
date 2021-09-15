@@ -28,6 +28,7 @@
         + [类型判断](./js/type_check.md)
         + [模块化](./js/module.md)
         + [遍历对象的属性](./js/get_object_key.md)
+        + [错误捕获](./js/try_catch.md)
         + [数组方法]
         + [字符串方法]
         + [对象方法]
@@ -183,3 +184,4 @@
     * [prettier代码规范](./frontend_practice/prettier.md)
     * [webpack-bundle-analyzer](./frontend_practice/webpack_bundle_analyzer.md)
     + [vue+nodejs配置多版本打包](./frontend_practice/vue_nodjes_multiple_version.md)
+    + [点击空白处关闭弹框](./frontend_practice/click_blank_close.md)
