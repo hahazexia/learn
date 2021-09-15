@@ -10,12 +10,12 @@ const router = new VueRouter({
 });
 ```
 
-webpack 打包的时候输出路径和 publicPath 配置上对应的版本号
+webpack 打包的时候输出路径和 publicPath 配置上对应的版本号，版本号可以放 vue 项目的 .env 文件里，然后用 process.env.VERSION 来获取
 
 ```js
 module.exports = {
-  publicPath: `/${version}/`,
-  outputDir: resolve(`../server/app/public/${version}`),
+  publicPath: `/${process.env.VERSION}/`,
+  outputDir: resolve(`../server/app/public/${process.env.VERSION}`),
 }
 ```
 
