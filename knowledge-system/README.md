@@ -150,22 +150,12 @@
 ![engineering](./img/engineering.svg)
 [链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
 
-- nodejs
-    * 基础
-        + [path](./nodejs/path.md)
-        + [fs](./nodejs/fs.md)
-        + [Buffer](./nodejs/buffer.md)
-        + [stream](./nodejs/stream.md)
-        + [http]
-    * 应用
-        + [koa](./nodejs/koa.md)
-
 - 工程化
     * webpack
         + 使用
             * [webpack基础](./webpack/webpack_base.md)
             * [webpack优化](./webpack/webpack_optimise.md)
-            * [browserslist]
+            * [browserslist](./webpack/browserslist.md)
             * [babel-loader]
             * [css相关loader]
             * [url-loader和file-loader]
@@ -177,6 +167,17 @@
         + 原理
             * [source-map](./webpack/source-map.md)
             * [HMR](./webpack/hmr.md)
+
+
+- nodejs
+    * 基础
+        + [path](./nodejs/path.md)
+        + [fs](./nodejs/fs.md)
+        + [Buffer](./nodejs/buffer.md)
+        + [stream](./nodejs/stream.md)
+        + [http]
+    * 应用
+        + [koa](./nodejs/koa.md)
 
 - 前端实践
     * [ESLint代码规范](./frontend_practice/eslint.md)
