@@ -74,6 +74,7 @@ rules: [
             "style-loader",
             // 将 css 文件变成 commonjs 一个模块加载到 js 中，里面的内容是样式字符串
             "css-loader",
+            "sass-loader",
              {
                  // css 兼容处理 postcss，注意需要在 package.json 配置 browserslist
                  loader: "postcss-loader",
