@@ -240,3 +240,5 @@ let vm = new Vue({
 ## 总结
 
 keep-alive 组件是一个抽象组件，它的实现通过自定义 render 函数并且利用了插槽，将它包裹的组件的 vnode 缓存起来。且在 patch 过程中对于已缓存的组件不会执行 mounted，所以不会有一般的组件的生命周期函数但是又提供了 activated 和 deactivated 钩子函数。patch 过程中通过 keep-alive 的 cache 属性获取到之前缓存的组件 vnode 然后拿到 elm 属性，也就是原生 dom 节点，然后直接插入页面中。
+
+keep-alive 也是个组件，它没有 dom 模板，而是实现了 render 方法用来缓存它的插槽内容，它会通过vm.$slots.default 拿到它包裹的子组件的 vnode 然后缓存在自己的 cache 数组中，然后返回这个子组件 vnode 渲染。等到第二次渲染的时候就直接会从 keep-alive 组件的 cache 数组里得到子组件的 vnode.elm 属性，也就是子组件的 dom 节点，然后直接插入页面对应位置。这时候就不再走 mounted 了，只会触发 activated 和 deactivated 钩子函数
