@@ -166,6 +166,58 @@ Sub.prototype.constructor = Sub;
 
 ```
 
+## constructor
+
+在实现继承之后什么时候需要将子类型的 constructor 重新分配为 Sub 呢？
+
+下面这种情况需要重新设置：
+
+```js
+function Parent() {};
+function CreatedConstructor() {}
+
+CreatedConstructor.prototype = Object.create(Parent.prototype);
+
+CreatedConstructor.prototype.create = function create() {
+  return new this.constructor();
+}
+
+new CreatedConstructor().create().create(); // error undefined is not a function since constructor === Parent
+```
+
+而下面这种情况就不需要了：
+
+```js
+function ParentWithStatic() {}
+
+ParentWithStatic.startPosition = { x: 0, y:0 };
+ParentWithStatic.getStartPosition = function getStartPosition() {
+  return this.startPosition;
+}
+
+function Child(x, y) {
+  this.position = {
+    x: x,
+    y: y
+  };
+}
+
+Child.prototype = Object.create(ParentWithStatic.prototype);
+Child.prototype.constructor = Child;
+
+Child.prototype.getOffsetByInitialPosition = function getOffsetByInitialPosition() {
+  var position = this.position;
+  var startPosition = this.constructor.getStartPosition(); // error undefined is not a function, since the constructor is Child
+
+  return {
+    offsetX: startPosition.x - position.x,
+    offsetY: startPosition.y - position.y
+  }
+};
+```
+
+总结一下就是如果使用了 constructor 属性并且希望获取到的是子类型那么就需要重新设置，否则就不需要。
+
 ## 题目
 
 第一题
