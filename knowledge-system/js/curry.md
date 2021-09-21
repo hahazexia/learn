@@ -185,3 +185,52 @@ function add(x) {
 ```
 </details>
 <br><br>
+
+第三题
+
+实现一个 sum 函数
+
+```js
+sum(1, 2, 3).valueOf(); // 6
+sum(2, 3)(2).valueOf(); // 7
+sum(1)(2)(3)(4).valueOf(); // 10
+sum(2)(4, 1)(2).valueOf(); // 9
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+function curry(fn) {
+  let preArgs = [].slice.call(arguments, 1);
+  let allArgs = [...preArgs];
+
+  function curried() {
+    if (arguments.length > 0) {
+      allArgs = [...allArgs, ...([].slice.call(arguments))];
+      return curried;
+    }
+  }
+
+  curried.valueOf = function () {
+    let res = fn.apply(this, allArgs);
+    allArgs = [...preArgs];
+    return res;
+  }
+
+  return curried;
+}
+
+function s() {
+  return [].slice.call(arguments).reduce((acc, item) => (acc += item, acc), 0)
+}
+
+let sum = curry(s);
+
+console.log(sum(1, 2, 3).valueOf())
+console.log(sum(2, 3)(2).valueOf())
+console.log(sum(1)(2)(3)(4).valueOf())
+console.log(sum(2)(4, 1)(2).valueOf())
+```
+</details>
+<br><br>

@@ -116,3 +116,72 @@ Object.prototype.toString.call(obj) === '[object Array]'
 ```
 </details>
 <br><br>
+
+第二题
+
+```js
+var a = {n: 1};
+var b = a;
+
+a.x = a = {n: 2};
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+a // {n: 2}
+b // {n: 1, x: {n: 2}}
+```
+
+赋值运算符从右边向左边计算，a.x 引用着 {n: 1} 这个对象的 x 属性，还没有赋值，一开始是 undefined，b 也引用着 {n: 1} 对象。a 被重新赋值为 {n: 2}，然后给 {n: 1} 多加了一个 x 属性等于 {n: 2}。
+</details>
+<br><br>
+
+第三题
+
+```js
+var str1 = '123'
+var str2 = new String('123')
+var str3 = String('123')
+
+str1 == str2
+str1 === str2
+str2 === str3
+```
+
+<details>
+<summary>答案</summary>
+
+```js
+var str1 = '123'
+var str2 = new String('123')
+var str3 = String('123')
+
+str1 == str2 // true 隐式转换，引用类型会 toPrimitive 转换成简单类型后再比较 
+str1 === str2 // false 类型不一样，str2 是 Object
+str2 === str3 // false 同上
+```
+</details>
+<br><br>
+
+第四题
+
+```js
+if ([] == ![]) {
+    console.log('1')
+} else {
+    console.log('2')
+}
+```
+
+<details>
+<summary>答案</summary>
+
+先计算一元操作符 ![]
+1. 先调用 ToBoolean 将操作数转换成布尔值（null undefined 0 NaN false '' 返回 false，其他一律 true）
+2. 然后对布尔值取反，返回结果
+
+所以 ![] 的结果是 false，这时候的式子变成了 [] == false，类型不一样，且之中有引用类型，于是调用 toPrimitive 将 [] 转换成简单类型，转换后是空字符串 ''，于是变成 '' == false，都是简单类型转换成数字比较，0 == 0，结果是 true，所以打印 1。
+</details>
+<br><br>

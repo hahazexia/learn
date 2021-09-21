@@ -105,3 +105,21 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
   console.log(results); // [-1, Infinity]
 });
 ```
+
+## 题目
+
+第一题
+
+```js
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .then(console.log)
+```
+
+<details>
+<summary>答案</summary>
+
+如果 Promise.prototype.then 的第一个参数不是函数，则会在内部被替换为 (x) => x，即原样返回 promise 最终结果的函数。因此第一个 then 和 第二个 then 都变成了 (x) => x，x 是 一开始的 1 被传递下去。最后被 console.log 函数接收打印出来。
+</details>
+<br><br>

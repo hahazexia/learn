@@ -469,3 +469,21 @@ console.log(fn.constructor === Fn) // true
 ```
 </details>
 <br><br>
+
+第五题
+
+```js
+Function.prototype.a = () => alert(1);
+Object.prototype.b = () => alert(2);
+function A() {}
+var a = new A();
+a.b();
+a.a();
+```
+
+<details>
+<summary>答案</summary>
+
+先 alert 2 然后报错，a.a is not a function。
+</details>
+<br><br>
