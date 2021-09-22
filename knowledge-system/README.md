@@ -91,6 +91,7 @@
         + [Image](./browser/image.md)
         + [serviceWorker]
         + [WebSocket]
+        + [Performance]
     * js数据存储
         + [垃圾回收](./browser/garbage_collection.md)
         + [js如何执行](./browser/js_how_to_run.md)
@@ -189,4 +190,5 @@
     + [点击空白处关闭弹框](./frontend_practice/click_blank_close.md)
     + [如何进行技术选型](./frontend_practice/select_tech.md)
     + [长列表优化](./frontend_practice/long_list_optimise.md)
+    + [webview加载优化](./frontend_practice/webview_optimise.md)
     + [ssr]
