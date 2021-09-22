@@ -550,3 +550,25 @@ console.log(ans);
 ```
 </details>
 <br><br>
+
+
+第三题
+
+```js
+if ([] == ![]) {
+    console.log('1')
+} else {
+    console.log('2')
+}
+```
+
+<details>
+<summary>答案</summary>
+
+先计算一元操作符 ![]
+1. 先调用 ToBoolean 将操作数转换成布尔值（null undefined 0 NaN false '' 返回 false，其他一律 true）
+2. 然后对布尔值取反，返回结果
+
+所以 ![] 的结果是 false，这时候的式子变成了 [] == false，类型不一样，且之中有引用类型，于是调用 toPrimitive 将 [] 转换成简单类型，转换后是空字符串 ''，于是变成 '' == false，都是简单类型转换成数字比较，0 == 0，结果是 true，所以打印 1。
+</details>
+<br><br>
