@@ -1,0 +1,11 @@
+<ul id="container"></ul>
+<script>
+    let total = 100000;
+    let container = document.getElementById("container")
+
+    for (let i = 0; i < total; i++) {
+        let li = document.createElement("li");
+        li.innerHTML = i;
+        container.appendChild(li)
+    }
+</script>

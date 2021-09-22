@@ -1,0 +1,26 @@
+<ul id="container"></ul>
+<script>
+    let total = 100000;
+    let container = document.getElementById("container")
+    let timer = Date.now();
+    let index = 0;
+    let id = 0;
+
+    function load() {
+        index += 50;
+        if (index < total) {
+            requestAnimationFrame(() => {
+                let fragment  = document.createDocumentFragment();
+                for (let i = 0; i < 50; i++) {
+                    let li = document.createElement("li");
+                    li.innerHTML = i
+                    fragment.appendChild(li)   
+                }
+                container.appendChild(fragment)
+                load();
+            },0)
+        }
+    }
+
+    load();
+</script>

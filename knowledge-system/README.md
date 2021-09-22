@@ -188,4 +188,5 @@
     + [vue+nodejs配置多版本打包](./frontend_practice/vue_nodjes_multiple_version.md)
     + [点击空白处关闭弹框](./frontend_practice/click_blank_close.md)
     + [如何进行技术选型](./frontend_practice/select_tech.md)
+    + [长列表优化](./frontend_practice/long_list_optimise.md)
     + [ssr]
