@@ -16,6 +16,14 @@ ssr 就是在服务端将 vue 组件解析成 html 字符串，然后发送给�
 * 服务端渲染比仅仅提供静态文件的服务器更加占用 CPU 资源
 * 需要 nodejs
 
+## 原理
+
+通过 Webpack 打包生成两份 bundle 文件：
+
+* Client Bundle，给浏览器用。和纯 Vue 前端项目 Bundle 类似
+* Server Bundle，供服务端 SSR 使用，一个 json 文件
+
+
 ## 使用
 
 和 express 结合的例子：
