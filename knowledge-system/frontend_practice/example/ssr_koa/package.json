@@ -1,6 +1,10 @@
 {
+  "scripts": {
+    "dev": "node index.js"
+  },
   "dependencies": {
     "koa": "^2.13.1",
+    "koa-router": "^10.1.1",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14"
   }
