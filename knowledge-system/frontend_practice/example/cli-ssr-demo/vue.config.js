@@ -7,6 +7,7 @@ const target = TARGET_NODE ? "server" : "client";
 
 
 module.exports = {
+  lintOnSave: false,
   css: {
     extract: process.env.NODE_ENV === 'production'
   },
@@ -26,14 +27,12 @@ module.exports = {
     // 并生成较小的 bundle 文件。
     externals: TARGET_NODE
       ? nodeExternals({
-          // 不要外置化 webpack 需要处理的依赖模块。
-          // 你可以在这里添加更多的文件类型。例如，未处理 *.vue 原始文件，
-          // 你还应该将修改 `global`（例如 polyfill）的依赖模块列入白名单
-          whitelist: [/\.css$/]
+          // allowlist 是一个数组，设置将要包含在最终包中的文件类型
+          allowlist: [/\.js$/, /\.vue$/]
         })
       : undefined,
     optimization: {
-      splitChunks: TARGET_NODE ? 'commonjs2' : undefined
+      splitChunks: TARGET_NODE ? false : undefined
     },
     plugins: [TARGET_NODE ? new VueSSRServerPlugin() : new VueSSRClientPlugin()]
   }),

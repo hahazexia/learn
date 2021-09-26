@@ -5,17 +5,17 @@ const koaStatic = require('koa-static')
 const app = new Koa();
 
 const resolve = file => path.resolve(__dirname, file);
-// 开放dist目录
+
 app.use(koaStatic(resolve('./dist')))
 
-// 第 2 步：获得一个createBundleRenderer
+// 第 2 步：获得一个 createBundleRenderer
 const { createBundleRenderer } = require("vue-server-renderer");
 const bundle = require("./dist/vue-ssr-server-bundle.json");
 const clientManifest = require("./dist/vue-ssr-client-manifest.json");
 
 const renderer = createBundleRenderer(bundle, {
   runInNewContext: false,
-  template: fs.readFileSync(resolve("./src/index.temp.html"), "utf-8"),
+  template: fs.readFileSync(resolve("./public/index.ssr.html"), "utf-8"),
   clientManifest: clientManifest
 });
 
@@ -38,6 +38,7 @@ app.use(async (ctx, next) => {
 });
 
 const port = 3000;
+
 app.listen(port, function() {
   console.log(`server started at localhost:${port}`);
 });

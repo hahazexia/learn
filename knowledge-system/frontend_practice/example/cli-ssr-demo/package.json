@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "koa": "^2.13.3",
+    "koa-static": "^5.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
@@ -34,6 +36,7 @@
     "lodash.merge": "^4.6.2",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
+    "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.11",
     "webpack-node-externals": "^3.0.0"
   }
