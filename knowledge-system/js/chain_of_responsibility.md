@@ -16,7 +16,6 @@ class Middleware {
     }
     compose() {
         const middlewares = this.middlewares;
-        return dispatch(0);
         function dispatch(index) {
             const middleware = middlewares[index];
             if (!middleware) {return;}
@@ -28,6 +27,7 @@ class Middleware {
                 return Promise.reject(err);
             }
         }
+        return dispatch(0);
     }
 }
 
