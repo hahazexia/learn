@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo512.png'
 import style from './index.module.scss'
+import ClassComponent from './components/ClassComponent';
+import FunctionComponent from './components/FunctionComponent';
 
 const name = 'React';
 const obj = {
@@ -29,6 +31,8 @@ const jsx = (
         </ul>
         <img src={logo} alt="logo" className={style.logo} />
         <div style={{width: '50px', height: '50px', border: '1px solid #000'}}></div>
+        <ClassComponent />
+        <FunctionComponent />
     </div>
 );
 

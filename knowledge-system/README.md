@@ -152,6 +152,7 @@
 - react
     * 使用
         + [jsx](./react/jsx.md)
+        + [组件](./react/component.md)
 
 ![engineering](./img/engineering.svg)
 [链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
