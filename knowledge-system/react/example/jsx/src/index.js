@@ -4,6 +4,7 @@ import logo from './logo512.png'
 import style from './index.module.scss'
 import ClassComponent from './components/ClassComponent';
 import FunctionComponent from './components/FunctionComponent';
+import SetState from './components/SetState';
 
 const name = 'React';
 const obj = {
@@ -33,6 +34,7 @@ const jsx = (
         <div style={{width: '50px', height: '50px', border: '1px solid #000'}}></div>
         <ClassComponent />
         <FunctionComponent />
+        <SetState />
     </div>
 );
 
