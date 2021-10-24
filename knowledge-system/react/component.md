@@ -127,3 +127,55 @@ export default class SetState extends Component {
 }
 
 ```
+
+## props.children
+
+Layout.js
+
+```js
+import React, { Component } from 'react'
+import TopBar from './TopBar'
+import BottomBar from './BottomBar'
+export default class Layout extends Component {
+    render() {
+        const { children, showTopBar, showBottomBar } = this.props;
+        return (
+            <div>
+                {showTopBar && <TopBar />}
+                {children.content}
+                <br/>
+                {children.txt}
+                <button onClick={children.btnClick}>按钮</button>
+                {showBottomBar && <BottomBar />}
+            </div>
+        )
+    }
+}
+
+```
+
+HomePage.js
+
+```js
+import React, { Component } from 'react'
+import Layout from './Layout'
+
+export default class HomePage extends Component {
+    render() {
+        return (
+            <div>
+                <Layout showTopBar={false} showBottomBar={true}>
+                    {
+                        {
+                            content: 'HomePage',
+                            txt: '文字',
+                            btnClick: () => console.log('点击按钮')
+                        }
+                    }
+                </Layout>
+            </div>
+        )
+    }
+}
+
+```
