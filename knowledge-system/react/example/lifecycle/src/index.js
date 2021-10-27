@@ -1,0 +1,92 @@
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+
+export default class Index extends Component {
+    constructor(props) {
+        console.log('constructor')
+        super();
+        this.state = {
+            count: 0
+        }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('getDerivedStateFromProps', props, state)
+        return null;
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+    }
+
+    shouldComponentUpdate(props, state) {
+        console.log('shouldComponentUpdate')
+        return true
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('getSnapshotBeforeUpdate', prevProps, prevState)
+        return null
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('componentDidUpdate', prevProps, prevState, snapshot)
+    }
+
+    changeCount() {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+    
+    render() {
+        console.log('render')
+        return (
+            <div>
+                <button onClick={() => this.changeCount()}>改变count</button>
+                <br/>
+                {this.state.count % 2 && <Count count={this.state.count} />}
+            </div>
+        )
+    }
+}
+
+ReactDOM.render(<Index/>, document.getElementById('root'));
+
+
+class Count extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
+    render() {
+        return (
+            <div>
+                {this.props.count}
+            </div>
+        )
+    }
+}
+
+/**
+ * 
+ *
+ * 首次渲染
+constructor
+getDerivedStateFromProps
+render
+componentDidMount
+
+数据更新
+
+getDerivedStateFromProps
+shouldComponentUpdate
+render
+getSnapshotBeforeUpdate
+componentDidUpdate 
+ */
+
