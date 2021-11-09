@@ -63,6 +63,10 @@ export default function FunctionComponent(props) {
 
 ## setState
 
+* setState 在合成事件和生命周期中是异步的，其实是批量更新，为了性能优化。把多次 setState 合成一次
+* setTimeout 和原生事件 中 setState 是同步的
+* setState 传递一个函数就可以实现链式调用。如果不用这种形式，那么 setState 多次调用修改同一个值，则只有最后一次起作用，将前面的调用都覆盖掉
+
 ```js
 import React, { Component } from 'react'
 
@@ -178,4 +182,44 @@ export default class HomePage extends Component {
     }
 }
 
+```
+
+## 事件处理函数绑定组件 this 的三种方法
+
+* constructor 中使用 bind 
+* 给元素的事件属性传递一个箭头函数，箭头函数中再调用对应的函数
+* public class fields 语法
+
+```js
+export default class App extends Component {
+    constructor(props) {
+        super(porps);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+
+    }
+
+    handleClick2(p1, event) {
+
+    }
+
+    handleClick3 = () => {}
+
+    handleClick4(p1, event) {
+
+    }
+
+    render() {
+        return (
+            <div>
+                <button onClick={this.handleClick}>按钮1</button>
+                <button onClick={(e) => this.handleClick2('666', e)}>按钮2</button>
+                <button onClick={this.handleClick3}>按钮3</button>
+                <button onClick={this.handleClick4.bind(this, '666')}>按钮4</button>
+            </div>
+        )
+    }
+}
 ```

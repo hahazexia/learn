@@ -5,6 +5,7 @@ import style from './index.module.scss'
 import ClassComponent from './components/ClassComponent';
 import FunctionComponent from './components/FunctionComponent';
 import SetState from './components/SetState';
+import Event from './components/Event';
 
 const name = 'React';
 const obj = {
@@ -35,6 +36,7 @@ const jsx = (
         <ClassComponent />
         <FunctionComponent />
         <SetState />
+        <Event />
     </div>
 );
 

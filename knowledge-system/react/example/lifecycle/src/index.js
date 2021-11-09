@@ -75,18 +75,25 @@ class Count extends Component {
 /**
  * 
  *
- * 首次渲染
-constructor
-getDerivedStateFromProps
-render
-componentDidMount
 
-数据更新
+初始化
 
-getDerivedStateFromProps
-shouldComponentUpdate
-render
-getSnapshotBeforeUpdate
-componentDidUpdate 
+constructor()
+static getDerivedStateFromProps()
+render()
+componentDidMount()
+
+更新
+
+static getDerivedStateFromProps()
+shouldComponentUpdate()
+render()
+getSnapshotBeforeUpdate()
+componentDidUpdate()
+
+销毁
+
+componentWillUnmount()
+
  */
 
