@@ -64,7 +64,7 @@ export default function FunctionComponent(props) {
 ## setState
 
 * setState 在合成事件和生命周期中是异步的，其实是批量更新，为了性能优化。把多次 setState 合成一次
-* setTimeout 和原生事件 中 setState 是同步的
+* setTimeout 和原生事件中 setState 是同步的
 * setState 传递一个函数就可以实现链式调用。如果不用这种形式，那么 setState 多次调用修改同一个值，则只有最后一次起作用，将前面的调用都覆盖掉
 
 ```js
@@ -183,6 +183,7 @@ export default class HomePage extends Component {
 }
 
 ```
+通过例子可以看到，子组件闭合标签中的任意内容都作为 props 的 children 属性传递给了子组件。
 
 ## 事件处理函数绑定组件 this 的三种方法
 
