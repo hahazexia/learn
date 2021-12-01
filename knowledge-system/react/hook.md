@@ -124,7 +124,7 @@
             document.getElementById("root")
         );
 
-        // app.js
+        // App.js
         import React, { useContext } from "react";
         import { UserContext, TokenContext } from "./index";
 
@@ -244,8 +244,8 @@
         function APP() {
             const [count, setCount] = useState(0);
             const userInfo = {
-            age: count,
-            name: 'jimmy'
+                age: count,
+                name: 'jimmy'
             }
             return <Child userInfo={userInfo}>
         }
@@ -260,14 +260,14 @@
             const [count, setCount] = useState(0);
             // 只有 count 改变了才会返回新的对象
             const userInfo = useMemo(() => {
-            return {
-                name: "jimmy",
-                age: count
-            };
+                return {
+                    name: "jimmy",
+                    age: count
+                };
             }, [count]);
             return <Child userInfo={userInfo}>
         }
     ```
 
 * useCallback 和 useMemo 总结
-    * 简单理解呢 useCallback 与 useMemo 一个缓存的是函数，一个缓存的是函数的返回的结果。useCallback 是来优化子组件的，防止子组件的重复渲染。useMemo 可以优化当前组件也可以优化子组件，优化当前组件主要是通过 memoize 来将一些复杂的计算逻辑进行缓存。当然如果只是进行一些简单的计算也没必要使用 useMemo。我们可以将 useMemo 的返回值定义为返回一个函数这样就可以变通的实现了 useCallback。useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
+    * 简单理解 useCallback 与 useMemo 一个缓存的是函数，一个缓存的是函数的返回的结果。useCallback 是来优化子组件的，防止子组件的重复渲染。useMemo 可以优化当前组件也可以优化子组件，优化当前组件主要是通过 memoize 来将一些复杂的计算逻辑进行缓存。当然如果只是进行一些简单的计算也没必要使用 useMemo。我们可以将 useMemo 的返回值定义为返回一个函数这样就可以变通的实现了 useCallback。useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
