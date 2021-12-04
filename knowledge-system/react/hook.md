@@ -271,3 +271,57 @@
 
 * useCallback 和 useMemo 总结
     * 简单理解 useCallback 与 useMemo 一个缓存的是函数，一个缓存的是函数的返回的结果。useCallback 是来优化子组件的，防止子组件的重复渲染。useMemo 可以优化当前组件也可以优化子组件，优化当前组件主要是通过 memoize 来将一些复杂的计算逻辑进行缓存。当然如果只是进行一些简单的计算也没必要使用 useMemo。我们可以将 useMemo 的返回值定义为返回一个函数这样就可以变通的实现了 useCallback。useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
+
+* useRef
+    ```js
+        const refContainer = useRef(initialValue);
+    ```
+    * useRef 返回一个可变的 ref 对象，其 .current 属性被初始化为传入的参数（initialValue）。返回的 ref 对象在组件的整个生命周期内保持不变
+    ```js
+        import React, { useRef } from "react";
+        function Example() {
+            const divRef = useRef();
+            function changeDOM() {
+                // 获取整个div
+                console.log("整个div", divRef.current);
+                // 获取div的class
+                console.log("div的class", divRef.current.className);
+                // 获取div自定义属性
+                console.log("div自定义属性", divRef.current.getAttribute("data-clj"));
+            }
+            return (
+                <div>
+                    <div className="div-class" data-clj="我是div的自定义属性" ref={divRef}>
+                        我是div
+                    </div>
+                    <button onClick={(e) => changeDOM()}>获取DOM</button>
+                </div>
+            );
+        }
+        export default Example;
+
+    ```
+    * useRef 缓存数据。usestate 和 useReducer 保存的数据源一旦改变，就会重新渲染整个组件，所以这时候函数组件内部声明的变量，则下一次更新也会重置，因此可以使用 useRef 来缓存数据
+    ```js
+        import React, { useRef, useState, useEffect } from "react";
+        function Example() {
+            const [count, setCount] = useState(0);
+
+            const numRef = useRef(count);
+
+            useEffect(() => {
+                numRef.current = count;
+            }, [count]);
+
+            return (
+                <div>
+                    <h2>count上一次的值: {numRef.current}</h2>
+                    <h2>count这一次的值: {count}</h2>
+                    <button onClick={(e) => setCount(count + 10)}>+10</button>
+                </div>
+            );
+        }
+        export default Example;
+
+    ```
+    当 ref 对象内容发生变化时，useRef 并不会通知你。变更 .current 属性不会引发组件重新渲染。所以，上面的例子中虽然numRef.current的值，已经改变了，但是页面上还是显示的上一次的值，重新更新时，才会显示上一次更新的值。
