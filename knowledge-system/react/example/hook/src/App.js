@@ -1,9 +1,11 @@
 import './App.css';
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext, TokenContext } from "./index";
+import Dialog from './Dialog'
 
 function App() {
   const [count, setCount] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
   console.log('App 重新渲染了')
 
   useEffect(() => {
@@ -17,7 +19,9 @@ function App() {
     <div className="App">
       <span>{count}</span>
       <button onClick={() => setCount(count + 1)}>点击加一</button>
+      <button onClick={() => setOpenDialog(true)}>打开 dialog</button>
       <ExampleMemo />
+      {Dialog({show: openDialog, onClose: () => setOpenDialog(false)})}
     </div>
   );
 }
