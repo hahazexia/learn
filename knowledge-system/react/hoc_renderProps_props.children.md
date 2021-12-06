@@ -96,3 +96,35 @@ const newIndex =  HOC(Index)
 console.log(newIndex.say)
 
 ```
+
+## HOC 场景
+
+1. 混入 props
+    * 高阶组件最常用的功能，承接上层的 props，在混入自己的 props，来强化组件
+    ```js
+        function FactoryHOC(Component) {
+            class Hoc extends React.Component {
+                state = {
+                    x: undefined,
+                    y: undefined
+                }
+                render() {
+                    return (
+                        <div onMouseMove={e => {
+                            this.setState({
+                                x: e.clientX,
+                                y: e.clientY
+                            })
+                        }}>
+                            <Component {...this.props} x={this.state.x} y={this.state.y}></Component>
+                        </div>
+                    )
+                }
+            }
+            return Hoc
+        }
+
+        const Mouse = FactoryHOC((props) => <div>mouse{props.x}{props.y}</div>)
+    ```
+
+
