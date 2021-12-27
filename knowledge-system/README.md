@@ -153,6 +153,12 @@
     * 使用
         + [jsx](./react/jsx.md)
         + [组件](./react/component.md)
+        + [生命周期](./react/lifecycle.md)
+        + [context](./react/context.md)
+        + [hoc](./react/hoc_renderProps_props.children.md)
+        + [ref](./react/ref.md)
+        + [hook](./react/hook.md)
+        + [custom_hook](./react/custom_hook.md)
 
 ![engineering](./img/engineering.svg)
 [链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
@@ -196,4 +202,5 @@
     + [如何进行技术选型](./frontend_practice/select_tech.md)
     + [长列表优化](./frontend_practice/long_list_optimise.md)
     + [webview加载优化](./frontend_practice/webview_optimise.md)
+    + [css实现loading动画](./frontend_practice/css3_loading.md)
     + [ssr]

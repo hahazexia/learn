@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .loading-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+            width: 80px;
+        }
+        .loading-box .key {
+            width: 15px;
+            height: 50px;
+            margin-left: 8px;
+            background-color: #67C1F5;
+            animation: keyHeightScale 1.2s infinite ease-in-out both;
+        }
+        .loading-box .key2 {
+            animation-delay: 0.2s;
+        }
+        .loading-box .key3 {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes keyHeightScale {
+            0%, 100%{
+                height: 50px;
+            }
+            50% {
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-box">
+        <div class="key key1"></div>
+        <div class="key key2"></div>
+        <div class="key key3"></div>
+    </div>
+</body>
+</html>
