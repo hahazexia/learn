@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Prompt } from 'react-router-dom';
 import WarningDialog from './WarningDialog';
 
+// react-router 文档 https://v5.reactrouter.com/core/api/Prompt
 // when 是否启用 Prompt
 // navigate 前端路由跳页面方法
 // shouldBlockNavigation 判断是否阻塞路由跳转
