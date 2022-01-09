@@ -49,7 +49,21 @@ yarn add --dev @welldone-software/why-did-you-render
   ![wdyr_use_state.png](./img/wdyr_use_state.png)
   这里出现的问题是 state 的值并未改变但是因为是引用类型所以造成了 re-render。根据这样的提示可以方便定位代码中的位置，然后一个一个解决，知道不再出现提示。
 
-## 常见 re-render 问题
+比较常见的问题是 state 变了但是值和之前相等，或者 props 变化了但是值和之前的相等。
 
-### props
+```js
+const App = () => {
+  const [something, setSomething] = useState({a: 1});
+  return (
+    <>
+      <button onClick={() => setSomething({a: 1})}>change</button>
+    </>
+  );
+}
+```
 
+上面这个例子 something 初始值是对象 `{a: 1}`，调用 setSomething 设置新值还是 `{a: 1}`，虽然值相等，但是是一个新对象，因此造成了一次 re-render
+
+![state1_wdyr.png](./img/state1_wdyr.png)
+
+因此这个插件最大的意义就是发现值相等，但是传递的 state 或 props 是新对象而造成的 re-render。而必然会发生 re-render 的情况它是不会提示的，所以代码中其他的不合理的 re-render 就需要自己写代码的时候多加注意了。
