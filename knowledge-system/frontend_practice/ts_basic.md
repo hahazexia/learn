@@ -173,3 +173,59 @@ function makePair<F, S>() {
   // ...
 }
 ```
+
+## 断言（type assertions）
+
+有些时候可能 typescript 不知道某个值是什么类型，比如使用 document.getElementById 获取某个 html 元素的时候，typescript 只知道会返回 HTMLElement，但是不知道具体的类型，这时候就可以使用断言，来指定更明确的类型。
+
+```js
+const myCanvas = document.getElementById('main_canvas') as HTMLCanvasElement;
+```
+
+除了上面 as 语法，还可以使用尖括号的语法，是等价的
+
+```js
+const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
+```
+
+## 枚举（enum）
+
+枚举允许定义一组起了名字的常量，支持数字枚举和字符串枚举。
+
+* 数字枚举
+
+```js
+enum Direction {
+  Up = 1,
+  Down,
+  Left,
+  Right,
+}
+```
+
+第一个常量从 1 开始，后面的常量依次自增 1。如果不设置第一个从 1 开始，默认从 0 开始
+
+```js
+enum UserResponse {
+  No = 0,
+  Yes = 1,
+}
+ 
+function respond(recipient: string, message: UserResponse): void {
+  // ...
+}
+ 
+respond("Princess Caroline", UserResponse.Yes);
+```
+
+* 字符串枚举
+
+```js
+enum Direction {
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+```
+
