@@ -432,34 +432,30 @@ module.exports = {
   ```
 
 * 延迟加载不重要的 js。某些特殊情况下可以通过修改代码实现：
+  ```js
+    import moduleA from "library";
 
-```js
-import moduleA from "library";
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      someFunction();
+    });
 
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  someFunction();
-});
+    const someFunction = () => {
+      // uses moduleA
+    }
+  ```
+  上面代码只有 someFunction 中使用了特定模块，可以改为如下
+  ```js
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      import('library.moduleA')
+        .then(module => module.default) // using the default export
+        .then(someFunction())
+        .catch(handleError());
+    });
 
-const someFunction = () => {
-  // uses moduleA
-}
-```
-
-上面代码只有 someFunction 中使用了特定模块，可以改为如下
-
-```js
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  import('library.moduleA')
-    .then(module => module.default) // using the default export
-    .then(someFunction())
-    .catch(handleError());
-});
-
-const someFunction = () => {
-    // uses moduleA
-}
-```
-
-改成动态导入的方式。不过这不是一个常用的模式。
+    const someFunction = () => {
+        // uses moduleA
+    }
+  ```
+  改成动态导入的方式。不过这不是一个常用的模式。
