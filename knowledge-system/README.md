@@ -1,8 +1,5 @@
 # 知识体系
 
-![javascript](./img/javascript.svg)
-[链接](https://www.processon.com/mindmap/60e66dc01efad457654f9198)
-
 - javascript
     * 运行时
         + 执行过程
@@ -40,9 +37,6 @@
         + [策略模式](./js/strategy.md)
         + [责任链模式](./js/chain_of_responsibility.md)
 
-![html&css](./img/html&css.svg)
-[链接](https://www.processon.com/mindmap/610e0572f346fb2a2e982bcc)
-
 - css & html
     * html
         + 元素
@@ -78,9 +72,6 @@
         + 应用
             * [移动端适配](./html_css/mobile.md)
 
-![浏览器](./img/browser.svg)
-[链接](https://www.processon.com/mindmap/6108212e1e0853337b1678d6)
-
 - 浏览器
     * webAPI
         + [定时器](./browser/timer.md)
@@ -107,9 +98,6 @@
         + [渲染流程](./browser/browser_render_process.md )
         + [重绘和重排](./browser/repaint_reflow.md)
 
-![http](./img/http.svg)
-[链接](https://www.processon.com/mindmap/60eba6ac1e08530964183b2b)
-
 - http
     * 使用
         + 报文
@@ -121,9 +109,6 @@
     * 历史
         + [http 历史](./http/history.md)
         + [三次握手 四次挥手](./http/three_way_handshake.md)
-
-![vue](./img/vue.svg)
-[链接](https://www.processon.com/mindmap/60eedb4d1e085306ea6da81b)
 
 - vue
     * 使用
@@ -160,9 +145,6 @@
         + [hook](./react/hook.md)
         + [custom_hook](./react/custom_hook.md)
 
-![engineering](./img/engineering.svg)
-[链接](https://www.processon.com/mindmap/6113c9f5e401fd5eeb87a4b3)
-
 - 工程化
     * webpack
         + 使用
@@ -183,14 +165,7 @@
 
 
 - nodejs
-    * 基础
-        + [path](./nodejs/path.md)
-        + [fs](./nodejs/fs.md)
-        + [Buffer](./nodejs/buffer.md)
-        + [stream](./nodejs/stream.md)
-        + [http]
-    * 应用
-        + [koa](./nodejs/koa.md)
+    * [nodejs基础](./nodejs/basic.md)
 
 - 前端实践
     * [ESLint代码规范](./frontend_practice/eslint.md)
