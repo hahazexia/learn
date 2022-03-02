@@ -159,3 +159,117 @@ console.log(buffer);
 ```
 
 ## http
+
+使用 http 模块可以创建一个服务器对象，监听并处理所有向这个服务发送的所有请求
+
+```js
+const http = require('http')
+const fs = require('fs')
+
+// http.createServer 会返回一个 server 对象，传入参数是一个 requestListener 回调函数，当 server 收到任何请求，requestListener 都会被触发
+// requestListener 回调函数有两个参数，request 和 response，从 request 对象获取请求相关的信息，用 response 对象设置响应信息
+const server = http.createServer((request, response) => {
+    const { url, method, headers } = request
+
+    // 请求的 url 是 / 并且是 GET 请求，就去读取硬盘上的 html 文件返回
+    if (url === '/' && method === 'GET') {
+        fs.readFile('index.html', (err, data) => {
+            response.statusCode = 200
+            response.setHeader('Content-Type','text/html')
+            response.end(data)
+        })
+    // 如果请求 url 为 /users，GET 请求，返回 json 数据
+    } else if (url === '/users' && method === 'GET') {
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
+        })
+        response.end(JSON.stringify({
+            name : 'laowang'
+        }))
+    }
+})
+
+// 启动 http 服务器并监听 3000 端口
+server.listen(3000)
+```
+
+这就是一个最简单的 nodejs 服务器的实现。
+
+上面这个例子可以看到在回调里判断不同的请求，然后做响应的处理就可以实现一个简单的服务器的效果了。
+
+## stream 流
+
+stream 译为流，接下来继续通过刚才 server 的例子来解释什么是 stream ，以及为什么要使用 stream。
+
+当我们要新增加一个处理返回图片的请求的时候就像下面这样再添加一个判断：
+
+```js
+const http = require('http')
+const fs = require('fs')
+
+const server = http.createServer((request, response) => {
+    const { url, method, headers } = request
+
+    if (url === '/' && method === 'GET') {
+        fs.readFile('index.html', (err, data) => {
+            response.statusCode = 200
+            response.setHeader('Content-Type','text/html')
+            response.end(data)
+        })
+    } else if (url === '/users' && method === 'GET') {
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
+        })
+        response.end(JSON.stringify({
+            name : 'laowang'
+        }))
+    // 处理图片的请求
+    } else if (method === 'GET' && headers.accept.indexOf('image/*') !== -1) {
+        fs.readFile('./' + url, (err, data) => {
+            response.statusCode = 200
+            response.end(data)
+        })
+    }
+})
+
+server.listen(3000)
+```
+
+当服务器向浏览器响应一张图片的时候，这里直接使用 fs 模块读取服务器上的图片文件到内存中，然后再通过响应发送数据，这样很容易理解，但是这样的实现方式有一个缺点，占用资源过多，如果同时有多个请求要处理，并且文件非常大，就会造成服务器内存被占满。
+
+如果使用 stream 就可以解决这个问题。
+
+```js
+const http = require('http')
+const fs = require('fs')
+
+const server = http.createServer((request, response) => {
+    const { url, method, headers } = request
+
+    if (url === '/' && method === 'GET') {
+        fs.readFile('index.html', (err, data) => {
+            response.statusCode = 200
+            response.setHeader('Content-Type','text/html')
+            response.end(data)
+        })
+    } else if (url === '/users' && method === 'GET') {
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
+        })
+        response.end(JSON.stringify({
+            name : 'laowang'
+        }))
+    // 使用 stream 处理图片的请求
+    } else if (method === 'GET' && headers.accept.indexOf('image/*') !== -1) {
+        fs.createReadStream('./' + url).pipe(response)
+    }
+})
+
+server.listen(3000)
+```
+
+第二种方法通过创建一个可读流，读取到图片文件的二进制数据然后 pipe 到 response 对象里完成响应。
+
+使用 stream 就相当于建立了一个`管道`，将服务器上的文件读取为二进制数据然后通过`管道`直接传输到响应里，**不会完整地读取整个文件数据到内存中**，这样就避免了会大量占用内存的问题。
+
+这里是一个形象地解释：如果把文件比作装水的桶，那么水就是文件里的内容，我们用一根管子连接两个桶使得水从一个桶流入另一个桶，这样就实现了大文件的复制过程
